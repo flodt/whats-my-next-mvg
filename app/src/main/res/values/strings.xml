@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">What\'s My Next</string>
+    <string name="minutes">minutes</string>
+    <string name="example_station">Klinikum Großhadern</string>
+    <string name="example_delta">0</string>
+    <string name="example_line">U6</string>
+</resources>
