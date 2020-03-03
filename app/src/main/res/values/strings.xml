@@ -13,9 +13,11 @@
     <string name="selection_bahn">bahn_select</string>
     <string name="save_settings">Save</string>
     <string name="dismiss_settings">Dismiss</string>
-    <string name="selection_station">SELECTED_STATION</string>
+    <string name="selection_station_in_menu">SELECTED_STATION</string>
     <string name="select_station_title">Select station…</string>
     <string name="custom_station_name_title">Enter custom station name…</string>
+    <string name="default_custom_station_name">Hauptbahnhof</string>
+    <string name="selection_custom_station_entry">CUSTOM_STATION_ENTRY</string>
     <string-array name="transport_keys">
         <item>BUS</item>
         <item>UBAHN</item>

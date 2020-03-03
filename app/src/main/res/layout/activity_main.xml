@@ -9,57 +9,65 @@
         android:background="@color/white"
         tools:context=".SingleDepartureActivity">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
-                                                           android:layout_height="match_parent"
-                                                           android:id="@+id/pull_to_refresh">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/example_line"
-                android:textColor="@color/white"
-                android:id="@+id/line"
-                android:textSize="45sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/inMinutes"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pull_to_refresh"
+            app:layout_constraintBottom_toTopOf="parent">
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/example_station"
-                android:textColor="@color/white"
-                android:id="@+id/direction"
-                android:textSize="25sp"
-                app:layout_constraintBottom_toTopOf="@id/inMinutes"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/example_delta"
-                android:textColor="@color/white"
-                android:id="@+id/inMinutes"
-                android:textSize="200sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/minutes"
-                android:textColor="@color/white"
-                android:id="@+id/minutesTextBox"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/inMinutes"/>
+        </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/example_line"
+            android:textColor="@color/white"
+            android:id="@+id/line"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/inMinutes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/example_station"
+            android:textColor="@color/white"
+            android:id="@+id/direction"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toTopOf="@id/inMinutes"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/example_delta"
+            android:textColor="@color/white"
+            android:id="@+id/inMinutes"
+            android:textSize="200sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minutes"
+            android:textColor="@color/white"
+            android:id="@+id/minutesTextBox"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inMinutes"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

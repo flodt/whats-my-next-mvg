@@ -26,6 +26,7 @@ import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.mvg.Departure;
+import de.schmidt.mvg.LineColor;
 import de.schmidt.util.SingleNetworkAccess;
 
 import java.util.HashSet;
@@ -40,10 +41,11 @@ public class SingleDepartureActivity extends AppCompatActivity {
 	private ActionBar actionBar;
 	private SwipeRefreshLayout pullToRefresh;
 
-	private String customName = null;
+	private String customName;
 
+	//todo: Make DepartureListActivity at the selected stations
+	//--> background colors correspond to the lines; top action bar has color of top list item
 
-	//ActionBar setup
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.app_menu, menu);
@@ -81,6 +83,9 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		layoutBackground = findViewById(R.id.background);
 		actionBar = getSupportActionBar();
 
+		customName = getPreferences(Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
+																	getResources().getString(R.string.default_custom_station_name));
+
 		pullToRefresh = findViewById(R.id.pull_to_refresh);
 		pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -109,7 +114,7 @@ public class SingleDepartureActivity extends AppCompatActivity {
 
 		//get station menu index from preferences, default to Hbf
 		SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station), 1);
+		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
 		new SingleNetworkAccess(this, dialog, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
 	}
@@ -134,14 +139,18 @@ public class SingleDepartureActivity extends AppCompatActivity {
 				direction.setText(dept.getDirection());
 				line.setText(dept.getLine());
 				minutesFixedLabel.setText(R.string.minutes);
+
+				//manage colors
+				//U7 and 8 have two colors in the line bullet - handle this here
+				LineColor color = LineColor.ofAPIValue(dept.getLineBackgroundColor());
 				layoutBackground.setBackground(new ColorDrawable(
-						modifyColor(Color.parseColor(dept.getLineBackgroundColor()), 1.20f)
+						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
 				));
 				actionBar.setBackgroundDrawable(new ColorDrawable(
-						modifyColor(Color.parseColor(dept.getLineBackgroundColor()), 1.00f)
+						modifyColor(Color.parseColor(color.getSecondary()), 1.00f)
 				));
 				getWindow().setStatusBarColor(
-						modifyColor(Color.parseColor(dept.getLineBackgroundColor()), 0.80f)
+						modifyColor(Color.parseColor(color.getSecondary()), 0.80f)
 				);
 			});
 		}
@@ -162,14 +171,14 @@ public class SingleDepartureActivity extends AppCompatActivity {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Select means of transport…");
-		builder.setIcon(R.drawable.ic_excluded);
+		builder.setIcon(R.drawable.ic_excluded_black);
 		builder.setMultiChoiceItems(readable, selected, new DialogInterface.OnMultiChoiceClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 				selected[which] = isChecked;
 			}
 		});
-		builder.setCancelable(false);
+		builder.setCancelable(true);
 		builder.setPositiveButton(getResources().getString(R.string.save_settings), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -212,19 +221,19 @@ public class SingleDepartureActivity extends AppCompatActivity {
 
 		String[] keys = getResources().getStringArray(R.array.station_keys);
 		String[] readable = getResources().getStringArray(R.array.station_readable);
-		int checked = prefs.getInt(getResources().getString(R.string.selection_station), 1);
+		int checked = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_station_title);
-		builder.setIcon(R.drawable.ic_station_selection);
+		builder.setIcon(R.drawable.ic_station_selection_black);
 		builder.setSingleChoiceItems(readable, checked, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				prefs.edit().putInt(getResources().getString(R.string.selection_station), which).apply();
+				prefs.edit().putInt(getResources().getString(R.string.selection_station_in_menu), which).apply();
 
 				//handle custom name here
 				if (keys[which].equals("BY_NAME")) {
-					getUserInputForCustomStationName();
+					getUserInputForCustomStationName(dialog);
 					return;
 				}
 
@@ -244,7 +253,7 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		dialog.show();
 	}
 
-	private void getUserInputForCustomStationName() {
+	private void getUserInputForCustomStationName(DialogInterface parent) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(getResources().getString(R.string.custom_station_name_title));
 
@@ -255,7 +264,16 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		builder.setPositiveButton(R.string.save_settings, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				SingleDepartureActivity.this.customName = input.getText().toString();
+				SingleDepartureActivity.this.customName = input.getText().toString().trim();
+				getPreferences(Context.MODE_PRIVATE)
+						.edit()
+						.putString(
+								getResources().getString(R.string.selection_custom_station_entry),
+								customName
+						)
+						.apply();
+
+				parent.cancel();
 				dialog.cancel();
 				refresh();
 			}

@@ -42,7 +42,12 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	protected void onPostExecute(Departure departure) {
 		super.onPostExecute(departure);
 		act.get().handleUIUpdate(departure, departure == null);
-		dialog.dismiss();
+
+		try {
+			if ((this.dialog != null) && this.dialog.isShowing()) dialog.dismiss();
+		} catch (IllegalArgumentException ignored) {
+			//ignored
+		}
 	}
 
 	@Override
