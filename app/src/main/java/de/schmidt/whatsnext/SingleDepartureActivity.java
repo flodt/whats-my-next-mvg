@@ -43,8 +43,10 @@ public class SingleDepartureActivity extends AppCompatActivity {
 
 	private String customName;
 
-	//todo: Make DepartureListActivity at the selected stations
+	//(1) todo: Make DepartureListActivity at the selected stations
 	//--> background colors correspond to the lines; top action bar has color of top list item
+
+	//(2) todo: Make StationOnMapActivity with the selected station on a map
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
