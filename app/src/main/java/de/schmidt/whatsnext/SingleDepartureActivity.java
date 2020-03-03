@@ -35,7 +35,7 @@ import java.util.Set;
 import static de.schmidt.util.Utils.modifyColor;
 
 public class SingleDepartureActivity extends AppCompatActivity {
-	private static final String TAG = "MainActivityLog";
+	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
 	private ActionBar actionBar;
