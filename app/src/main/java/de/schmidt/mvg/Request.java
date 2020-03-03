@@ -12,7 +12,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 public class Request {
 	private static final Request singleton = new Request();
@@ -32,7 +34,8 @@ public class Request {
 		return singleton;
 	}
 
-	private Request() {}
+	private Request() {
+	}
 
 	public String executeRequest(String rawUrl) {
 		try {
@@ -66,6 +69,27 @@ public class Request {
 	}
 
 	public Departure[] getNextDeparturesAtStation(Station station) throws JSONException {
+		return getNextDeparturesAtStation(station, Collections.emptySet());
+	}
+
+	public Station getNearestStation(Location location) throws JSONException {
+		String url = nearby_url
+				.replace("{lat}", Double.toString(location.getLatitude()))
+				.replace("{lon}", Double.toString(location.getLongitude()));
+		String response = executeRequest(url);
+
+		JSONObject json = new JSONObject(response);
+
+		//capture the first station id
+		JSONObject firstStation = json.getJSONArray("locations").getJSONObject(0);
+
+		return new Station(firstStation.getString("id"),
+						   firstStation.getString("name"),
+						   firstStation.getDouble("latitude"),
+						   firstStation.getDouble("longitude"));
+	}
+
+	public Departure[] getNextDeparturesAtStation(Station station, Set<String> exclusions) throws JSONException {
 		String url = departure_url.replace("{id}", station.getId());
 		String response = executeRequest(url);
 
@@ -94,21 +118,37 @@ public class Request {
 
 		return Arrays.stream(result)
 				.filter(Objects::nonNull)
-				.filter(dep -> !dep.getProduct().contains("BUS"))
+				.filter(dep -> exclusions.stream().noneMatch(mean -> dep.getProduct().equals(mean)))
 				.toArray(Departure[]::new);
 	}
 
-	public Station getNearestStation(Location location) throws JSONException {
-		String url = nearby_url
-				.replace("{lat}", Double.toString(location.getLatitude()))
-				.replace("{lon}", Double.toString(location.getLongitude()));
+	public Station getStationByName(String name) throws JSONException {
+		String url = query_url_name.replace("{name}", name);
 		String response = executeRequest(url);
 
 		JSONObject json = new JSONObject(response);
+		JSONArray locations = json.getJSONArray("locations");
 
-		//capture the first station id
-		JSONObject firstStation = json.getJSONArray("locations").getJSONObject(0);
+		JSONObject station = locations.getJSONObject(0);
 
-		return new Station(firstStation.getString("id"), firstStation.getString("name"));
+		return new Station(station.getString("id"),
+						   station.getString("name"),
+						   station.getDouble("latitude"),
+						   station.getDouble("longitude"));
+	}
+
+	public Station getStationById(String id) throws JSONException {
+		String url = query_url_id.replace("{id}", id);
+		String response = executeRequest(url);
+
+		JSONObject json = new JSONObject(response);
+		JSONArray locations = json.getJSONArray("locations");
+
+		JSONObject station = locations.getJSONObject(0);
+
+		return new Station(station.getString("id"),
+						   station.getString("name"),
+						   station.getDouble("latitude"),
+						   station.getDouble("longitude"));
 	}
 }

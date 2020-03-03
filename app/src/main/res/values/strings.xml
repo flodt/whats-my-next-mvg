@@ -4,4 +4,47 @@
     <string name="example_station">Klinikum Großhadern</string>
     <string name="example_delta">0</string>
     <string name="example_line">U6</string>
+    <string name="refresh">Refresh</string>
+    <string name="exclude">Exclude…</string>
+    <string name="selection_bus">bus_select</string>
+    <string name="selection_ubahn">u_select</string>
+    <string name="selection_sbahn">s_select</string>
+    <string name="selection_tram">tram_select</string>
+    <string name="selection_bahn">bahn_select</string>
+    <string name="save_settings">Save</string>
+    <string name="dismiss_settings">Dismiss</string>
+    <string name="selection_station">SELECTED_STATION</string>
+    <string name="select_station_title">Select station…</string>
+    <string name="custom_station_name_title">Enter custom station name…</string>
+    <string-array name="transport_keys">
+        <item>BUS</item>
+        <item>UBAHN</item>
+        <item>SBAHN</item>
+        <item>TRAM</item>
+        <item>BAHN</item>
+    </string-array>
+    <string-array name="transport_means_readable">
+        <item>Bus</item>
+        <item>U-Bahn</item>
+        <item>S-Bahn</item>
+        <item>Tram</item>
+        <item>Regionalbahn</item>
+    </string-array>
+
+    <string-array name="station_keys">
+        <item>LOCATION</item>
+        <item>de:09162:6</item> <!-- Hbf -->
+        <item>de:09162:2</item> <!-- Marienplatz -->
+        <item>de:09162:470</item> <!-- Fröttmaning -->
+        <item>de:09184:460</item> <!-- Garching, Forschungszentr. -->
+        <item>BY_NAME</item>
+    </string-array>
+    <string-array name="station_readable">
+        <item>Current location</item>
+        <item>Hauptbahnhof</item> <!-- Hbf -->
+        <item>Marienplatz</item> <!-- Marienplatz -->
+        <item>Fröttmaning</item> <!-- Fröttmaning -->
+        <item>Garching, Forschungszentrum</item> <!-- Garching, Forschungszentr. -->
+        <item>Choose by name…</item>
+    </string-array>
 </resources>
