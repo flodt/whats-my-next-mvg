@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Request {
+	private static final Request singleton = new Request();
+
 	protected static final String API_KEY = "5af1beca494712ed38d313714d4caff6";
 
 	protected static final String query_url_name = "https://www.mvg.de/api/fahrinfo/location/queryWeb?q={name}";
@@ -25,6 +27,12 @@ public class Request {
 	protected static final String interruptions_url = "https://www.mvg.de/.rest/betriebsaenderungen/api/interruptions";
 	protected static final String id_prefix = "de:09162:";
 	private static final String TAG = "Request";
+
+	public static Request instance() {
+		return singleton;
+	}
+
+	private Request() {}
 
 	public String executeRequest(String rawUrl) {
 		try {
@@ -71,6 +79,7 @@ public class Request {
 
 			try {
 				result[i] = new Departure(
+						station,
 						single.getString("label"),
 						single.getString("destination"),
 						single.getLong("departureTime"),

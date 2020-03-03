@@ -1,14 +1,12 @@
 package de.schmidt.mvg;
 
-import android.os.Build;
-import androidx.annotation.RequiresApi;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class Departure {
+	private final Station station;
 	private final String line;
 	private final String direction;
 	private final long departureTime;
@@ -16,13 +14,18 @@ public class Departure {
 	private final int delay;
 	private final String product;
 
-	public Departure(String line, String direction, long departureTime, String lineBackgroundColor, int delay, String product) {
+	public Departure(Station atStation, String line, String direction, long departureTime, String lineBackgroundColor, int delay, String product) {
+		this.station = atStation;
 		this.line = line;
 		this.direction = direction;
 		this.departureTime = departureTime;
 		this.lineBackgroundColor = lineBackgroundColor;
 		this.delay = delay;
 		this.product = product;
+	}
+
+	public Station getStation() {
+		return station;
 	}
 
 	public String getLine() {

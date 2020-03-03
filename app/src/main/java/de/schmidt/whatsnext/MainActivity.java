@@ -2,6 +2,7 @@ package de.schmidt.whatsnext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,9 +11,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.TextView;
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,14 +19,21 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Request;
 import de.schmidt.mvg.Station;
+import de.schmidt.util.NetworkAccess;
+
+import java.util.concurrent.ExecutionException;
+
+import static de.schmidt.util.Utils.modifyColor;
 
 // TODO: 25.02.20 add a refresh button (by adding a menu)
-// TODO: 25.02.20 add a ProgressDialog, move Network access to AsyncTask
 public class MainActivity extends AppCompatActivity {
 	private static final String TAG = "MainActivityLog";
 	private TextView line, direction, inMinutes;
 	private ConstraintLayout layoutBackground;
 	private ActionBar actionBar;
+
+	@SuppressWarnings("deprecation")
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,26 +54,20 @@ public class MainActivity extends AppCompatActivity {
 		refresh();
 	}
 
+	@SuppressWarnings("deprecation")
 	private void refresh() {
-		//handle updates
-		Location loc = getLocation();
+		dialog = new ProgressDialog(this);
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(false);
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setMessage("Loading...");
+		dialog.show();
 
-		Thread network = new Thread(() -> {
-			Request request = new Request();
-			try {
-				Station nearest = request.getNearestStation(loc);
-				Departure next = request.getNextDeparturesAtStation(nearest)[0];
-				handleUIUpdate(next, false);
-			} catch (Exception e) {
-				Log.e(TAG, "onCreate: network access", e);
-				handleUIUpdate(null, true);
-			}
-		});
-		network.start();
+		new NetworkAccess(this, dialog).execute(getLocation());
 	}
 
 	@SuppressLint("SetTextI18n")
-	private void handleUIUpdate(Departure dept, boolean empty) {
+	public void handleUIUpdate(Departure dept, boolean empty) {
 		if (empty) {
 			runOnUiThread(() -> {
 				inMinutes.setText("");
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 			});
 		} else {
 			runOnUiThread(() -> {
+				setTitle(dept.getStation().getName());
 				inMinutes.setText("" + dept.getDeltaInMinutes());
 				direction.setText(dept.getDirection());
 				line.setText(dept.getLine());
@@ -94,14 +95,6 @@ public class MainActivity extends AppCompatActivity {
 			});
 		}
 
-	}
-
-	@ColorInt
-	private int modifyColor(@ColorInt int color, float value) {
-		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
-		hsv[2] *= value;
-		return Color.HSVToColor(hsv);
 	}
 
 	private Location getLocation() {
