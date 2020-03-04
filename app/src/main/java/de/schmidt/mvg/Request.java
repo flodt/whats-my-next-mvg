@@ -119,6 +119,13 @@ public class Request {
 		return Arrays.stream(result)
 				.filter(Objects::nonNull)
 				.filter(dep -> exclusions.stream().noneMatch(mean -> dep.getProduct().equals(mean)))
+				.filter(dep -> {
+					if (exclusions.contains("BUS")) {
+						return !dep.getProduct().contains("BUS");
+					} else {
+						return true;
+					}
+				})
 				.toArray(Departure[]::new);
 	}
 

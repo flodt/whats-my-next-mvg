@@ -127,6 +127,8 @@ public class DepartureListActivity extends AppCompatActivity {
 	}
 
 	public void handleUIUpdate(Departure[] array) {
+		if (array == null) return;
+
 		runOnUiThread(() -> {
 			this.departures.clear();
 			for (int i = 0; i < array.length; i++) {
