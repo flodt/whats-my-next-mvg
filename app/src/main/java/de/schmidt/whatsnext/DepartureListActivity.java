@@ -1,7 +1,6 @@
 package de.schmidt.whatsnext;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,37 +16,37 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
-import de.schmidt.util.SingleNetworkAccess;
+import de.schmidt.util.ListableNetworkAccess;
 import de.schmidt.util.Utils;
+import de.schmidt.whatsnext.R;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static de.schmidt.util.Utils.modifyColor;
 
-public class SingleDepartureActivity extends AppCompatActivity {
-	private static final String TAG = "SingleDepartureActivity";
-	private TextView line, direction, inMinutes, minutesFixedLabel;
-	private ConstraintLayout layoutBackground;
-	private ActionBar actionBar;
-	private SwipeRefreshLayout pullToRefresh;
+public class DepartureListActivity extends AppCompatActivity {
+	private static final String TAG = "DepartureList";
+	private SwipeRefreshLayout swipeRefresh;
+	private ListView listView;
 
+	private List<Departure> departures;
+	private DepartureViewAdapter adapter;
 	private String customName;
-
-	//(1) todo: Make DepartureListActivity at the selected stations
-	//--> background colors correspond to the lines; top action bar has color of top list item
-
-	//(2) todo: Make StationOnMapActivity with the selected station on a map
+	private ActionBar actionBar;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,37 +71,37 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_departure_list);
 
-		//setup layout
-		inMinutes = findViewById(R.id.inMinutes);
-		minutesFixedLabel = findViewById(R.id.minutesTextBox);
-		direction = findViewById(R.id.direction);
-		line = findViewById(R.id.line);
-		layoutBackground = findViewById(R.id.background);
 		actionBar = getSupportActionBar();
+
+		//refresh view
+		swipeRefresh = findViewById(R.id.pull_to_refresh_list);
+		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				refresh();
+				swipeRefresh.setRefreshing(false);
+			}
+		});
+
+		departures = new ArrayList<>();
 
 		customName = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
 																								getResources().getString(R.string.default_custom_station_name));
 
-		pullToRefresh = findViewById(R.id.pull_to_refresh);
-		pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+		listView = findViewById(R.id.departure_list);
+		adapter = new DepartureViewAdapter(this, departures);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onRefresh() {
-				refresh();
-				pullToRefresh.setRefreshing(false);
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//item clicked - open on map?
 			}
 		});
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		refresh();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -119,47 +118,46 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		SharedPreferences prefs = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
 		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
-		new SingleNetworkAccess(this, dialog, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
+		new ListableNetworkAccess(this, dialog, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
 	}
 
-	@SuppressLint("SetTextI18n")
-	public void handleUIUpdate(Departure dept, boolean empty) {
-		if (empty) {
-			runOnUiThread(() -> {
+	public void handleUIUpdate(Departure[] array) {
+		runOnUiThread(() -> {
+			this.departures.clear();
+			for (int i = 0; i < array.length; i++) {
+				this.departures.add(i, array[i]);
+			}
+
+			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
-				inMinutes.setText("");
-				direction.setText("No departures found");
-				line.setText("");
-				minutesFixedLabel.setText("");
-				layoutBackground.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+				listView.setBackgroundColor(getColor(R.color.colorPrimary));
 				actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 				getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-			});
-		} else {
-			runOnUiThread(() -> {
-				setTitle(dept.getStation().getName());
-				inMinutes.setText("" + dept.getDeltaInMinutes());
-				direction.setText(dept.getDirection());
-				line.setText(dept.getLine());
-				minutesFixedLabel.setText(R.string.minutes);
-
-				//manage colors
-				//U7 and 8 have two colors in the line bullet - handle this here
-				LineColor color = LineColor.ofAPIValue(dept.getLineBackgroundColor());
-				layoutBackground.setBackground(new ColorDrawable(
-						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
-				));
+			} else {
+				//adapt status bar to first departure
+				setTitle(departures.get(0).getStation().getName());
+				LineColor topDeparture = LineColor.ofAPIValue(departures.get(0).getLineBackgroundColor());
 				actionBar.setBackgroundDrawable(new ColorDrawable(
-						modifyColor(Color.parseColor(color.getSecondary()), 1.00f)
+						modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
 				));
 				getWindow().setStatusBarColor(
-						modifyColor(Color.parseColor(color.getSecondary()), 0.80f)
+						modifyColor(Color.parseColor(topDeparture.getSecondary()), 0.80f)
 				);
-			});
-		}
+			}
+
+			//refresh the list view
+			adapter.notifyDataSetChanged();
+			listView.invalidateViews();
+			listView.refreshDrawableState();
+		});
+
 
 	}
 
+
+
+
+	//refactor this! todo duplicates
 	private void updateExclusions() {
 		//0: bus, 1: u, 2: s, 3: tram, 4: bahn
 		String[] keys = getResources().getStringArray(R.array.transport_keys);
@@ -267,7 +265,7 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		builder.setPositiveButton(R.string.save_settings, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				SingleDepartureActivity.this.customName = input.getText().toString().trim();
+				DepartureListActivity.this.customName = input.getText().toString().trim();
 				getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE)
 						.edit()
 						.putString(
@@ -325,6 +323,4 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		}
 		return location;
 	}
-
-
 }
