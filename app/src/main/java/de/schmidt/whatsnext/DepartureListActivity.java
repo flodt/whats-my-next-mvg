@@ -66,9 +66,16 @@ public class DepartureListActivity extends AppCompatActivity {
 			case R.id.select_station_button:
 				updateStationSelection();
 				break;
+			case R.id.switch_list_button:
+				switchActivity();
+				break;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void switchActivity() {
+		//todo switch to the single view here
 	}
 
 	@Override
@@ -102,6 +109,12 @@ public class DepartureListActivity extends AppCompatActivity {
 				//item clicked - open on map?
 			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		refresh();
 	}
 
 	@SuppressWarnings("deprecation")

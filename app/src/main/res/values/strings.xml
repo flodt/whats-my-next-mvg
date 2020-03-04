@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">What\'s My Next</string>
     <string name="minutes">minutes</string>
-    <string name="example_station">Klinikum Großhadern</string>
-    <string name="example_delta">0</string>
+    <string name="example_station">Garching, Forschungszentrum</string>
+    <string name="example_delta">3</string>
     <string name="example_line">U6</string>
     <string name="refresh">Refresh</string>
-    <string name="exclude">Exclude…</string>
+    <string name="exclude">Exclude transport means…</string>
     <string name="selection_bus">bus_select</string>
     <string name="selection_ubahn">u_select</string>
     <string name="selection_sbahn">s_select</string>
@@ -18,6 +18,7 @@
     <string name="custom_station_name_title">Enter custom station name…</string>
     <string name="default_custom_station_name">Hauptbahnhof</string>
     <string name="selection_custom_station_entry">CUSTOM_STATION_ENTRY</string>
+    <string name="switch_view_button">Switch view</string>
     <string-array name="transport_keys">
         <item>BUS</item>
         <item>UBAHN</item>
