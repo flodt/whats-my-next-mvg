@@ -1,7 +1,8 @@
 package de.schmidt.mvg;
 
 public class LineColor {
-	private String primary, secondary;
+	private final String primary;
+	private final String secondary;
 
 	private LineColor(String primary, String secondary) {
 		this.primary = primary;

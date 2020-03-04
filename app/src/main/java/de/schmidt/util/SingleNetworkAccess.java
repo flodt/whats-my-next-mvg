@@ -1,6 +1,5 @@
 package de.schmidt.util;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;

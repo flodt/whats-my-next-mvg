@@ -1,12 +1,10 @@
 package de.schmidt.util;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.whatsnext.DepartureListActivity;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Request;
