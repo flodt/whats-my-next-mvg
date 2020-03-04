@@ -18,7 +18,7 @@
     <string name="custom_station_name_title">Enter custom station name…</string>
     <string name="default_custom_station_name">Hauptbahnhof</string>
     <string name="selection_custom_station_entry">CUSTOM_STATION_ENTRY</string>
-    <string name="switch_view_button">Switch view</string>
+    <string name="switch_view_button">Switch view…</string>
     <string-array name="transport_keys">
         <item>BUS</item>
         <item>UBAHN</item>

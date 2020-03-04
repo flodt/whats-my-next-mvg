@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -44,11 +45,6 @@ public class SingleDepartureActivity extends AppCompatActivity {
 
 	private String customName;
 
-	//(1) todo: Make DepartureListActivity at the selected stations
-	//--> background colors correspond to the lines; top action bar has color of top list item
-
-	//(2) todo: Make StationOnMapActivity with the selected station on a map
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.app_menu, menu);
@@ -76,7 +72,8 @@ public class SingleDepartureActivity extends AppCompatActivity {
 	}
 
 	private void switchActivity() {
-		//todo switch to the departure list here
+		Intent switchIntent = new Intent(this, DepartureListActivity.class);
+		startActivity(switchIntent);
 	}
 
 
@@ -97,6 +94,7 @@ public class SingleDepartureActivity extends AppCompatActivity {
 																								getResources().getString(R.string.default_custom_station_name));
 
 		pullToRefresh = findViewById(R.id.pull_to_refresh);
+		pullToRefresh.setColorSchemeColors(Utils.getSpriteColors(this));
 		pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -112,21 +110,14 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		refresh();
 	}
 
-	@SuppressWarnings("deprecation")
 	private void refresh() {
-		//setup progress dialog
-		ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setIndeterminate(true);
-		dialog.setCancelable(false);
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setMessage("Loading...");
-		dialog.show();
+		pullToRefresh.setRefreshing(true);
 
 		//get station menu index from preferences, default to Hbf
 		SharedPreferences prefs = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
 		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
-		new SingleNetworkAccess(this, dialog, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
+		new SingleNetworkAccess(this, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
 	}
 
 	@SuppressLint("SetTextI18n")
@@ -141,6 +132,8 @@ public class SingleDepartureActivity extends AppCompatActivity {
 				layoutBackground.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 				actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 				getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+
+				pullToRefresh.setRefreshing(false);
 			});
 		} else {
 			runOnUiThread(() -> {
@@ -162,6 +155,8 @@ public class SingleDepartureActivity extends AppCompatActivity {
 				getWindow().setStatusBarColor(
 						modifyColor(Color.parseColor(color.getSecondary()), 0.80f)
 				);
+
+				pullToRefresh.setRefreshing(false);
 			});
 		}
 

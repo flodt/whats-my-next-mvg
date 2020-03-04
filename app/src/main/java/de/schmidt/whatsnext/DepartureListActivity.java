@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,7 +77,8 @@ public class DepartureListActivity extends AppCompatActivity {
 	}
 
 	private void switchActivity() {
-		//todo switch to the single view here
+		Intent switchIntent = new Intent(this, SingleDepartureActivity.class);
+		startActivity(switchIntent);
 	}
 
 	@Override
@@ -87,6 +90,7 @@ public class DepartureListActivity extends AppCompatActivity {
 
 		//refresh view
 		swipeRefresh = findViewById(R.id.pull_to_refresh_list);
+		swipeRefresh.setColorSchemeColors(Utils.getSpriteColors(this));
 		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -103,12 +107,7 @@ public class DepartureListActivity extends AppCompatActivity {
 		listView = findViewById(R.id.departure_list);
 		adapter = new DepartureViewAdapter(this, departures);
 		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//item clicked - open on map?
-			}
-		});
+		listView.setClickable(false); // TODO: 04.03.20 open destination in map with long press?
 	}
 
 	@Override
@@ -117,21 +116,14 @@ public class DepartureListActivity extends AppCompatActivity {
 		refresh();
 	}
 
-	@SuppressWarnings("deprecation")
 	private void refresh() {
-		//setup progress dialog
-		ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setIndeterminate(true);
-		dialog.setCancelable(false);
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setMessage("Loading...");
-		dialog.show();
+		swipeRefresh.setRefreshing(true);
 
 		//get station menu index from preferences, default to Hbf
 		SharedPreferences prefs = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
 		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
-		new ListableNetworkAccess(this, dialog, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
+		new ListableNetworkAccess(this, stationIndex, customName, getExcludableTransportMeans()).execute(getLocation());
 	}
 
 	public void handleUIUpdate(Departure[] array) {
@@ -162,6 +154,8 @@ public class DepartureListActivity extends AppCompatActivity {
 			adapter.notifyDataSetChanged();
 			listView.invalidateViews();
 			listView.refreshDrawableState();
+
+			swipeRefresh.setRefreshing(false);
 		});
 
 

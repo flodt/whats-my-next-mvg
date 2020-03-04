@@ -66,7 +66,7 @@ public class Departure {
 	}
 
 	public String toHumanReadable() {
-		return line + " -> " + direction + ": " + getDeltaInMinutes() + " mins";
+		return line + " -> " + direction + ": " + getDeltaInMinutes() + " mins (" + delay + "min delay)";
 	}
 
 	@Override

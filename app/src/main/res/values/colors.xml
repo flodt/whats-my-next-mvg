@@ -6,4 +6,12 @@
     <color name="colorAccent">#607D8B</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="mvg_1">#C20831</color>
+    <color name="mvg_2">#EC6725</color>
+    <color name="mvg_3">#F0AA00</color>
+    <color name="mvg_4">#76B82A</color>
+    <color name="mvg_5">#008D58</color>
+    <color name="mvg_6">#16BAE7</color>
+    <color name="mvg_7">#0065AE</color>
+    <color name="mvg_8">#951B81</color>
 </resources>

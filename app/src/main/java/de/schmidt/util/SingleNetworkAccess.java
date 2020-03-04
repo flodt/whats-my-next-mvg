@@ -18,16 +18,14 @@ import java.util.Set;
 public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	private static final String TAG = "NetworkAccessLog";
 	private final WeakReference<SingleDepartureActivity> act;
-	private ProgressDialog dialog;
 	private final int stationMenuIndex;
 	private final String stationMenuName;
 	private final Set<String> exclusions;
 
 
-	public SingleNetworkAccess(Context context, ProgressDialog dialog, int stationMenuIndex,
+	public SingleNetworkAccess(Context context, int stationMenuIndex,
 							   @Nullable String stationMenuName, Set<String> exclusions) {
 		this.act = new WeakReference<>((SingleDepartureActivity) context);
-		this.dialog = dialog;
 		this.stationMenuIndex = stationMenuIndex;
 		this.stationMenuName = stationMenuName;
 		this.exclusions = exclusions;
@@ -42,12 +40,6 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	protected void onPostExecute(Departure departure) {
 		super.onPostExecute(departure);
 		act.get().handleUIUpdate(departure, departure == null);
-
-		try {
-			if ((this.dialog != null) && this.dialog.isShowing()) dialog.dismiss();
-		} catch (IllegalArgumentException ignored) {
-			//ignored
-		}
 	}
 
 	@Override

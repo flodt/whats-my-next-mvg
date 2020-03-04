@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.whatsnext.DepartureListActivity;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Request;
@@ -18,16 +19,14 @@ import java.util.Set;
 public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]> {
 	private static final String TAG = "ListableNetworkAccessLog";
 	private final WeakReference<DepartureListActivity> act;
-	private ProgressDialog dialog;
 	private final int stationMenuIndex;
 	private final String stationMenuName;
 	private final Set<String> exclusions;
 
 
-	public ListableNetworkAccess(Context context, ProgressDialog dialog, int stationMenuIndex,
+	public ListableNetworkAccess(Context context, int stationMenuIndex,
 								 @Nullable String stationMenuName, Set<String> exclusions) {
 		this.act = new WeakReference<>((DepartureListActivity) context);
-		this.dialog = dialog;
 		this.stationMenuIndex = stationMenuIndex;
 		this.stationMenuName = stationMenuName;
 		this.exclusions = exclusions;
@@ -41,14 +40,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 	@Override
 	protected void onPostExecute(Departure[] departures) {
 		super.onPostExecute(departures);
-
 		act.get().handleUIUpdate(departures);
-
-		try {
-			if ((this.dialog != null) && this.dialog.isShowing()) dialog.dismiss();
-		} catch (IllegalArgumentException ignored) {
-			//ignored
-		}
 	}
 
 	@Override
