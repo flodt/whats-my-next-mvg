@@ -3,12 +3,14 @@ package de.schmidt.whatsnext.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.ListView;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
@@ -30,6 +32,7 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 	private DepartureListViewAdapter adapter;
 	private String customName;
 	private ActionBar actionBar;
+	private BottomNavigationView navBar;
 
 	@Override
 	public void switchActivity() {
@@ -41,6 +44,9 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_departure_list);
+
+		navBar = findViewById(R.id.bottom_nav_bar_list);
+		NavBarManager.getInstance().initialize(navBar, this);
 
 		actionBar = getSupportActionBar();
 
@@ -64,12 +70,6 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 		adapter = new DepartureListViewAdapter(this, departures);
 		listView.setAdapter(adapter);
 		listView.setClickable(false);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		refresh();
 	}
 
 	@Override
@@ -106,18 +106,25 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 				listView.setBackgroundColor(getColor(R.color.colorPrimary));
 				actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 				getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
+				navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 			} else {
 				//adapt status bar to first departure
 				setTitle(departures.get(0).getStation().getName());
 				listView.setBackgroundColor(getColor(R.color.white));
-				LineColor topDeparture = LineColor.ofAPIValue(departures.get(0).getLineBackgroundColor());
+				LineColor topDeparture = LineColor.ofAPIValue(departures.get(0).getLineBackgroundColor(),
+															  departures.get(0).getLine());
 				actionBar.setBackgroundDrawable(new ColorDrawable(
 						modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
 				));
 				getWindow().setStatusBarColor(
 						modifyColor(Color.parseColor(topDeparture.getSecondary()), 0.80f)
 				);
+				navBar.setItemTextColor(ColorStateList.valueOf(Color.parseColor(topDeparture.getSecondary())));
+				navBar.setItemIconTintList(ColorStateList.valueOf(Color.parseColor(topDeparture.getSecondary())));
 			}
+
+			navBar.setBackgroundColor(getColor(R.color.white));
 
 			//refresh the list view
 			adapter.notifyDataSetChanged();
@@ -131,5 +138,10 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 	@Override
 	public int getNavButtonItemId() {
 		return R.id.nav_list_button;
+	}
+
+	@Override
+	public BottomNavigationView getNavBar() {
+		return navBar;
 	}
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
@@ -27,6 +29,7 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 	private SwipeRefreshLayout pullToRefresh;
 
 	private String customName;
+	private BottomNavigationView navBar;
 
 	@Override
 	public void switchActivity() {
@@ -47,6 +50,9 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 		layoutBackground = findViewById(R.id.background);
 		actionBar = getSupportActionBar();
 
+		navBar = findViewById(R.id.bottom_nav_bar_single);
+		NavBarManager.getInstance().initialize(navBar, this);
+
 		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
 																											getResources().getString(R.string.default_custom_station_name));
 
@@ -59,12 +65,6 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 				pullToRefresh.setRefreshing(false);
 			}
 		});
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		refresh();
 	}
 
 	@Override
@@ -99,9 +99,11 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 				direction.setText("No departures found");
 				line.setText("");
 				minutesFixedLabel.setText("");
-				layoutBackground.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-				actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-				getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+				direction.setTextColor(getColor(R.color.white));
+				layoutBackground.setBackgroundColor(getColor(R.color.colorPrimary));
+				actionBar.setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimary)));
+				getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
+				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 
 				pullToRefresh.setRefreshing(false);
 			});
@@ -115,7 +117,8 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 
 				//manage colors
 				//U7 and 8 have two colors in the line bullet - handle this here
-				LineColor color = LineColor.ofAPIValue(dept.getLineBackgroundColor());
+				LineColor color = LineColor.ofAPIValue(dept.getLineBackgroundColor(),
+													   dept.getLine());
 				layoutBackground.setBackground(new ColorDrawable(
 						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
 				));
@@ -126,6 +129,16 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 						modifyColor(Color.parseColor(color.getSecondary()), 0.80f)
 				);
 
+				navBar.setBackgroundColor(
+						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
+				);
+				inMinutes.setTextColor(Color.parseColor(color.getTextColor()));
+				direction.setTextColor(Color.parseColor(color.getTextColor()));
+				line.setTextColor(Color.parseColor(color.getTextColor()));
+				minutesFixedLabel.setTextColor(Color.parseColor(color.getTextColor()));
+				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.white)));
+				navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.white)));
+
 				pullToRefresh.setRefreshing(false);
 			});
 		}
@@ -135,5 +148,10 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 	@Override
 	public int getNavButtonItemId() {
 		return R.id.nav_single_button;
+	}
+
+	@Override
+	public BottomNavigationView getNavBar() {
+		return navBar;
 	}
 }

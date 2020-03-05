@@ -47,14 +47,21 @@ public class DepartureListViewAdapter extends BaseAdapter {
 
 		TextView line = convertView.findViewById(R.id.list_item_line);
 		TextView minutes = convertView.findViewById(R.id.list_item_in_minutes);
+		TextView minutesLabel = convertView.findViewById(R.id.list_item_minutes_label);
 		TextView destination = convertView.findViewById(R.id.list_item_destination);
 
 		Departure departure = departures.get(position);
-		LineColor color = LineColor.ofAPIValue(departure.getLineBackgroundColor());
+		LineColor color = LineColor.ofAPIValue(departure.getLineBackgroundColor(),
+											   departure.getLine());
 
 		line.setText(departure.getLine());
 		minutes.setText("" + departure.getDeltaInMinutes());
 		destination.setText(departure.getDirection());
+
+		line.setTextColor(Color.parseColor(color.getTextColor()));
+		minutes.setTextColor(Color.parseColor(color.getTextColor()));
+		minutesLabel.setTextColor(Color.parseColor(color.getTextColor()));
+		destination.setTextColor(Color.parseColor(color.getTextColor()));
 
 		convertView.setBackgroundColor(modifyColor(Color.parseColor(color.getPrimary()), 1.20f));
 

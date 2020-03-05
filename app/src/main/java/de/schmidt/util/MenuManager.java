@@ -36,23 +36,6 @@ public class MenuManager {
 			case R.id.select_station_button:
 				PreferenceManager.getInstance().updateStationSelection(context);
 				break;
-			case R.id.switch_list_button:
-				switchActivity(context);
-				break;
-			case R.id.show_interruptions_button:
-				showInterruptions(context);
-				break;
-		}
-	}
-
-	private void showInterruptions(Context context) {
-		Intent intent = new Intent(context, InterruptionsActivity.class);
-		context.startActivity(intent);
-	}
-
-	private void switchActivity(Context context) {
-		if (context instanceof ActionBarBaseActivity) {
-			((ActionBarBaseActivity) context).switchActivity();
 		}
 	}
 

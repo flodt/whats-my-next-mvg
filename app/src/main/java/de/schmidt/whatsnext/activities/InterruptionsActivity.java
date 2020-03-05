@@ -1,11 +1,14 @@
 package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.widget.ListView;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Interruption;
 import de.schmidt.util.ColorUtils;
+import de.schmidt.util.NavBarManager;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
@@ -19,6 +22,7 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 	private ListView listView;
 	private List<Interruption> interruptions;
 	private InterruptionsListViewAdapter adapter;
+	private BottomNavigationView navBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,9 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 		interruptions = new ArrayList<>();
 
 		setTitle(getString(R.string.interruptions_title));
+
+		navBar = findViewById(R.id.bottom_nav_bar_inter);
+		NavBarManager.getInstance().initialize(navBar, this);
 
 		swipeRefresh = findViewById(R.id.pull_to_refresh_interruptions);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
@@ -43,12 +50,6 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 		adapter = new InterruptionsListViewAdapter(this, interruptions);
 		listView.setAdapter(adapter);
 		listView.setClickable(false);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		refresh();
 	}
 
 	@Override
@@ -70,6 +71,10 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 			InterruptionsActivity.this.interruptions.clear();
 			InterruptionsActivity.this.interruptions.addAll(interruptions);
 
+			navBar.setBackgroundColor(getColor(R.color.white));
+			navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));
+			navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));
+
 			//refresh the list view
 			adapter.notifyDataSetChanged();
 			listView.invalidateViews();
@@ -81,5 +86,10 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 	@Override
 	public int getNavButtonItemId() {
 		return R.id.nav_inter_button;
+	}
+
+	@Override
+	public BottomNavigationView getNavBar() {
+		return navBar;
 	}
 }
