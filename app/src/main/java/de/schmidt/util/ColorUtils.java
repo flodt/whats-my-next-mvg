@@ -5,9 +5,7 @@ import android.graphics.Color;
 import androidx.annotation.ColorInt;
 import de.schmidt.whatsnext.R;
 
-public class Utils {
-	public static final String PREFERENCE_KEY = "WhatsMyNext";
-
+public class ColorUtils {
 	@ColorInt
 	public static int modifyColor(@ColorInt int color, float value) {
 		float[] hsv = new float[3];

@@ -11,41 +11,34 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-public class Request {
-	private static final Request singleton = new Request();
+public class Requests {
+	private static final Requests singleton = new Requests();
 
-	protected static final String API_KEY = "5af1beca494712ed38d313714d4caff6";
+	private static final String URL_STATION_BY_NAME = "https://www.mvg.de/api/fahrinfo/location/queryWeb?q={name}";
+	private static final String URL_STATION_BY_ID = "https://www.mvg.de/api/fahrinfo/location/query?q={id}";
+	private static final String URL_DEPARTURE_BY_ID = "https://www.mvg.de/api/fahrinfo/departure/{id}?footway=0";
+	private static final String URL_STATIONS_BY_LOCATION = "https://www.mvg.de/api/fahrinfo/location/nearby?latitude={lat}&longitude={lon}";
+	private static final String URL_ROUTING = "https://www.mvg.de/api/fahrinfo/routing/?";
+	private static final String URL_INTERRUPTIONS = "https://www.mvg.de/.rest/betriebsaenderungen/api/interruptions";
+	private static final String ID_PREFIX = "de:09162:";
+	private static final String TAG = "Requests";
 
-	protected static final String query_url_name = "https://www.mvg.de/api/fahrinfo/location/queryWeb?q={name}";
-	protected static final String query_url_id = "https://www.mvg.de/api/fahrinfo/location/query?q={id}";
-	protected static final String departure_url = "https://www.mvg.de/api/fahrinfo/departure/{id}?footway=0";
-	protected static final String nearby_url = "https://www.mvg.de/api/fahrinfo/location/nearby?latitude={lat}&longitude={lon}";
-	protected static final String routing_url = "https://www.mvg.de/api/fahrinfo/routing/?";
-	protected static final String interruptions_url = "https://www.mvg.de/.rest/betriebsaenderungen/api/interruptions";
-	protected static final String id_prefix = "de:09162:";
-	private static final String TAG = "Request";
-
-	public static Request instance() {
+	public static Requests instance() {
 		return singleton;
 	}
 
-	private Request() {
+	private Requests() {
 	}
 
-	public String executeRequest(String rawUrl) {
+	private String executeRequest(String rawUrl) {
 		try {
 			URL url = new URL(rawUrl);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Accept-Encoding", "identity");
-			//connection.setRequestProperty("X-MVG-Authorization-Key", API_KEY);
-			//connection.setDoOutput(true);
 
 			Log.d(TAG, "REQUEST URL: " + rawUrl);
 
@@ -68,12 +61,8 @@ public class Request {
 		}
 	}
 
-	public Departure[] getNextDeparturesAtStation(Station station) throws JSONException {
-		return getNextDeparturesAtStation(station, Collections.emptySet());
-	}
-
 	public Station getNearestStation(Location location) throws JSONException {
-		String url = nearby_url
+		String url = URL_STATIONS_BY_LOCATION
 				.replace("{lat}", Double.toString(location.getLatitude()))
 				.replace("{lon}", Double.toString(location.getLongitude()));
 		String response = executeRequest(url);
@@ -89,8 +78,20 @@ public class Request {
 						   firstStation.getDouble("longitude"));
 	}
 
+	public Departure getNextDepartureAtStation(Station station) throws JSONException {
+		return getNextDeparturesAtStation(station)[0];
+	}
+
+	public Departure getNextDepartureAtStation(Station station, Set<String> exclusions) throws JSONException {
+		return getNextDeparturesAtStation(station, exclusions)[0];
+	}
+
+	public Departure[] getNextDeparturesAtStation(Station station) throws JSONException {
+		return getNextDeparturesAtStation(station, Collections.emptySet());
+	}
+
 	public Departure[] getNextDeparturesAtStation(Station station, Set<String> exclusions) throws JSONException {
-		String url = departure_url.replace("{id}", station.getId());
+		String url = URL_DEPARTURE_BY_ID.replace("{id}", station.getId());
 		String response = executeRequest(url);
 
 		JSONObject json = new JSONObject(response);
@@ -130,7 +131,7 @@ public class Request {
 	}
 
 	public Station getStationByName(String name) throws JSONException {
-		String url = query_url_name.replace("{name}", name);
+		String url = URL_STATION_BY_NAME.replace("{name}", name);
 		String response = executeRequest(url);
 
 		JSONObject json = new JSONObject(response);
@@ -145,7 +146,7 @@ public class Request {
 	}
 
 	public Station getStationById(String id) throws JSONException {
-		String url = query_url_id.replace("{id}", id);
+		String url = URL_STATION_BY_ID.replace("{id}", id);
 		String response = executeRequest(url);
 
 		JSONObject json = new JSONObject(response);
@@ -157,5 +158,21 @@ public class Request {
 						   station.getString("name"),
 						   station.getDouble("latitude"),
 						   station.getDouble("longitude"));
+	}
+
+	public List<Interruption> getInterruptions() throws JSONException {
+		String url = URL_INTERRUPTIONS;
+		String response = executeRequest(url);
+
+		JSONObject json = new JSONObject(response);
+		JSONArray interruptions = json.getJSONArray("interruption");
+
+		List<Interruption> result = new ArrayList<>();
+		for (int i = 0; i < interruptions.length(); i++) {
+			JSONObject singleInterruption = interruptions.getJSONObject(i);
+			result.add(Interruption.ofJSON(singleInterruption));
+		}
+
+		return result;
 	}
 }

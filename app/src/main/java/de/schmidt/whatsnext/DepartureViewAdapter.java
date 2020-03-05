@@ -13,7 +13,7 @@ import de.schmidt.mvg.LineColor;
 
 import java.util.List;
 
-import static de.schmidt.util.Utils.modifyColor;
+import static de.schmidt.util.ColorUtils.modifyColor;
 
 public class DepartureViewAdapter extends BaseAdapter {
 	private final Activity context;

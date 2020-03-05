@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import de.schmidt.whatsnext.DepartureListActivity;
 import de.schmidt.mvg.Departure;
-import de.schmidt.mvg.Request;
+import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.Station;
 import de.schmidt.whatsnext.R;
 
@@ -49,28 +49,28 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 		String[] keys = act.get().getResources().getStringArray(R.array.station_keys);
 
 		if (keys[stationMenuIndex].equals("LOCATION")) {
-			Request request = Request.instance();
+			Requests requests = Requests.instance();
 			try {
-				Station nearest = request.getNearestStation(loc);
-				return request.getNextDeparturesAtStation(nearest, exclusions);
+				Station nearest = requests.getNearestStation(loc);
+				return requests.getNextDeparturesAtStation(nearest, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
 			}
 		} else if (keys[stationMenuIndex].equals("BY_NAME")) {
-			Request request = Request.instance();
+			Requests requests = Requests.instance();
 			try {
-				Station byName = request.getStationByName(stationMenuName);
-				return request.getNextDeparturesAtStation(byName, exclusions);
+				Station byName = requests.getStationByName(stationMenuName);
+				return requests.getNextDeparturesAtStation(byName, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
 			}
 		} else {
-			Request request = Request.instance();
+			Requests requests = Requests.instance();
 			try {
-				Station byId = request.getStationById(keys[stationMenuIndex]);
-				return request.getNextDeparturesAtStation(byId, exclusions);
+				Station byId = requests.getStationById(keys[stationMenuIndex]);
+				return requests.getNextDeparturesAtStation(byId, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;

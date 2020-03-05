@@ -6,12 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,9 +15,9 @@ import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
 
-import static de.schmidt.util.Utils.modifyColor;
+import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class SingleDepartureActivity extends AppCompatActivity {
+public class SingleDepartureActivity extends ActionBarBaseActivity {
 	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
@@ -31,27 +27,15 @@ public class SingleDepartureActivity extends AppCompatActivity {
 	private String customName;
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuManager.getInstance().inflate(menu, this);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-		MenuManager.getInstance().dispatch(item, this);
-		return super.onOptionsItemSelected(item);
-	}
-
 	public void switchActivity() {
 		Intent switchIntent = new Intent(this, DepartureListActivity.class);
 		startActivity(switchIntent);
 	}
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_departure_single);
 
 		//setup layout
 		inMinutes = findViewById(R.id.inMinutes);
@@ -61,11 +45,11 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		layoutBackground = findViewById(R.id.background);
 		actionBar = getSupportActionBar();
 
-		customName = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
-																								getResources().getString(R.string.default_custom_station_name));
+		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
+																											getResources().getString(R.string.default_custom_station_name));
 
 		pullToRefresh = findViewById(R.id.pull_to_refresh);
-		pullToRefresh.setColorSchemeColors(Utils.getSpriteColors(this));
+		pullToRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
 		pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -81,11 +65,12 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		refresh();
 	}
 
+	@Override
 	public void refresh() {
 		pullToRefresh.setRefreshing(true);
 
 		//get station menu index from preferences, default to Hbf
-		SharedPreferences prefs = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE);
 		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
 		new SingleNetworkAccess(
@@ -98,6 +83,7 @@ public class SingleDepartureActivity extends AppCompatActivity {
 		);
 	}
 
+	@Override
 	public void setCustomName(String customName) {
 		this.customName = customName;
 	}

@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
-import de.schmidt.whatsnext.DepartureListActivity;
+import de.schmidt.whatsnext.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.SingleDepartureActivity;
 
 public class MenuManager {
 	private static final MenuManager instance = new MenuManager();
@@ -42,18 +41,14 @@ public class MenuManager {
 	}
 
 	private void switchActivity(Context context) {
-		if (context instanceof SingleDepartureActivity) {
-			((SingleDepartureActivity) context).switchActivity();
-		} else if (context instanceof DepartureListActivity) {
-			((DepartureListActivity) context).switchActivity();
+		if (context instanceof ActionBarBaseActivity) {
+			((ActionBarBaseActivity) context).switchActivity();
 		}
 	}
 
 	private void refresh(Context context) {
-		if (context instanceof SingleDepartureActivity) {
-			((SingleDepartureActivity) context).refresh();
-		} else if (context instanceof DepartureListActivity) {
-			((DepartureListActivity) context).refresh();
+		if (context instanceof ActionBarBaseActivity) {
+			((ActionBarBaseActivity) context).refresh();
 		}
 	}
 }

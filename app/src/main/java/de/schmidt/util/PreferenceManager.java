@@ -6,14 +6,14 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
-import de.schmidt.whatsnext.DepartureListActivity;
+import de.schmidt.whatsnext.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.SingleDepartureActivity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PreferenceManager {
+	public static final String PREFERENCE_KEY = "WhatsMyNext";
 	private static final PreferenceManager instance = new PreferenceManager();
 
 	private PreferenceManager() {
@@ -31,7 +31,7 @@ public class PreferenceManager {
 		boolean[] selected = new boolean[keys.length];
 
 		//read preferences
-		SharedPreferences prefs = context.getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 		for (int i = 0; i < selected.length; i++) {
 			selected[i] = prefs.getBoolean(keys[i], true);
 		}
@@ -71,7 +71,7 @@ public class PreferenceManager {
 	}
 
 	public Set<String> getExcludableTransportMeans(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 		Set<String> exclusions = new HashSet<>();
 
 		String[] keys = context.getResources().getStringArray(R.array.transport_keys);
@@ -84,7 +84,7 @@ public class PreferenceManager {
 	}
 
 	public void updateStationSelection(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 
 		String[] keys = context.getResources().getStringArray(R.array.station_keys);
 		String[] readable = context.getResources().getStringArray(R.array.station_readable);
@@ -133,7 +133,7 @@ public class PreferenceManager {
 			public void onClick(DialogInterface dialog, int which) {
 				String userInput = input.getText().toString().trim();
 				setCustomNameFieldInContext(userInput, context);
-				context.getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE)
+				context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
 						.edit()
 						.putString(
 								context.getResources().getString(R.string.selection_custom_station_entry),
@@ -154,18 +154,14 @@ public class PreferenceManager {
 	}
 
 	private void setCustomNameFieldInContext(String userInput, Context context) {
-		if (context instanceof SingleDepartureActivity) {
-			((SingleDepartureActivity) context).setCustomName(userInput);
-		} else if (context instanceof DepartureListActivity) {
-			((DepartureListActivity) context).setCustomName(userInput);
+		if (context instanceof ActionBarBaseActivity) {
+			((ActionBarBaseActivity) context).setCustomName(userInput);
 		}
 	}
 
 	private void refresh(Context context) {
-		if (context instanceof SingleDepartureActivity) {
-			((SingleDepartureActivity) context).refresh();
-		} else if (context instanceof DepartureListActivity) {
-			((DepartureListActivity) context).refresh();
+		if (context instanceof ActionBarBaseActivity) {
+			((ActionBarBaseActivity) context).refresh();
 		}
 	}
 }

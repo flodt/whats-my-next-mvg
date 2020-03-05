@@ -5,25 +5,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
-import de.schmidt.whatsnext.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.schmidt.util.Utils.modifyColor;
+import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class DepartureListActivity extends AppCompatActivity {
+public class DepartureListActivity extends ActionBarBaseActivity {
 	private static final String TAG = "DepartureList";
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
@@ -34,17 +29,6 @@ public class DepartureListActivity extends AppCompatActivity {
 	private ActionBar actionBar;
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuManager.getInstance().inflate(menu, this);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-		MenuManager.getInstance().dispatch(item, this);
-		return super.onOptionsItemSelected(item);
-	}
-
 	public void switchActivity() {
 		Intent switchIntent = new Intent(this, SingleDepartureActivity.class);
 		startActivity(switchIntent);
@@ -59,7 +43,7 @@ public class DepartureListActivity extends AppCompatActivity {
 
 		//refresh view
 		swipeRefresh = findViewById(R.id.pull_to_refresh_list);
-		swipeRefresh.setColorSchemeColors(Utils.getSpriteColors(this));
+		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
 		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -70,8 +54,8 @@ public class DepartureListActivity extends AppCompatActivity {
 
 		departures = new ArrayList<>();
 
-		customName = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
-																								getResources().getString(R.string.default_custom_station_name));
+		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
+																											getResources().getString(R.string.default_custom_station_name));
 
 		listView = findViewById(R.id.departure_list);
 		adapter = new DepartureViewAdapter(this, departures);
@@ -85,11 +69,12 @@ public class DepartureListActivity extends AppCompatActivity {
 		refresh();
 	}
 
+	@Override
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
 
 		//get station menu index from preferences, default to Hbf
-		SharedPreferences prefs = getSharedPreferences(Utils.PREFERENCE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE);
 		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
 
 		new ListableNetworkAccess(
@@ -99,6 +84,7 @@ public class DepartureListActivity extends AppCompatActivity {
 		);
 	}
 
+	@Override
 	public void setCustomName(String customName) {
 		this.customName = customName;
 	}
@@ -120,6 +106,7 @@ public class DepartureListActivity extends AppCompatActivity {
 			} else {
 				//adapt status bar to first departure
 				setTitle(departures.get(0).getStation().getName());
+				listView.setBackgroundColor(getColor(R.color.white));
 				LineColor topDeparture = LineColor.ofAPIValue(departures.get(0).getLineBackgroundColor());
 				actionBar.setBackgroundDrawable(new ColorDrawable(
 						modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
