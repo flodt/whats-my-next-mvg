@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
-import de.schmidt.whatsnext.ActionBarBaseActivity;
+import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 import java.util.HashSet;

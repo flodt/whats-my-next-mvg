@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext;
+package de.schmidt.whatsnext.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
+import de.schmidt.util.network.ListableNetworkAccess;
+import de.schmidt.whatsnext.adapters.DepartureListViewAdapter;
+import de.schmidt.whatsnext.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 	private ListView listView;
 
 	private List<Departure> departures;
-	private DepartureViewAdapter adapter;
+	private DepartureListViewAdapter adapter;
 	private String customName;
 	private ActionBar actionBar;
 
@@ -58,9 +61,9 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 																											getResources().getString(R.string.default_custom_station_name));
 
 		listView = findViewById(R.id.departure_list);
-		adapter = new DepartureViewAdapter(this, departures);
+		adapter = new DepartureListViewAdapter(this, departures);
 		listView.setAdapter(adapter);
-		listView.setClickable(false); // TODO: 04.03.20 open destination in map with long press?
+		listView.setClickable(false);
 	}
 
 	@Override

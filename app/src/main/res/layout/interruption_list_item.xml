@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:background="@color/light_gray"
+                android:layout_height="wrap_content">
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/interruption_item_title"
+            android:text="@string/example_int_title"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+    />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/interruption_item_text"
+            android:text="@string/example_int_text"
+            android:textStyle="normal"
+            android:textSize="12sp"
+            android:layout_below="@id/interruption_item_title"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/black"
+    />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/interruption_item_duration"
+            android:text="@string/example_int_duration"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:textAlignment="viewStart"
+            android:layout_below="@id/interruption_item_text"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/black"
+    />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/interruption_item_update"
+            android:text="@string/example_int_mod_date"
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:layout_alignTop="@id/interruption_item_duration"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="18dp"
+            android:textColor="@color/black"
+    />
+
+</RelativeLayout>

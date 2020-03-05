@@ -4,6 +4,8 @@
     <color name="colorPrimaryLight">#BDBDBD</color>
     <color name="colorPrimaryDark">#616161</color>
     <color name="colorAccent">#607D8B</color>
+    <color name="lighter_gray">#ECECEC</color>
+    <color name="light_gray">#DCDCDC</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="mvg_1">#C20831</color>

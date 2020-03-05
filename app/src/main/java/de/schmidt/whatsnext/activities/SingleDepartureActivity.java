@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext;
+package de.schmidt.whatsnext.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
+import de.schmidt.util.network.SingleNetworkAccess;
+import de.schmidt.whatsnext.R;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 

@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext;
+package de.schmidt.whatsnext.activities;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +20,10 @@ public abstract class ActionBarBaseActivity extends AppCompatActivity {
 	}
 
 	public abstract void switchActivity();
+
+	public void setCustomName(String customName) {
+		//default intentionally left blank
+	}
+
 	public abstract void refresh();
-	public abstract void setCustomName(String customName);
 }

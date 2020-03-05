@@ -18,6 +18,7 @@ public class LineColor {
 	}
 
 	public static LineColor ofAPIValue(String rawData) {
+		//U7 and U8 have 2 colors, the API returns them comma separated
 		String[] colors = rawData.split(",");
 
 		return new LineColor(

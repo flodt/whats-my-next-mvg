@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext;
+package de.schmidt.whatsnext.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,16 +10,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
+import de.schmidt.whatsnext.R;
 
 import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class DepartureViewAdapter extends BaseAdapter {
+public class DepartureListViewAdapter extends BaseAdapter {
 	private final Activity context;
 	private final List<Departure> departures;
 
-	public DepartureViewAdapter(Activity context, List<Departure> departures) {
+	public DepartureListViewAdapter(Activity context, List<Departure> departures) {
 		this.context = context;
 		this.departures = departures;
 	}

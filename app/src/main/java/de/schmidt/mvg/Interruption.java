@@ -43,6 +43,14 @@ public class Interruption {
 		return lines;
 	}
 
+	public String getLinesAsString() {
+		StringBuilder sb = new StringBuilder(lines.get(0).getLine());
+		for (int i = 1; i < lines.size(); i++) {
+			sb.append(", ").append(lines.get(i).getLine());
+		}
+		return sb.toString();
+	}
+
 	public LocalDateTime getFrom() {
 		return from;
 	}
@@ -63,6 +71,10 @@ public class Interruption {
 		return modificationDate;
 	}
 
+	public String getModificationDateAsString() {
+		return "Stand: " + modificationDate.toString();
+	}
+
 	public static Interruption ofJSON(JSONObject json) throws JSONException {
 		//collect interruption lines
 		List<InterruptionLine> lines = new ArrayList<>();
@@ -71,6 +83,8 @@ public class Interruption {
 			JSONObject line = rawLines.getJSONObject(i);
 			lines.add(InterruptionLine.ofJSON(line));
 		}
+
+		//get duration object
 		JSONObject duration = json.getJSONObject("duration");
 
 		return new Interruption(

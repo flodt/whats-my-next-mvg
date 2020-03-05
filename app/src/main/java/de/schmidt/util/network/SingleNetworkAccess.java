@@ -1,30 +1,30 @@
-package de.schmidt.util;
+package de.schmidt.util.network;
 
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import de.schmidt.whatsnext.DepartureListActivity;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.Station;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.SingleDepartureActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
-public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]> {
-	private static final String TAG = "ListableNetworkAccessLog";
-	private final WeakReference<DepartureListActivity> act;
+public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
+	private static final String TAG = "NetworkAccessLog";
+	private final WeakReference<SingleDepartureActivity> act;
 	private final int stationMenuIndex;
 	private final String stationMenuName;
 	private final Set<String> exclusions;
 
 
-	public ListableNetworkAccess(Context context, int stationMenuIndex,
-								 @Nullable String stationMenuName, Set<String> exclusions) {
-		this.act = new WeakReference<>((DepartureListActivity) context);
+	public SingleNetworkAccess(Context context, int stationMenuIndex,
+							   @Nullable String stationMenuName, Set<String> exclusions) {
+		this.act = new WeakReference<>((SingleDepartureActivity) context);
 		this.stationMenuIndex = stationMenuIndex;
 		this.stationMenuName = stationMenuName;
 		this.exclusions = exclusions;
@@ -36,13 +36,13 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 	}
 
 	@Override
-	protected void onPostExecute(Departure[] departures) {
-		super.onPostExecute(departures);
-		act.get().handleUIUpdate(departures);
+	protected void onPostExecute(Departure departure) {
+		super.onPostExecute(departure);
+		act.get().handleUIUpdate(departure, departure == null);
 	}
 
 	@Override
-	protected Departure[] doInBackground(Location... locations) {
+	protected Departure doInBackground(Location... locations) {
 		//handle updates
 		Location loc = locations[0];
 
@@ -52,7 +52,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 			Requests requests = Requests.instance();
 			try {
 				Station nearest = requests.getNearestStation(loc);
-				return requests.getNextDeparturesAtStation(nearest, exclusions);
+				return requests.getNextDepartureAtStation(nearest, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
@@ -61,7 +61,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 			Requests requests = Requests.instance();
 			try {
 				Station byName = requests.getStationByName(stationMenuName);
-				return requests.getNextDeparturesAtStation(byName, exclusions);
+				return requests.getNextDepartureAtStation(byName, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
@@ -70,7 +70,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 			Requests requests = Requests.instance();
 			try {
 				Station byId = requests.getStationById(keys[stationMenuIndex]);
-				return requests.getNextDeparturesAtStation(byId, exclusions);
+				return requests.getNextDepartureAtStation(byId, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;

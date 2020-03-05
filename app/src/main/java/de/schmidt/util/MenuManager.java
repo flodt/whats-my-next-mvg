@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
-import de.schmidt.whatsnext.ActionBarBaseActivity;
+import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 public class MenuManager {
