@@ -19,6 +19,8 @@ import de.schmidt.util.*;
 import de.schmidt.util.network.SingleNetworkAccess;
 import de.schmidt.whatsnext.R;
 
+import java.util.List;
+
 import static de.schmidt.util.ColorUtils.modifyColor;
 
 public class SingleDepartureActivity extends ActionBarBaseActivity {
@@ -90,9 +92,10 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 		this.customName = customName;
 	}
 
+	@Override
 	@SuppressLint("SetTextI18n")
-	public void handleUIUpdate(Departure dept, boolean empty) {
-		if (empty) {
+	public void handleUIUpdate(List<Departure> dataSet) {
+		if (dataSet.isEmpty()) {
 			runOnUiThread(() -> {
 				setTitle(R.string.app_name);
 				inMinutes.setText("");
@@ -109,6 +112,7 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 			});
 		} else {
 			runOnUiThread(() -> {
+				Departure dept = dataSet.get(0);
 				setTitle(dept.getStation().getName());
 				inMinutes.setText("" + dept.getDeltaInMinutes());
 				direction.setText(dept.getDirection());

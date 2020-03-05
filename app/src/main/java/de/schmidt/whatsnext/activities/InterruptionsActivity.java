@@ -6,6 +6,7 @@ import android.widget.ListView;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Interruption;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.NavBarManager;
@@ -64,7 +65,7 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 		startActivity(intent);
 	}
 
-	public void handleUIUpdate(List<Interruption> interruptions) {
+	public void handleInterruptionsUIUpdate(List<Interruption> interruptions) {
 		if (interruptions == null) return;
 
 		runOnUiThread(() -> {
@@ -82,6 +83,9 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 			swipeRefresh.setRefreshing(false);
 		});
 	}
+
+	@Override
+	public void handleUIUpdate(List<Departure> dataSet) {}
 
 	@Override
 	public int getNavButtonItemId() {

@@ -12,6 +12,8 @@ import de.schmidt.mvg.Station;
 import de.schmidt.whatsnext.R;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]> {
@@ -38,7 +40,8 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 	@Override
 	protected void onPostExecute(Departure[] departures) {
 		super.onPostExecute(departures);
-		act.get().handleUIUpdate(departures);
+		DepartureCache.getInstance().setCache(Arrays.asList(departures));
+		act.get().handleUIUpdate(Arrays.asList(departures));
 	}
 
 	@Override

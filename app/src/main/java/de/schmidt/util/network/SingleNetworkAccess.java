@@ -12,6 +12,8 @@ import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.activities.SingleDepartureActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
 
 public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
@@ -38,7 +40,9 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	@Override
 	protected void onPostExecute(Departure departure) {
 		super.onPostExecute(departure);
-		act.get().handleUIUpdate(departure, departure == null);
+		act.get().handleUIUpdate(
+				(departure == null) ? Collections.emptyList() : Collections.singletonList(departure)
+		);
 	}
 
 	@Override
@@ -52,7 +56,9 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 			Requests requests = Requests.instance();
 			try {
 				Station nearest = requests.getNearestStation(loc);
-				return requests.getNextDepartureAtStation(nearest, exclusions);
+				Departure[] next = requests.getNextDeparturesAtStation(nearest, exclusions);
+				DepartureCache.getInstance().setCache(Arrays.asList(next));
+				return next[0];
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
@@ -61,7 +67,9 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 			Requests requests = Requests.instance();
 			try {
 				Station byName = requests.getStationByName(stationMenuName);
-				return requests.getNextDepartureAtStation(byName, exclusions);
+				Departure[] next = requests.getNextDeparturesAtStation(byName, exclusions);
+				DepartureCache.getInstance().setCache(Arrays.asList(next));
+				return next[0];
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;
@@ -70,7 +78,9 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 			Requests requests = Requests.instance();
 			try {
 				Station byId = requests.getStationById(keys[stationMenuIndex]);
-				return requests.getNextDepartureAtStation(byId, exclusions);
+				Departure[] next = requests.getNextDeparturesAtStation(byId, exclusions);
+				DepartureCache.getInstance().setCache(Arrays.asList(next));
+				return next[0];
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
 				return null;

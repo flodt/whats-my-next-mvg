@@ -58,7 +58,7 @@ public class Departure {
 				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault()).plusMinutes(delay)
 		);
 
-		return diff.toMinutes();
+		return Math.max(diff.toMinutes(), 0);
 	}
 
 	public String getProduct() {

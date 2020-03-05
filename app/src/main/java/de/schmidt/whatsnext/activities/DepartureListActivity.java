@@ -92,14 +92,13 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 		this.customName = customName;
 	}
 
-	public void handleUIUpdate(Departure[] array) {
-		if (array == null) return;
+	@Override
+	public void handleUIUpdate(List<Departure> dataSet) {
+		if (dataSet == null) return;
 
 		runOnUiThread(() -> {
 			this.departures.clear();
-			for (int i = 0; i < array.length; i++) {
-				this.departures.add(i, array[i]);
-			}
+			this.departures.addAll(dataSet);
 
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
