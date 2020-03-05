@@ -131,4 +131,9 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 		}
 
 	}
+
+	@Override
+	public int getNavButtonItemId() {
+		return R.id.nav_single_button;
+	}
 }

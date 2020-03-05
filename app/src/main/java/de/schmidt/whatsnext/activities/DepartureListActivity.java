@@ -127,4 +127,9 @@ public class DepartureListActivity extends ActionBarBaseActivity {
 			swipeRefresh.setRefreshing(false);
 		});
 	}
+
+	@Override
+	public int getNavButtonItemId() {
+		return R.id.nav_list_button;
+	}
 }

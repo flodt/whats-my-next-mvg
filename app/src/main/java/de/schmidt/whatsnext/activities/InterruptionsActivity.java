@@ -77,4 +77,9 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 			swipeRefresh.setRefreshing(false);
 		});
 	}
+
+	@Override
+	public int getNavButtonItemId() {
+		return R.id.nav_inter_button;
+	}
 }
