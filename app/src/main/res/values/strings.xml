@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">What\'s My Next</string>
+    <string name="interruptions_title">Interruptions</string>
     <string name="minutes">minutes</string>
     <string name="example_station">Garching, Forschungszentrum</string>
     <string name="example_delta">3</string>
@@ -19,6 +20,7 @@
     <string name="default_custom_station_name">Hauptbahnhof</string>
     <string name="selection_custom_station_entry">CUSTOM_STATION_ENTRY</string>
     <string name="switch_view_button">Switch view…</string>
+    <string name="interruptions_button">Show interruptions…</string>
     <string-array name="transport_keys">
         <item>BUS</item>
         <item>UBAHN</item>

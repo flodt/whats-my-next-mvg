@@ -2,10 +2,12 @@ package de.schmidt.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.InterruptionsActivity;
 
 public class MenuManager {
 	private static final MenuManager instance = new MenuManager();
@@ -37,7 +39,15 @@ public class MenuManager {
 			case R.id.switch_list_button:
 				switchActivity(context);
 				break;
+			case R.id.show_interruptions_button:
+				showInterruptions(context);
+				break;
 		}
+	}
+
+	private void showInterruptions(Context context) {
+		Intent intent = new Intent(context, InterruptionsActivity.class);
+		context.startActivity(intent);
 	}
 
 	private void switchActivity(Context context) {

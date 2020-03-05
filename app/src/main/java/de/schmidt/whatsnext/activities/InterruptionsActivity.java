@@ -27,6 +27,8 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 
 		interruptions = new ArrayList<>();
 
+		setTitle(getString(R.string.interruptions_title));
+
 		swipeRefresh = findViewById(R.id.pull_to_refresh_interruptions);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
 		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

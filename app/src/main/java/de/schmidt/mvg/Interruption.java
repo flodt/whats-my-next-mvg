@@ -27,7 +27,8 @@ public class Interruption {
 		this.from = from;
 		this.until = until;
 		this.durationAsText = durationAsText;
-		this.descriptionText = descriptionText;
+		//interruption description is given as html style text, we need to replace all line breaks
+		this.descriptionText = descriptionText.replaceAll("<br />", "\n");
 		this.modificationDate = modificationDate;
 	}
 

@@ -52,7 +52,9 @@ public class InterruptionsListViewAdapter extends BaseAdapter {
 		TextView updated = convertView.findViewById(R.id.interruption_item_update);
 
 		Interruption interruption = interruptions.get(position);
-		title.setText(interruption.getTitle());
+		title.setText(
+				interruption.getLinesAsString() + ": " + interruption.getTitle()
+		);
 		text.setText(interruption.getDescriptionText());
 		duration.setText(interruption.getDurationAsText());
 		updated.setText(interruption.getModificationDateAsString());
