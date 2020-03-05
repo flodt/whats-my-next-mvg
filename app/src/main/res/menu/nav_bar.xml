@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/nav_list_button"
+            android:title="@string/navbar_list"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_list_switch"
+    />
+
+    <item
+            android:id="@+id/nav_single_button"
+            android:title="@string/navbar_single"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_train"
+    />
+
+    <item
+            android:id="@+id/nav_inter_button"
+            android:title="@string/navbar_inter"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_interruptions"
+    />
+</menu>
