@@ -1,6 +1,6 @@
-package de.schmidt.util.network;
+package de.schmidt.util.caching;
 
-import de.schmidt.mvg.Interruption;
+import de.schmidt.mvg.interrupt.Interruption;
 
 import java.util.Collections;
 import java.util.List;

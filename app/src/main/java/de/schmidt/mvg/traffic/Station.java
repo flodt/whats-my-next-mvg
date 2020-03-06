@@ -1,4 +1,4 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.traffic;
 
 import java.util.Objects;
 

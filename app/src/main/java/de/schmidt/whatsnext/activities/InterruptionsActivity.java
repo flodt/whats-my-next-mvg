@@ -5,13 +5,15 @@ import android.widget.ListView;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import de.schmidt.mvg.Interruption;
+import de.schmidt.mvg.interrupt.Interruption;
 import de.schmidt.util.ColorUtils;
-import de.schmidt.util.NavBarManager;
-import de.schmidt.util.network.InterruptionsCache;
+import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.caching.InterruptionsCache;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;

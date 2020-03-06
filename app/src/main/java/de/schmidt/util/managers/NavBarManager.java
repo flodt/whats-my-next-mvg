@@ -1,4 +1,4 @@
-package de.schmidt.util;
+package de.schmidt.util.managers;
 
 import android.content.Intent;
 import android.util.Log;
@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.activities.InterruptionsActivity;
 import de.schmidt.whatsnext.activities.SingleDepartureActivity;

@@ -1,4 +1,4 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.traffic;
 
 public class LineColor {
 	private final String primary;

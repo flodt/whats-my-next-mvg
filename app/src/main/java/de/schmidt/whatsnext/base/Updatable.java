@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext.activities;
+package de.schmidt.whatsnext.base;
 
 import java.util.List;
 

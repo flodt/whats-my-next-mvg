@@ -1,4 +1,4 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.interrupt;
 
 import org.json.JSONArray;
 import org.json.JSONException;

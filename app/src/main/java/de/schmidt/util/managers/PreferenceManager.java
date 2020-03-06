@@ -1,4 +1,4 @@
-package de.schmidt.util;
+package de.schmidt.util.managers;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
-import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 import java.util.HashSet;

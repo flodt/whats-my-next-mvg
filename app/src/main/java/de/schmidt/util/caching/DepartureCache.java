@@ -1,6 +1,6 @@
-package de.schmidt.util.network;
+package de.schmidt.util.caching;
 
-import de.schmidt.mvg.Departure;
+import de.schmidt.mvg.traffic.Departure;
 
 import java.util.Collections;
 import java.util.List;

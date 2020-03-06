@@ -2,8 +2,9 @@ package de.schmidt.util.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import de.schmidt.mvg.Interruption;
+import de.schmidt.mvg.interrupt.Interruption;
 import de.schmidt.mvg.Requests;
+import de.schmidt.util.caching.InterruptionsCache;
 import de.schmidt.whatsnext.activities.InterruptionsActivity;
 import org.json.JSONException;
 

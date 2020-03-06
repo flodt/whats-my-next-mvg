@@ -1,5 +1,6 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.route;
 
+import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,5 +79,16 @@ public class RouteConnection {
 				new Date(arrival),
 				Collections.unmodifiableList(partList)
 		);
+	}
+
+	@Override
+	public String toString() {
+		return "RouteConnection{" +
+				"from=" + from +
+				", to=" + to +
+				", departure=" + departure +
+				", arrival=" + arrival +
+				", connectionParts=" + connectionParts +
+				'}';
 	}
 }

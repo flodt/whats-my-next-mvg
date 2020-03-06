@@ -1,4 +1,4 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.route;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,5 +25,13 @@ public class RoutePathLocation {
 				loc.getDouble("latitude"),
 				loc.getDouble("longitude")
 		);
+	}
+
+	@Override
+	public String toString() {
+		return "RoutePathLocation{" +
+				"latitude=" + latitude +
+				", longitude=" + longitude +
+				'}';
 	}
 }

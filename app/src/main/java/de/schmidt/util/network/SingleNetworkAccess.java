@@ -5,9 +5,10 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import de.schmidt.mvg.Departure;
+import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.Requests;
-import de.schmidt.mvg.Station;
+import de.schmidt.mvg.traffic.Station;
+import de.schmidt.util.caching.DepartureCache;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.activities.SingleDepartureActivity;
 

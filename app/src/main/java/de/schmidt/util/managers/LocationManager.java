@@ -1,4 +1,4 @@
-package de.schmidt.util;
+package de.schmidt.util.managers;
 
 import android.Manifest;
 import android.content.Context;

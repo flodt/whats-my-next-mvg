@@ -2,6 +2,11 @@ package de.schmidt.mvg;
 
 import android.location.Location;
 import android.util.Log;
+import de.schmidt.mvg.interrupt.Interruption;
+import de.schmidt.mvg.route.RouteConnection;
+import de.schmidt.mvg.route.RouteOptions;
+import de.schmidt.mvg.traffic.Departure;
+import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -176,8 +181,17 @@ public class Requests {
 		return result;
 	}
 
-	public void getRoute(RouteOptions options) throws JSONException {
+	public List<RouteConnection> getRoute(RouteOptions options) throws JSONException {
 		String url = URL_ROUTING + options.getParameterString();
 		String response = executeRequest(url);
+
+		JSONObject json = new JSONObject(response);
+		JSONArray jConnections = json.getJSONArray("connectionList");
+		List<RouteConnection> connections = new ArrayList<>();
+		for (int i = 0; i < jConnections.length(); i++) {
+			connections.add(i, RouteConnection.fromJSON(jConnections.getJSONObject(i)));
+		}
+
+		return Collections.unmodifiableList(connections);
 	}
 }

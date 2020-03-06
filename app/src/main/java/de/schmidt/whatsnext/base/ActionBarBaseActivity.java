@@ -1,11 +1,11 @@
-package de.schmidt.whatsnext.activities;
+package de.schmidt.whatsnext.base;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import de.schmidt.util.MenuManager;
+import de.schmidt.util.managers.MenuManager;
 
 public abstract class ActionBarBaseActivity extends AppCompatActivity implements Cacheable {
 	@Override

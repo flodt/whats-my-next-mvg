@@ -1,4 +1,6 @@
-package de.schmidt.mvg;
+package de.schmidt.mvg.route;
+
+import de.schmidt.mvg.traffic.Station;
 
 import java.util.Collections;
 import java.util.Date;
