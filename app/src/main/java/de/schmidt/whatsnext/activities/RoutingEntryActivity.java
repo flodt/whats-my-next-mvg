@@ -1,6 +1,7 @@
 package de.schmidt.whatsnext.activities;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
@@ -156,7 +157,13 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 						}
 
 						RouteOptions finalOptions = options;
-						runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Request with " + finalOptions, Toast.LENGTH_SHORT).show());
+						Log.d(TAG, "onClick: request with " + finalOptions);
+
+						runOnUiThread(() -> {
+							Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
+							intent.putExtra(getString(R.string.key_parameters), finalOptions);
+							startActivity(intent);
+						});
 					} catch (Exception e) {
 						runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
 						Log.e(TAG, "onClick: error in json parsing for route", e);

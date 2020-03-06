@@ -1,5 +1,6 @@
 package de.schmidt.mvg.route;
 
+import android.util.Log;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class RouteConnectionPart {
+	private static final String TAG = "RouteConnectionPart";
 	private final Station from;
 	private final Station to;
 	private final List<RouteIntermediateStop> stops;

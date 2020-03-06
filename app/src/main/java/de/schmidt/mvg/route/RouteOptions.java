@@ -2,13 +2,14 @@ package de.schmidt.mvg.route;
 
 import de.schmidt.mvg.traffic.Station;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RouteOptions {
+public class RouteOptions implements Serializable {
 	private final Map<String, String> properties;
 
 	private RouteOptions(Map<String, String> properties) {

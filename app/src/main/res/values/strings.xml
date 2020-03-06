@@ -82,4 +82,6 @@
     <string name="go_button">Go</string>
     <string name="reset">Clear</string>
     <string name="now">Now</string>
+    <string name="key_parameters">request_parameters</string>
+    <string name="alternatives_title">Alternatives</string>
 </resources>

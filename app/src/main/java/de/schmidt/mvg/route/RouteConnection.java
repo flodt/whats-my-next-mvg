@@ -5,6 +5,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -41,6 +44,15 @@ public class RouteConnection {
 		return arrival;
 	}
 
+	public long getDeltaInMinutes() {
+		Duration diff = Duration.between(
+				LocalDateTime.now(),
+				LocalDateTime.ofInstant(getDeparture().toInstant(), ZoneId.systemDefault())
+		);
+
+		return Math.max(diff.toMinutes(), 0);
+	}
+
 	public List<RouteConnectionPart> getConnectionParts() {
 		return connectionParts;
 	}
@@ -69,6 +81,10 @@ public class RouteConnection {
 		JSONArray connectionPartList = json.getJSONArray("connectionPartList");
 		for (int i = 0; i < connectionPartList.length(); i++) {
 			JSONObject part = connectionPartList.getJSONObject(i);
+
+			//ignore the FOOTWAY types
+			if (!part.getString("connectionPartType").equals("TRANSPORTATION")) continue;
+
 			partList.add(i, RouteConnectionPart.fromJSON(part));
 		}
 
@@ -90,5 +106,14 @@ public class RouteConnection {
 				", arrival=" + arrival +
 				", connectionParts=" + connectionParts +
 				'}';
+	}
+
+	public long getDuration() {
+		Duration diff = Duration.between(
+				LocalDateTime.ofInstant(getDeparture().toInstant(), ZoneId.systemDefault()),
+				LocalDateTime.ofInstant(getArrival().toInstant(), ZoneId.systemDefault())
+		);
+
+		return diff.toMinutes();
 	}
 }
