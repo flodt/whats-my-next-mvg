@@ -184,8 +184,6 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 
-		selectedTime = null;
-
 		super.onResume();
 	}
 
@@ -212,7 +210,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
 		//noinspection deprecation
-		selectedTime = new Date(year, month, day, hourOfDay, minute);
+		selectedTime = new Date(year - 1900, month, day, hourOfDay, minute);
 		selectedTimeLabel.setText(new SimpleDateFormat("HH:mm").format(selectedTime));
 	}
 }

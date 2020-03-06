@@ -1,6 +1,5 @@
 package de.schmidt.mvg.route;
 
-import android.util.Log;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;
@@ -73,7 +72,14 @@ public class RouteConnectionPart {
 
 		long departure = json.getLong("departure");
 		long arrival = json.getLong("arrival");
-		int delay = json.getInt("delay");
+
+		//delay field might not be present
+		int delay;
+		try {
+			delay = json.getInt("delay");
+		} catch (JSONException e) {
+			delay = 0;
+		}
 
 		String line = json.getString("label");
 		String direction = json.getString("destination");
