@@ -1,15 +1,14 @@
 package de.schmidt.whatsnext.activities;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.widget.ListView;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Interruption;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.NavBarManager;
+import de.schmidt.util.network.InterruptionsCache;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
@@ -17,7 +16,7 @@ import de.schmidt.whatsnext.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterruptionsActivity extends ActionBarBaseActivity {
+public class InterruptionsActivity extends ActionBarBaseActivity implements Updatable<Interruption> {
 
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
@@ -60,12 +59,7 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 	}
 
 	@Override
-	public void switchActivity() {
-		Intent intent = new Intent(this, DepartureListActivity.class);
-		startActivity(intent);
-	}
-
-	public void handleInterruptionsUIUpdate(List<Interruption> interruptions) {
+	public void handleUIUpdate(List<Interruption> interruptions) {
 		if (interruptions == null) return;
 
 		runOnUiThread(() -> {
@@ -85,9 +79,6 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 	}
 
 	@Override
-	public void handleUIUpdate(List<Departure> dataSet) {}
-
-	@Override
 	public int getNavButtonItemId() {
 		return R.id.nav_inter_button;
 	}
@@ -95,5 +86,10 @@ public class InterruptionsActivity extends ActionBarBaseActivity {
 	@Override
 	public BottomNavigationView getNavBar() {
 		return navBar;
+	}
+
+	@Override
+	public void updateFromCache() {
+		handleUIUpdate(InterruptionsCache.getInstance().getCache());
 	}
 }

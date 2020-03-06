@@ -2,7 +2,6 @@ package de.schmidt.whatsnext.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.LineColor;
 import de.schmidt.util.*;
+import de.schmidt.util.network.DepartureCache;
 import de.schmidt.util.network.SingleNetworkAccess;
 import de.schmidt.whatsnext.R;
 
@@ -23,7 +23,7 @@ import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class SingleDepartureActivity extends ActionBarBaseActivity {
+public class SingleDepartureActivity extends ActionBarBaseActivity implements Updatable<Departure> {
 	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
@@ -32,12 +32,6 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 
 	private String customName;
 	private BottomNavigationView navBar;
-
-	@Override
-	public void switchActivity() {
-		Intent switchIntent = new Intent(this, DepartureListActivity.class);
-		startActivity(switchIntent);
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,5 +151,10 @@ public class SingleDepartureActivity extends ActionBarBaseActivity {
 	@Override
 	public BottomNavigationView getNavBar() {
 		return navBar;
+	}
+
+	@Override
+	public void updateFromCache() {
+		handleUIUpdate(DepartureCache.getInstance().getCache());
 	}
 }

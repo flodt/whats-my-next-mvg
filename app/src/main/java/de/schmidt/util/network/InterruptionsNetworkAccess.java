@@ -27,7 +27,8 @@ public class InterruptionsNetworkAccess extends AsyncTask<Void, Void, List<Inter
 	@Override
 	protected void onPostExecute(List<Interruption> interruptions) {
 		super.onPostExecute(interruptions);
-		act.get().handleInterruptionsUIUpdate(interruptions);
+		InterruptionsCache.getInstance().setCache(interruptions);
+		act.get().handleUIUpdate(interruptions);
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import de.schmidt.mvg.Station;
 import de.schmidt.whatsnext.R;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 

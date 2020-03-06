@@ -2,12 +2,10 @@ package de.schmidt.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import de.schmidt.whatsnext.activities.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.activities.InterruptionsActivity;
 
 public class MenuManager {
 	private static final MenuManager instance = new MenuManager();
