@@ -47,4 +47,12 @@ public class RunningView extends ConnectionDisplayView {
 	public boolean isDeparture() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "RunningView{" +
+				"color=" + color +
+				", stops=" + stops +
+				'}';
+	}
 }

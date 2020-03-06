@@ -1,6 +1,7 @@
 package de.schmidt.whatsnext.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +15,7 @@ import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
+import de.schmidt.whatsnext.adapters.ConnectionDisplayView;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection> {
+	private static final String TAG = "RoutingAlternativesActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
@@ -56,7 +59,11 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				RouteConnection tappedConnection = connections.get(position);
 				Toast.makeText(RoutingAlternativesActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
+
+				List<ConnectionDisplayView> views = ConnectionDisplayView.getViewListFromRouteConnection(tappedConnection);
+				views.forEach(v -> Log.d(TAG, "onItemClick: " + v.toString()));
 			}
 		});
 	}

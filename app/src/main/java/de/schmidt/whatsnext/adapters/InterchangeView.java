@@ -77,4 +77,17 @@ public class InterchangeView extends ConnectionDisplayView {
 	public boolean isDeparture() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "InterchangeView{" +
+				"at=" + at +
+				", formerColor=" + formerColor +
+				", nextColor=" + nextColor +
+				", arrival=" + arrival +
+				", departure=" + departure +
+				", arrivalPlatform='" + arrivalPlatform + '\'' +
+				", departurePlatform='" + departurePlatform + '\'' +
+				'}';
+	}
 }

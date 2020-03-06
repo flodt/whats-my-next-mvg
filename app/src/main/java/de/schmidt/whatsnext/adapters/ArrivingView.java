@@ -59,4 +59,14 @@ public class ArrivingView extends ConnectionDisplayView {
 	public boolean isDeparture() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "ArrivingView{" +
+				"to=" + to +
+				", arrival=" + arrival +
+				", arrivalPlatform='" + arrivalPlatform + '\'' +
+				", color=" + color +
+				'}';
+	}
 }

@@ -4,7 +4,6 @@ import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class ConnectionDisplayView {
@@ -24,17 +23,6 @@ public abstract class ConnectionDisplayView {
 						part.getDirection(),
 						part.getColor()
 				));
-				views.add(new RunningView(
-						part.getColor(),
-						part.getStops()
-				));
-			} else if (part.getTo().equals(connection.getTo())) { //ending element in list
-				views.add(new ArrivingView(
-						part.getTo(),
-						part.getArrival(),
-						part.getArrivalPlatform(),
-						part.getColor()
-				));
 			} else { //interchange element in list
 				views.add(new InterchangeView(
 						part.getFrom(),
@@ -45,9 +33,19 @@ public abstract class ConnectionDisplayView {
 						parts.get(i - 1).getArrivalPlatform(),
 						part.getDeparturePlatform()
 				));
-				views.add(new RunningView(
-						part.getColor(),
-						part.getStops()
+			}
+
+			views.add(new RunningView(
+					part.getColor(),
+					part.getStops()
+			));
+
+			if (part.getTo().equals(connection.getTo())) { //ending element in list
+				views.add(new ArrivingView(
+						part.getTo(),
+						part.getArrival(),
+						part.getArrivalPlatform(),
+						part.getColor()
 				));
 			}
 		}

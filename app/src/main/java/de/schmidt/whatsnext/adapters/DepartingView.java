@@ -71,4 +71,16 @@ public class DepartingView extends ConnectionDisplayView {
 	public boolean isDeparture() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "DepartingView{" +
+				"from=" + from +
+				", departure=" + departure +
+				", departurePlatform='" + departurePlatform + '\'' +
+				", delay=" + delay +
+				", direction='" + direction + '\'' +
+				", color=" + color +
+				'}';
+	}
 }
