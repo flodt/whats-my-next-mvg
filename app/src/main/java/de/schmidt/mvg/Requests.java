@@ -150,6 +150,27 @@ public class Requests {
 						   station.getDouble("longitude"));
 	}
 
+	public List<String> getAutocompleteSuggestionsForInput(String input, int count) {
+		String url = URL_STATION_BY_NAME.replace("{name}", input);
+		String response = executeRequest(url);
+
+		try {
+			JSONObject json = new JSONObject(response);
+			JSONArray locations = json.getJSONArray("locations");
+
+			List<String> result = new ArrayList<>();
+			for (int i = 0; i < locations.length() && i < count; i++) {
+				JSONObject station = locations.getJSONObject(i);
+				result.add(station.getString("name") + " (" + station.getString("place") + ")");
+			}
+
+			return result;
+		} catch (JSONException e) {
+			Log.e(TAG, "getAutocompleteSuggestionsForInput: json error", e);
+			return Collections.emptyList();
+		}
+	}
+
 	public Station getStationById(String id) throws JSONException {
 		String url = URL_STATION_BY_ID.replace("{id}", id);
 		String response = executeRequest(url);
