@@ -14,6 +14,13 @@ public class ColorUtils {
 		return Color.HSVToColor(hsv);
 	}
 
+	public static int[] extractPrimaryAndDark(@ColorInt int color) {
+		return new int[]{
+				color,
+				modifyColor(color, 0.80f)
+		};
+	}
+
 	@SuppressWarnings("deprecation")
 	public static int[] getSpriteColors(Activity context) {
 		return new int[]{

@@ -2,10 +2,9 @@ package de.schmidt.util.managers;
 
 import android.content.Intent;
 import android.util.Log;
-import android.view.MenuItem;
-import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.activities.InterruptionsActivity;
@@ -40,6 +39,9 @@ public class NavBarManager {
 					break;
 				case R.id.nav_inter_button:
 					intent = new Intent(context, InterruptionsActivity.class);
+					break;
+				case R.id.nav_route_button:
+					intent = new Intent(context, RoutingEntryActivity.class);
 					break;
 				default:
 					return false;

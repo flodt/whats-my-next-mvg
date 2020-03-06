@@ -15,6 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.RoutingEntryActivity">
+        </activity>
         <activity android:name=".activities.InterruptionsActivity">
         </activity>
         <activity android:name=".activities.DepartureListActivity">

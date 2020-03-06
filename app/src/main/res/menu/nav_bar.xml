@@ -1,6 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+            android:id="@+id/nav_route_button"
+            android:title="@string/navbar_route"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_routing"
+    />
+
+    <item
             android:id="@+id/nav_list_button"
             android:title="@string/navbar_list"
             app:showAsAction="ifRoom"

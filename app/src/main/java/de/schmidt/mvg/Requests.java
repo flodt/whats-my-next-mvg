@@ -136,7 +136,8 @@ public class Requests {
 	}
 
 	public Station getStationByName(String name) throws JSONException {
-		String url = URL_STATION_BY_NAME.replace("{name}", name);
+		String url = URL_STATION_BY_NAME.replace("{name}", name)
+				.replace(" ", "%20");
 		String response = executeRequest(url);
 
 		JSONObject json = new JSONObject(response);
@@ -150,8 +151,9 @@ public class Requests {
 						   station.getDouble("longitude"));
 	}
 
-	public List<String> getAutocompleteSuggestionsForInput(String input, int count) {
-		String url = URL_STATION_BY_NAME.replace("{name}", input);
+	public String[] getAutocompleteSuggestionsForInput(String input, int count) {
+		String url = URL_STATION_BY_NAME.replace("{name}", input)
+				.replace(" ", "%20");
 		String response = executeRequest(url);
 
 		try {
@@ -160,14 +162,18 @@ public class Requests {
 
 			List<String> result = new ArrayList<>();
 			for (int i = 0; i < locations.length() && i < count; i++) {
-				JSONObject station = locations.getJSONObject(i);
-				result.add(station.getString("name") + " (" + station.getString("place") + ")");
+				try {
+					JSONObject station = locations.getJSONObject(i);
+					result.add(station.getString("name"));
+				} catch (JSONException ignored) {
+					//intentionally left blank
+				}
 			}
 
-			return result;
+			return result.toArray(new String[0]);
 		} catch (JSONException e) {
 			Log.e(TAG, "getAutocompleteSuggestionsForInput: json error", e);
-			return Collections.emptyList();
+			return new String[0];
 		}
 	}
 

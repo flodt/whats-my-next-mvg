@@ -53,12 +53,33 @@
         <item>Choose by name…</item>
     </string-array>
 
-    <string name="example_int_title">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor: Unterbrechung wegen Gleisbauarbeiten</string>
+    <string name="example_int_title">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor: Unterbrechung wegen
+        Gleisbauarbeiten
+    </string>
     <string name="example_int_duration">25.03.2020 - 26.03.2020</string>
-    <string name="example_int_text">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße ist der Streckenabschnitt Karlsplatz (Stachus) - Sendlinger Tor am Mittwoch, 25. März und Donnerstag, 26. März 2020 von ca. 01.40 bis 04.15 Uhr gesperrt. An der (H) Sendlinger Tor fahren die Tramlinien N17 > Effnerplatz und N27 > Großhesseloher Brücke in der Brunnenschleife (vor der Kirche) ab. Die NachtTram N17 ist zwischen den (H) Hauptbahnhof und Sendlinger Tor unterbrochen, dieser Abschnitt wird mit Ersatztaxis bedient. Die NachtTram N27 ist zwischen den (H) Karlsplatz (Stachus) und Sendlinger Tor unterbrochen, in diesem Abschnitt nutzen Sie bitte die NachtBuslinien N40, N41 und N45. Die Züge in Richtung Petuelring fahren an der (H) Karlsplatz (Stachus) von der Halteposition 6 in der Prielmayerstraße ab.</string>
+    <string name="example_int_text">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße ist der
+        Streckenabschnitt Karlsplatz (Stachus) - Sendlinger Tor am Mittwoch, 25. März und Donnerstag, 26. März 2020 von
+        ca. 01.40 bis 04.15 Uhr gesperrt. An der (H) Sendlinger Tor fahren die Tramlinien N17 > Effnerplatz und N27 >
+        Großhesseloher Brücke in der Brunnenschleife (vor der Kirche) ab. Die NachtTram N17 ist zwischen den (H)
+        Hauptbahnhof und Sendlinger Tor unterbrochen, dieser Abschnitt wird mit Ersatztaxis bedient. Die NachtTram N27
+        ist zwischen den (H) Karlsplatz (Stachus) und Sendlinger Tor unterbrochen, in diesem Abschnitt nutzen Sie bitte
+        die NachtBuslinien N40, N41 und N45. Die Züge in Richtung Petuelring fahren an der (H) Karlsplatz (Stachus) von
+        der Halteposition 6 in der Prielmayerstraße ab.
+    </string>
     <string name="example_int_mod_date">Stand: 2020-03-17 13:30 UTC</string>
 
     <string name="navbar_single">Single</string>
     <string name="navbar_list">Departures</string>
+    <string name="navbar_route">Route</string>
     <string name="navbar_inter">Interruptions</string>
+    <string name="label_stations">Stations</string>
+    <string name="hint_from_input">From…</string>
+    <string name="hint_to_input">To…</string>
+    <string name="label_time">Time</string>
+    <string name="radio_departure">Departure</string>
+    <string name="radio_arrival">Arrival</string>
+    <string name="select_time_button">Select time…</string>
+    <string name="go_button">Go</string>
+    <string name="reset">Clear</string>
+    <string name="now">Now</string>
 </resources>
