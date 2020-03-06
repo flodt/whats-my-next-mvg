@@ -175,4 +175,9 @@ public class Requests {
 
 		return result;
 	}
+
+	public void getRoute(RouteOptions options) throws JSONException {
+		String url = URL_ROUTING + options.getParameterString();
+		String response = executeRequest(url);
+	}
 }

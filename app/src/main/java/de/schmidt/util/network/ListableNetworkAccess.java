@@ -10,6 +10,7 @@ import de.schmidt.mvg.Departure;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.Station;
 import de.schmidt.whatsnext.R;
+import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
