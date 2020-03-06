@@ -39,31 +39,20 @@ public class PreferenceManager {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle("Select means of transport…");
 		builder.setIcon(R.drawable.ic_excluded_black);
-		builder.setMultiChoiceItems(readable, selected, new DialogInterface.OnMultiChoiceClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-				selected[which] = isChecked;
-			}
-		});
+		builder.setMultiChoiceItems(readable, selected, (dialog, which, isChecked) -> selected[which] = isChecked);
 		builder.setCancelable(true);
-		builder.setPositiveButton(context.getResources().getString(R.string.save_settings), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//save to preferences
-				SharedPreferences.Editor editor = prefs.edit();
-				for (int i = 0; i < keys.length; i++) {
-					editor.putBoolean(keys[i], selected[i]);
-				}
-				editor.apply();
-				refresh(context);
+		builder.setPositiveButton(context.getResources().getString(R.string.save_settings), (dialog, which) -> {
+			//save to preferences
+			SharedPreferences.Editor editor = prefs.edit();
+			for (int i = 0; i < keys.length; i++) {
+				editor.putBoolean(keys[i], selected[i]);
 			}
+			editor.apply();
+			refresh(context);
 		});
-		builder.setNegativeButton(context.getResources().getString(R.string.dismiss_settings), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				refresh(context);
-			}
+		builder.setNegativeButton(context.getResources().getString(R.string.dismiss_settings), (dialog, which) -> {
+			dialog.dismiss();
+			refresh(context);
 		});
 
 		AlertDialog dialog = builder.create();
@@ -93,27 +82,21 @@ public class PreferenceManager {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.select_station_title);
 		builder.setIcon(R.drawable.ic_station_selection_black);
-		builder.setSingleChoiceItems(readable, checked, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				prefs.edit().putInt(context.getResources().getString(R.string.selection_station_in_menu), which).apply();
+		builder.setSingleChoiceItems(readable, checked, (dialog, which) -> {
+			prefs.edit().putInt(context.getResources().getString(R.string.selection_station_in_menu), which).apply();
 
-				//handle custom name here
-				if (keys[which].equals("BY_NAME")) {
-					getUserInputForCustomStationName(dialog, context);
-					return;
-				}
-
-				dialog.cancel();
-				refresh(context);
+			//handle custom name here
+			if (keys[which].equals("BY_NAME")) {
+				getUserInputForCustomStationName(dialog, context);
+				return;
 			}
+
+			dialog.cancel();
+			refresh(context);
 		});
-		builder.setNeutralButton(R.string.dismiss_settings, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				refresh(context);
-			}
+		builder.setNeutralButton(R.string.dismiss_settings, (dialog, which) -> {
+			dialog.dismiss();
+			refresh(context);
 		});
 
 		AlertDialog dialog = builder.create();
@@ -128,23 +111,20 @@ public class PreferenceManager {
 		input.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(input);
 
-		builder.setPositiveButton(R.string.save_settings, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				String userInput = input.getText().toString().trim();
-				setCustomNameFieldInContext(userInput, context);
-				context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
-						.edit()
-						.putString(
-								context.getResources().getString(R.string.selection_custom_station_entry),
-								userInput
-						)
-						.apply();
+		builder.setPositiveButton(R.string.save_settings, (dialog, which) -> {
+			String userInput = input.getText().toString().trim();
+			setCustomNameFieldInContext(userInput, context);
+			context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+					.edit()
+					.putString(
+							context.getResources().getString(R.string.selection_custom_station_entry),
+							userInput
+					)
+					.apply();
 
-				parent.cancel();
-				dialog.cancel();
-				refresh(context);
-			}
+			parent.cancel();
+			dialog.cancel();
+			refresh(context);
 		});
 
 		builder.setCancelable(false);

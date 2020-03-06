@@ -52,12 +52,9 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		//refresh view
 		swipeRefresh = findViewById(R.id.pull_to_refresh_list);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
-		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				refresh();
-				swipeRefresh.setRefreshing(false);
-			}
+		swipeRefresh.setOnRefreshListener(() -> {
+			refresh();
+			swipeRefresh.setRefreshing(false);
 		});
 
 		departures = new ArrayList<>();
@@ -102,8 +99,8 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
 				listView.setBackgroundColor(getColor(R.color.colorPrimary));
-				actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-				getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+				actionBar.setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimary)));
+				getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
 				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 				navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 			} else {

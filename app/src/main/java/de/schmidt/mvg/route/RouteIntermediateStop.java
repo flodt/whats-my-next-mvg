@@ -7,8 +7,8 @@ import org.json.JSONObject;
 import java.util.Date;
 
 public class RouteIntermediateStop {
-	private Station station;
-	private Date time;
+	private final Station station;
+	private final Date time;
 
 	private RouteIntermediateStop(Station station, Date time) {
 		this.station = station;

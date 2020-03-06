@@ -40,12 +40,9 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 
 		swipeRefresh = findViewById(R.id.pull_to_refresh_interruptions);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
-		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				refresh();
-				swipeRefresh.setRefreshing(false);
-			}
+		swipeRefresh.setOnRefreshListener(() -> {
+			refresh();
+			swipeRefresh.setRefreshing(false);
 		});
 
 		listView = findViewById(R.id.interruption_list);

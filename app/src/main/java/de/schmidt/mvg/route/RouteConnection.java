@@ -11,11 +11,11 @@ import java.util.Date;
 import java.util.List;
 
 public class RouteConnection {
-	private Station from;
-	private Station to;
-	private Date departure;
-	private Date arrival;
-	private List<RouteConnectionPart> connectionParts;
+	private final Station from;
+	private final Station to;
+	private final Date departure;
+	private final Date arrival;
+	private final List<RouteConnectionPart> connectionParts;
 
 	private RouteConnection(Station from, Station to, Date departure, Date arrival, List<RouteConnectionPart> connectionParts) {
 		this.from = from;

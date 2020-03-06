@@ -166,8 +166,7 @@ public class Requests {
 	}
 
 	public List<Interruption> getInterruptions() throws JSONException {
-		String url = URL_INTERRUPTIONS;
-		String response = executeRequest(url);
+		String response = executeRequest(URL_INTERRUPTIONS);
 
 		JSONObject json = new JSONObject(response);
 		JSONArray interruptions = json.getJSONArray("interruption");

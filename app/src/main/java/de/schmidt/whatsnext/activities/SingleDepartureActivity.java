@@ -59,12 +59,9 @@ public class SingleDepartureActivity extends ActionBarBaseActivity implements Up
 
 		pullToRefresh = findViewById(R.id.pull_to_refresh);
 		pullToRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
-		pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				refresh();
-				pullToRefresh.setRefreshing(false);
-			}
+		pullToRefresh.setOnRefreshListener(() -> {
+			refresh();
+			pullToRefresh.setRefreshing(false);
 		});
 	}
 

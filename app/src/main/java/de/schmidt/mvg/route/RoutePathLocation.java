@@ -4,8 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RoutePathLocation {
-	private double latitude;
-	private double longitude;
+	private final double latitude;
+	private final double longitude;
 
 	private RoutePathLocation(double latitude, double longitude) {
 		this.latitude = latitude;
