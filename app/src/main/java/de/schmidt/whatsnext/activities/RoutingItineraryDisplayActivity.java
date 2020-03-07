@@ -1,7 +1,9 @@
 package de.schmidt.whatsnext.activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.traffic.Station;
@@ -34,6 +38,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	private ItineraryListViewAdapter adapter;
 	private RouteConnection routeConnection;
 	private ActionBar actionBar;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,16 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 							.setIcon(getResources().getDrawable(R.drawable.ic_stops))
 							.show();
 				}
+			}
+		});
+
+		fab = findViewById(R.id.fab_show_on_map);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(RoutingItineraryDisplayActivity.this, RoutingOnMapActivity.class);
+				intent.putExtra(getResources().getString(R.string.key_route_map), routeConnection);
+				startActivity(intent);
 			}
 		});
 	}

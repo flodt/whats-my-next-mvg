@@ -58,7 +58,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 				return requests.getNextDeparturesAtStation(nearest, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
-				return null;
+				return new Departure[0];
 			}
 		} else if (keys[stationMenuIndex].equals("BY_NAME")) {
 			Requests requests = Requests.instance();
@@ -67,7 +67,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 				return requests.getNextDeparturesAtStation(byName, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
-				return null;
+				return new Departure[0];
 			}
 		} else {
 			Requests requests = Requests.instance();
@@ -76,7 +76,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 				return requests.getNextDeparturesAtStation(byId, exclusions);
 			} catch (Exception e) {
 				Log.e(TAG, "onCreate: network access", e);
-				return null;
+				return new Departure[0];
 			}
 		}
 	}

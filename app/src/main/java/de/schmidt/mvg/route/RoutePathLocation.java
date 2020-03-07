@@ -1,5 +1,6 @@
 package de.schmidt.mvg.route;
 
+import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +21,10 @@ public class RoutePathLocation implements Serializable {
 
 	public double getLongitude() {
 		return longitude;
+	}
+
+	public LatLng getLatLongForMaps() {
+		return new LatLng(latitude, longitude);
 	}
 
 	public static RoutePathLocation fromJSON(JSONObject loc) throws JSONException {

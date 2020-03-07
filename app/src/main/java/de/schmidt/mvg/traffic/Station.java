@@ -1,5 +1,7 @@
 package de.schmidt.mvg.traffic;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +32,10 @@ public class Station implements Serializable {
 
 	public double getLongitude() {
 		return longitude;
+	}
+
+	public LatLng getLatLongForMaps() {
+		return new LatLng(latitude, longitude);
 	}
 
 	@Override

@@ -58,6 +58,11 @@ public abstract class ConnectionDisplayView {
 	}
 
 	public abstract int getLayoutId();
+
+	/**
+	 * This needs to be different than the layoutId, as the ListView uses a list with indices [0..4) internally!
+	 * @return view type id int
+	 */
 	public abstract int getViewType();
 	public abstract View inflate(View view, ConnectionDisplayView content);
 	public abstract boolean isRunning();
