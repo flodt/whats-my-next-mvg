@@ -50,7 +50,9 @@ public class RunningView extends ConnectionDisplayView {
 		TextView info = view.findViewById(R.id.running_line_info);
 
 		bar.setBackground(new ColorDrawable(Color.parseColor(running.getColor().getPrimary())));
-		info.setText("(" + running.getStops().size() + " stops)");
+
+		String stopsText = running.getStops().isEmpty() ? "" : "(" + running.getStops().size() + " stops)";
+		info.setText(stopsText);
 
 		return view;
 	}

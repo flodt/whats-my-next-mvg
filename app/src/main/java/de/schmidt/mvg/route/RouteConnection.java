@@ -93,9 +93,9 @@ public class RouteConnection implements Serializable {
 			JSONObject part = connectionPartList.getJSONObject(i);
 
 			//ignore the FOOTWAY types
-			if (!part.getString("connectionPartType").equals("TRANSPORTATION")) continue;
+			//if (!part.getString("connectionPartType").equals("TRANSPORTATION")) continue;
 
-			partList.add(i, RouteConnectionPart.fromJSON(part));
+			partList.add(RouteConnectionPart.fromJSON(part));
 		}
 
 		return new RouteConnection(

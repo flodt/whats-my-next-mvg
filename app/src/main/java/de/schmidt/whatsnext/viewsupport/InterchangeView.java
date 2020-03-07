@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.LineColor;
@@ -112,11 +113,27 @@ public class InterchangeView extends ConnectionDisplayView {
 		atLabel.setText(inter.getAt().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		info.setText(inter.getDeparturePlatform() + ", " + df.format(inter.getDeparture()));
+		String infoText;
+		if (inter.getDeparturePlatform().length() != 0) {
+			infoText = String.join(", ",
+								   inter.getDeparturePlatform(),
+								   df.format(inter.getDeparture()));
+		} else {
+			infoText = df.format(inter.getDeparture());
+		}
+		info.setText(infoText);
 
 		destination.setText(
 				Html.fromHtml(LineColor.getHtmlColored(inter.getLine()) + ": " + inter.getDirection())
 		);
+
+		Spanned destFromHtml;
+		if (inter.getDirection().equals("")) {
+			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(inter.getLine()));
+		} else {
+			destFromHtml = Html.fromHtml(String.join(": ", LineColor.getHtmlColored(inter.getLine()), inter.getDirection()));
+		}
+		destination.setText(destFromHtml);
 
 		return view;
 	}

@@ -125,6 +125,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		resetButton.setOnClickListener(v -> {
 			fromInput.setText("");
 			toInput.setText("");
+
 			selectedTime = null;
 			selectedTimeLabel.setText(R.string.now);
 			radio.check(R.id.radio_dept);
@@ -132,6 +133,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 
 		goButton.setOnClickListener(v -> new Thread(() -> {
 			try {
+				if (fromInput.getText().toString().length() == 0 || toInput.getText().toString().length() == 0) {
+					Toast.makeText(this, "Input is empty!", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
 				Station start = Requests.instance().getStationByName(fromInput.getText().toString().trim());
 				Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
 

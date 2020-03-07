@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.LineColor;
@@ -12,6 +13,9 @@ import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class DepartingView extends ConnectionDisplayView {
 	private final Station from;
@@ -92,11 +96,24 @@ public class DepartingView extends ConnectionDisplayView {
 		fromLabel.setText(departure.getFrom().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		info.setText(departure.getDeparturePlatform() + ", " + df.format(departure.getDeparture()));
+		String infoText;
+		if (departure.getDeparturePlatform().length() != 0) {
+			infoText = String.join(", ",
+								   departure.getDeparturePlatform(),
+								   df.format(departure.getDeparture()));
+		} else {
+			infoText = df.format(departure.getDeparture());
+		}
+		info.setText(infoText);
 
-		destination.setText(
-				Html.fromHtml(LineColor.getHtmlColored(departure.getLine()) + ": " + departure.getDirection())
-		);
+		Spanned destFromHtml;
+		if (departure.getDirection().equals("")) {
+			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(departure.getLine()));
+		} else {
+			destFromHtml = Html.fromHtml(String.join(": ", LineColor.getHtmlColored(departure.getLine()), departure.getDirection()));
+		}
+		destination.setText(destFromHtml);
+
 
 		return view;
 	}

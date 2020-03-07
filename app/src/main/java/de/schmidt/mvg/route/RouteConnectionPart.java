@@ -66,15 +66,19 @@ public class RouteConnectionPart implements Serializable {
 		}
 
 		List<RouteIntermediateStop> stops = new ArrayList<>();
-		JSONArray jStops = json.getJSONArray("stops");
-		for (int i = 0; i < jStops.length(); i++) {
-			stops.add(i, RouteIntermediateStop.fromJSON(jStops.getJSONObject(i)));
+		try {
+			JSONArray jStops = json.getJSONArray("stops");
+			for (int i = 0; i < jStops.length(); i++) {
+				stops.add(i, RouteIntermediateStop.fromJSON(jStops.getJSONObject(i)));
+			}
+		} catch (JSONException ignored) {
+			//no stops: footway!
 		}
 
 		long departure = json.getLong("departure");
 		long arrival = json.getLong("arrival");
 
-		//delay field might not be present
+		//delay field might not be present (FOOTWAY type)
 		int delay;
 		try {
 			delay = json.getInt("delay");
@@ -82,10 +86,32 @@ public class RouteConnectionPart implements Serializable {
 			delay = 0;
 		}
 
-		String line = json.getString("label");
-		String direction = json.getString("destination");
-		String departurePlatform = json.getString("departurePlatform");
-		String arrivalPlatform = json.getString("arrivalPlatform");
+		//handle footway: no value for line
+		String line;
+		try {
+			line = json.getString("label");
+		} catch (JSONException e) {
+			line = "Walking";
+		}
+
+		//handle footway for direction
+		String direction;
+		try {
+			direction = json.getString("destination");
+		} catch (JSONException e) {
+			direction = "";
+		}
+
+		//handle footway for platforms
+		String departurePlatform;
+		String arrivalPlatform;
+		try {
+			departurePlatform = json.getString("departurePlatform");
+			arrivalPlatform = json.getString("arrivalPlatform");
+		} catch (JSONException e) {
+			departurePlatform = "";
+			arrivalPlatform = "";
+		}
 
 		return new RouteConnectionPart(
 				from,

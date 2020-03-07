@@ -70,7 +70,15 @@ public class ArrivingView extends ConnectionDisplayView {
 		toLabel.setText(arrival.getTo().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		info.setText(arrival.getArrivalPlatform() + ", " + df.format(arrival.getArrival()));
+		String infoText;
+		if (arrival.getArrivalPlatform().length() != 0) {
+			infoText = String.join(", ",
+								   arrival.getArrivalPlatform(),
+								   df.format(arrival.getArrival()));
+		} else {
+			infoText = df.format(arrival.getArrival());
+		}
+		info.setText(infoText);
 
 		return view;
 	}
