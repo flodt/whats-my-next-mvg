@@ -1,8 +1,9 @@
 package de.schmidt.mvg.traffic;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Station {
+public class Station implements Serializable {
 	private final String id;
 	private final String name;
 	private final double latitude;

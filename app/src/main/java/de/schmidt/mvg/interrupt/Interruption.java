@@ -52,6 +52,14 @@ public class Interruption {
 		return sb.toString();
 	}
 
+	public String getLinesAsHtmlColoredString() {
+		StringBuilder sb = new StringBuilder(lines.get(0).getHtmlColoredLine());
+		for (int i = 1; i < lines.size(); i++) {
+			sb.append(", ").append(lines.get(i).getHtmlColoredLine());
+		}
+		return sb.toString();
+	}
+
 	public LocalDateTime getFrom() {
 		return from;
 	}

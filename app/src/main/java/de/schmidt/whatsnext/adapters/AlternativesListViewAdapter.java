@@ -8,10 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import de.schmidt.mvg.interrupt.Interruption;
 import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.mvg.route.RouteConnectionPart;
-import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;

@@ -1,5 +1,6 @@
 package de.schmidt.mvg.interrupt;
 
+import de.schmidt.mvg.traffic.LineColor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +33,10 @@ public class InterruptionLine {
 
 	public String getLine() {
 		return line;
+	}
+
+	public String getHtmlColoredLine() {
+		return "<font color=" + LineColor.getForLine(line).getPrimary() + ">" + line + "</font>";
 	}
 
 	@Override

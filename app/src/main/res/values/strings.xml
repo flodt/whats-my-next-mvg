@@ -84,4 +84,6 @@
     <string name="now">Now</string>
     <string name="key_parameters">request_parameters</string>
     <string name="alternatives_title">Alternatives</string>
+    <string name="itinerary_title">Itinerary</string>
+    <string name="key_itinerary">route_itinerary</string>
 </resources>

@@ -38,6 +38,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	private Button goButton;
 	private TextView selectedTimeLabel;
 	private Button resetButton;
+	private Button flipButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		selectedTimeLabel = findViewById(R.id.selected_time_label);
 		goButton = findViewById(R.id.go_button);
 		resetButton = findViewById(R.id.reset_button);
+		flipButton = findViewById(R.id.flip_button);
 
 		fromInput.setThreshold(1);
 		toInput.setThreshold(1);
@@ -74,13 +76,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 				new Thread(() -> {
 					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
 
-					runOnUiThread(() -> {
-						fromInput.setAdapter(new ArrayAdapter<String>(
-								RoutingEntryActivity.this,
-								android.R.layout.select_dialog_item,
-								suggestions
-						));
-					});
+					runOnUiThread(() -> fromInput.setAdapter(new ArrayAdapter<>(
+							RoutingEntryActivity.this,
+							android.R.layout.select_dialog_item,
+							suggestions
+					)));
 				}).start();
 			}
 
@@ -103,13 +103,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 				new Thread(() -> {
 					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
 
-					runOnUiThread(() -> {
-						toInput.setAdapter(new ArrayAdapter<>(
-								RoutingEntryActivity.this,
-								android.R.layout.select_dialog_item,
-								suggestions
-						));
-					});
+					runOnUiThread(() -> toInput.setAdapter(new ArrayAdapter<>(
+							RoutingEntryActivity.this,
+							android.R.layout.select_dialog_item,
+							suggestions
+					)));
 				}).start();
 			}
 
@@ -119,57 +117,53 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			}
 		});
 
-		selectTimeButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DialogFragment timePicker = new TimePickerFragment();
-				timePicker.show(getSupportFragmentManager(), "TimePicker");
-			}
+		selectTimeButton.setOnClickListener(v -> {
+			DialogFragment timePicker = new TimePickerFragment();
+			timePicker.show(getSupportFragmentManager(), "TimePicker");
 		});
 
-		resetButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fromInput.setText("");
-				toInput.setText("");
-				selectedTime = null;
-				selectedTimeLabel.setText(R.string.now);
-				radio.check(R.id.radio_dept);
-			}
+		resetButton.setOnClickListener(v -> {
+			fromInput.setText("");
+			toInput.setText("");
+			selectedTime = null;
+			selectedTimeLabel.setText(R.string.now);
+			radio.check(R.id.radio_dept);
 		});
 
-		goButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				new Thread(() -> {
-					try {
-						Station start = Requests.instance().getStationByName(fromInput.getText().toString().trim());
-						Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
+		goButton.setOnClickListener(v -> new Thread(() -> {
+			try {
+				Station start = Requests.instance().getStationByName(fromInput.getText().toString().trim());
+				Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
 
-						RouteOptions options = RouteOptions.getBase()
-								.withStart(start)
-								.withDestination(finish);
+				RouteOptions options = RouteOptions.getBase()
+						.withStart(start)
+						.withDestination(finish);
 
-						if (selectedTime != null) {
-							options = options.withTime(
-									selectedTime, radio.getCheckedRadioButtonId() == R.id.radio_dept
-							);
-						}
+				if (selectedTime != null) {
+					options = options.withTime(
+							selectedTime, radio.getCheckedRadioButtonId() == R.id.radio_dept
+					);
+				}
 
-						RouteOptions finalOptions = options;
-						Log.d(TAG, "onClick: request with " + finalOptions);
+				RouteOptions finalOptions = options;
+				Log.d(TAG, "onClick: request with " + finalOptions);
 
-						runOnUiThread(() -> {
-							Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
-							intent.putExtra(getString(R.string.key_parameters), finalOptions);
-							startActivity(intent);
-						});
-					} catch (Exception e) {
-						runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
-						Log.e(TAG, "onClick: error in json parsing for route", e);
-					}
-				}).start();
+				runOnUiThread(() -> {
+					Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
+					intent.putExtra(getString(R.string.key_parameters), finalOptions);
+					startActivity(intent);
+				});
+			} catch (Exception e) {
+				runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
+				Log.e(TAG, "onClick: error in json parsing for route", e);
 			}
+		}).start());
+
+		flipButton.setOnClickListener(v -> {
+			String first = fromInput.getText().toString();
+			String second = toInput.getText().toString();
+			fromInput.setText(second);
+			toInput.setText(first);
 		});
 	}
 

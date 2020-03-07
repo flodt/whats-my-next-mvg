@@ -1,11 +1,10 @@
 package de.schmidt.whatsnext.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
@@ -15,7 +14,6 @@ import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
-import de.schmidt.whatsnext.adapters.ConnectionDisplayView;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
 
@@ -44,27 +42,21 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 
 		swipeRefresh = findViewById(R.id.pull_to_refresh_alternatives);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
-		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				refresh();
-				swipeRefresh.setRefreshing(false);
-			}
+		swipeRefresh.setOnRefreshListener(() -> {
+			refresh();
+			swipeRefresh.setRefreshing(false);
 		});
 
 		listView = findViewById(R.id.alternative_list);
 		adapter = new AlternativesListViewAdapter(this, connections);
 		listView.setAdapter(adapter);
 		listView.setClickable(true);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				RouteConnection tappedConnection = connections.get(position);
-				Toast.makeText(RoutingAlternativesActivity.this, "Clicked " + position, Toast.LENGTH_SHORT).show();
+		listView.setOnItemClickListener((parent, view, position, id) -> {
+			RouteConnection tappedConnection = connections.get(position);
 
-				List<ConnectionDisplayView> views = ConnectionDisplayView.getViewListFromRouteConnection(tappedConnection);
-				views.forEach(v -> Log.d(TAG, "onItemClick: " + v.toString()));
-			}
+			Intent intent = new Intent(RoutingAlternativesActivity.this, ItineraryDisplayActivity.class);
+			intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
+			startActivity(intent);
 		});
 	}
 

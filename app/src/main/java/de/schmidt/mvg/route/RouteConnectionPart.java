@@ -6,12 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class RouteConnectionPart {
+public class RouteConnectionPart implements Serializable {
 	private static final String TAG = "RouteConnectionPart";
 	private final Station from;
 	private final Station to;

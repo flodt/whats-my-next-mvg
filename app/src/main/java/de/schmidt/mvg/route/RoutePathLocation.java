@@ -3,7 +3,9 @@ package de.schmidt.mvg.route;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RoutePathLocation {
+import java.io.Serializable;
+
+public class RoutePathLocation implements Serializable {
 	private final double latitude;
 	private final double longitude;
 

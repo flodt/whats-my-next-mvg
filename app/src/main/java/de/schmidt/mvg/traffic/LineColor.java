@@ -1,6 +1,8 @@
 package de.schmidt.mvg.traffic;
 
-public class LineColor {
+import java.io.Serializable;
+
+public class LineColor implements Serializable {
 	private final String primary;
 	private final String secondary;
 	private final String textColor;
@@ -53,5 +55,9 @@ public class LineColor {
 			case "S8": return ofAPIValue("#000000", line);
 			default: return ofAPIValue("#7E7E7E", line);
 		}
+	}
+
+	public static String getHtmlColored(String line) {
+		return "<font color=" + getForLine(line).getPrimary() + ">" + line + "</font>";
 	}
 }

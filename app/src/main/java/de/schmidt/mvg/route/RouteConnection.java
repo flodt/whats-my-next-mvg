@@ -1,10 +1,12 @@
 package de.schmidt.mvg.route;
 
+import android.graphics.Color;
 import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,7 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class RouteConnection {
+public class RouteConnection implements Serializable {
 	private final Station from;
 	private final Station to;
 	private final Date departure;
@@ -42,6 +44,14 @@ public class RouteConnection {
 
 	public Date getArrival() {
 		return arrival;
+	}
+
+	public int getFirstColor() {
+		return Color.parseColor(connectionParts.get(0).getColor().getPrimary());
+	}
+
+	public int getLastColor() {
+		return Color.parseColor(connectionParts.get(connectionParts.size() - 1).getColor().getPrimary());
 	}
 
 	public long getDeltaInMinutes() {

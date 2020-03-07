@@ -2,6 +2,7 @@ package de.schmidt.whatsnext.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class InterruptionsListViewAdapter extends BaseAdapter {
 
 		Interruption interruption = interruptions.get(position);
 		title.setText(
-				interruption.getLinesAsString() + ": " + interruption.getTitle()
+				Html.fromHtml(interruption.getLinesAsHtmlColoredString() + ": " + interruption.getTitle())
 		);
 		text.setText(interruption.getDescriptionText());
 		duration.setText(interruption.getDurationAsText());

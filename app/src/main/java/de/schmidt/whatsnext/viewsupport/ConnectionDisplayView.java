@@ -1,5 +1,6 @@
-package de.schmidt.whatsnext.adapters;
+package de.schmidt.whatsnext.viewsupport;
 
+import android.view.View;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
 
@@ -21,7 +22,8 @@ public abstract class ConnectionDisplayView {
 						part.getDeparturePlatform(),
 						part.getDelay(),
 						part.getDirection(),
-						part.getColor()
+						part.getColor(),
+						part.getLine()
 				));
 			} else { //interchange element in list
 				views.add(new InterchangeView(
@@ -31,7 +33,9 @@ public abstract class ConnectionDisplayView {
 						parts.get(i - 1).getArrival(),
 						part.getDeparture(),
 						parts.get(i - 1).getArrivalPlatform(),
-						part.getDeparturePlatform()
+						part.getDeparturePlatform(),
+						part.getLine(),
+						part.getDirection()
 				));
 			}
 
@@ -54,8 +58,6 @@ public abstract class ConnectionDisplayView {
 	}
 
 	public abstract int getLayoutId();
-	public abstract boolean isArrival();
-	public abstract boolean isInterchange();
+	public abstract View inflate(View view, ConnectionDisplayView content);
 	public abstract boolean isRunning();
-	public abstract boolean isDeparture();
 }

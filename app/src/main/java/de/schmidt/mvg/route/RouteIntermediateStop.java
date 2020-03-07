@@ -4,9 +4,10 @@ import de.schmidt.mvg.traffic.Station;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RouteIntermediateStop {
+public class RouteIntermediateStop implements Serializable {
 	private final Station station;
 	private final Date time;
 

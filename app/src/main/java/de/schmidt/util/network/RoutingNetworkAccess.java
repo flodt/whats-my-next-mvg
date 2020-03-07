@@ -1,26 +1,16 @@
 package de.schmidt.util.network;
 
-import android.content.Context;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
-import androidx.annotation.Nullable;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteOptions;
-import de.schmidt.mvg.traffic.Departure;
-import de.schmidt.mvg.traffic.Station;
-import de.schmidt.util.caching.DepartureCache;
-import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.activities.RoutingAlternativesActivity;
 import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class RoutingNetworkAccess extends AsyncTask<Void, Void, List<RouteConnection>> {
 	private static final String TAG = "RoutingAlternativesActivity";
@@ -51,6 +41,8 @@ public class RoutingNetworkAccess extends AsyncTask<Void, Void, List<RouteConnec
 	@Override
 	protected void onPostExecute(List<RouteConnection> routeConnections) {
 		super.onPostExecute(routeConnections);
-		act.get().handleUIUpdate(routeConnections);
+		if (act.get() != null) {
+			act.get().handleUIUpdate(routeConnections);
+		}
 	}
 }
