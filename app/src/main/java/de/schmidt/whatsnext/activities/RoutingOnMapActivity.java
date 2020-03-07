@@ -11,7 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
+import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.route.RoutePathLocation;
+import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 
 import java.util.Arrays;
@@ -64,7 +66,8 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 				.forEach(mMap::addMarker);
 
 		//add polylines for each path segment in the routeconnection (stroke pattern?, tag?)
-		connectionParts.stream()
+		connectionParts
+				.stream()
 				.map(rcp -> new PolylineOptions()
 						.addAll(
 								rcp.getPath()
@@ -74,11 +77,28 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 						)
 						.color(Color.parseColor(rcp.getColor().getPrimary()))
 						.width(10.0f)
+						.zIndex(0.0f)
 						.pattern(
 								rcp.getLine().equals("Walking") ? Arrays.asList(new Dot(), new Gap(10.0f)) : null
 						)
 						.clickable(false))
 				.forEach(mMap::addPolyline);
+
+		//add point for every intermediate stop
+		connectionParts
+				.stream()
+				.map(RouteConnectionPart::getStops)
+				.flatMap(List::stream)
+				.map(RouteIntermediateStop::getStation)
+				.map(Station::getLatLongForMaps)
+				.map(loc -> new CircleOptions()
+						.center(loc)
+						.radius(15.0d)
+						.strokeWidth(5.0f)
+						.fillColor(getColor(R.color.white))
+						.zIndex(1.0f)
+						.clickable(false))
+				.forEach(mMap::addCircle);
 
 
 		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(routeConnection.getTo().getLatLongForMaps(), 11.0f));
