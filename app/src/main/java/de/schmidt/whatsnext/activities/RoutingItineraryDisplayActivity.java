@@ -6,6 +6,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
@@ -73,7 +74,12 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 						.collect(Collectors.joining("\n"));
 
 				if (stops.length() != 0) {
-					Toast.makeText(RoutingItineraryDisplayActivity.this, stops, Toast.LENGTH_LONG).show();
+					new AlertDialog.Builder(this)
+							.setTitle(getResources().getString(R.string.intermediate_stops_title))
+							.setMessage(stops)
+							.setPositiveButton("OK", null)
+							.setIcon(getResources().getDrawable(R.drawable.ic_stops))
+							.show();
 				}
 			}
 		});
