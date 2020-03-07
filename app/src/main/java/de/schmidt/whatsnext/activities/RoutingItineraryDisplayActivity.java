@@ -2,8 +2,6 @@ package de.schmidt.whatsnext.activities;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView> {
+public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView> {
 	private static final String TAG = "ItineraryDisplayActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
@@ -73,7 +71,10 @@ public class ItineraryDisplayActivity extends ActionBarBaseActivity implements U
 						.map(Station::getName)
 						.map(str -> "- " + str)
 						.collect(Collectors.joining("\n"));
-				Toast.makeText(ItineraryDisplayActivity.this, stops, Toast.LENGTH_LONG).show();
+
+				if (stops.length() != 0) {
+					Toast.makeText(RoutingItineraryDisplayActivity.this, stops, Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 	}

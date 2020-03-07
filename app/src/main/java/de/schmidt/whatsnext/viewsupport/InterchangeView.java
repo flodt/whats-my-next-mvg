@@ -113,13 +113,13 @@ public class InterchangeView extends ConnectionDisplayView {
 		atLabel.setText(inter.getAt().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		String infoText;
+		String infoText = "Arrival: " + df.format( inter.getArrival()) + "; Departure: ";
 		if (inter.getDeparturePlatform().length() != 0) {
-			infoText = String.join(", ",
+			infoText += String.join(", ",
 								   inter.getDeparturePlatform(),
 								   df.format(inter.getDeparture()));
 		} else {
-			infoText = df.format(inter.getDeparture());
+			infoText += df.format(inter.getDeparture());
 		}
 		info.setText(infoText);
 
@@ -141,5 +141,10 @@ public class InterchangeView extends ConnectionDisplayView {
 	@Override
 	public boolean isRunning() {
 		return false;
+	}
+
+	@Override
+	public int getViewType() {
+		return 2;
 	}
 }

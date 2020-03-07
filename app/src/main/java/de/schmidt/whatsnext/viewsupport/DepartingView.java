@@ -122,4 +122,9 @@ public class DepartingView extends ConnectionDisplayView {
 	public boolean isRunning() {
 		return false;
 	}
+
+	@Override
+	public int getViewType() {
+		return 0;
+	}
 }

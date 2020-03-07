@@ -36,7 +36,7 @@ public class ItineraryListViewAdapter extends BaseAdapter {
 
 	@Override
 	public int getItemViewType(int position) {
-		return views.get(position).getLayoutId();
+		return views.get(position).getViewType();
 	}
 
 	@Override

@@ -58,6 +58,7 @@ public abstract class ConnectionDisplayView {
 	}
 
 	public abstract int getLayoutId();
+	public abstract int getViewType();
 	public abstract View inflate(View view, ConnectionDisplayView content);
 	public abstract boolean isRunning();
 }

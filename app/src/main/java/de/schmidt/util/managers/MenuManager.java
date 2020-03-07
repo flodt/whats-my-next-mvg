@@ -19,7 +19,7 @@ public class MenuManager {
 		return instance;
 	}
 
-	public void inflate(Menu menu, Activity context) {
+	public void inflate(Menu menu, ActionBarBaseActivity context) {
 		context.getMenuInflater().inflate(R.menu.app_menu, menu);
 	}
 

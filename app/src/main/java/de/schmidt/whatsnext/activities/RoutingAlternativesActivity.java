@@ -2,8 +2,6 @@ package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -54,7 +52,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		listView.setOnItemClickListener((parent, view, position, id) -> {
 			RouteConnection tappedConnection = connections.get(position);
 
-			Intent intent = new Intent(RoutingAlternativesActivity.this, ItineraryDisplayActivity.class);
+			Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingItineraryDisplayActivity.class);
 			intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
 			startActivity(intent);
 		});

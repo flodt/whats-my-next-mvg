@@ -87,4 +87,9 @@ public class ArrivingView extends ConnectionDisplayView {
 	public boolean isRunning() {
 		return false;
 	}
+
+	@Override
+	public int getViewType() {
+		return 3;
+	}
 }
