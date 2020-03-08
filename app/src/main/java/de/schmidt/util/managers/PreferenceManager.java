@@ -30,12 +30,13 @@ public class PreferenceManager {
 		String[] readable = context.getResources().getStringArray(R.array.transport_means_readable);
 		boolean[] selected = new boolean[keys.length];
 
-		//read preferences
+		//read preferences for selections
 		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 		for (int i = 0; i < selected.length; i++) {
 			selected[i] = prefs.getBoolean(keys[i], true);
 		}
 
+		//ask for exclusions
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle("Select means of transport…");
 		builder.setIcon(R.drawable.ic_excluded_black);
@@ -51,6 +52,7 @@ public class PreferenceManager {
 			refresh(context);
 		});
 		builder.setNegativeButton(context.getResources().getString(R.string.dismiss_settings), (dialog, which) -> {
+			//dismiss dialog
 			dialog.dismiss();
 			refresh(context);
 		});
@@ -60,6 +62,7 @@ public class PreferenceManager {
 	}
 
 	public Set<String> getExcludableTransportMeans(Context context) {
+		//read exclusions from preferences as string of means of transport
 		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 		Set<String> exclusions = new HashSet<>();
 
@@ -75,14 +78,17 @@ public class PreferenceManager {
 	public void updateStationSelection(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
 
+		//read selected station from prefs
 		String[] keys = context.getResources().getStringArray(R.array.station_keys);
 		String[] readable = context.getResources().getStringArray(R.array.station_readable);
 		int checked = prefs.getInt(context.getResources().getString(R.string.selection_station_in_menu), 1);
 
+		//show dialog for selection
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.select_station_title);
 		builder.setIcon(R.drawable.ic_station_selection_black);
 		builder.setSingleChoiceItems(readable, checked, (dialog, which) -> {
+			//save selection to preferences, this is read by the other activities
 			prefs.edit().putInt(context.getResources().getString(R.string.selection_station_in_menu), which).apply();
 
 			//handle custom name here
@@ -104,6 +110,7 @@ public class PreferenceManager {
 	}
 
 	public void getUserInputForCustomStationName(DialogInterface parent, Context context) {
+		//input dialog for custom station name
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(context.getResources().getString(R.string.custom_station_name_title));
 
@@ -114,6 +121,8 @@ public class PreferenceManager {
 		builder.setPositiveButton(R.string.save_settings, (dialog, which) -> {
 			String userInput = input.getText().toString().trim();
 			setCustomNameFieldInContext(userInput, context);
+
+			//save custom input to preferences (this is read by the other activities)
 			context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
 					.edit()
 					.putString(
@@ -134,12 +143,15 @@ public class PreferenceManager {
 	}
 
 	private void setCustomNameFieldInContext(String userInput, Context context) {
+		//sets the custom name field for the activities that need it
+		//this is used in the network access to avoid reading the preferences again
 		if (context instanceof ActionBarBaseActivity) {
 			((ActionBarBaseActivity) context).setCustomName(userInput);
 		}
 	}
 
 	private void refresh(Context context) {
+		//manually call refresh on the activity
 		if (context instanceof ActionBarBaseActivity) {
 			((ActionBarBaseActivity) context).refresh();
 		}

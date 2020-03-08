@@ -62,9 +62,11 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 		if (interruptions == null) return;
 
 		runOnUiThread(() -> {
+			//copy data to field
 			InterruptionsActivity.this.interruptions.clear();
 			InterruptionsActivity.this.interruptions.addAll(interruptions);
 
+			//set colors accordingly
 			navBar.setBackgroundColor(getColor(R.color.white));
 			navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));
 			navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));

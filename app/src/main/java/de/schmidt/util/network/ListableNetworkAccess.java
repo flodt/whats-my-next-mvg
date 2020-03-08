@@ -39,6 +39,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 
 	@Override
 	protected void onPostExecute(Departure[] departures) {
+		//save to cache and trigger UI update
 		super.onPostExecute(departures);
 		DepartureCache.getInstance().setCache(Arrays.asList(departures));
 		act.get().handleUIUpdate(Arrays.asList(departures));
@@ -46,7 +47,7 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 
 	@Override
 	protected Departure[] doInBackground(Location... locations) {
-		//handle updates
+		//handle network request here depending on station selection
 		Location loc = locations[0];
 
 		String[] keys = act.get().getResources().getStringArray(R.array.station_keys);

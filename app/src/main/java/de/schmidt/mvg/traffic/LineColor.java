@@ -37,6 +37,7 @@ public class LineColor implements Serializable {
 	}
 
 	public static LineColor getForLine(String line) {
+		//returns the LineColor object for a specific line (U-Bahn and S-Bahn values supported), default grey
 		switch (line) {
 			case "U1": return ofAPIValue("#468447", line);
 			case "U2": return ofAPIValue("#dd3d4d", line);
@@ -45,7 +46,7 @@ public class LineColor implements Serializable {
 			case "U5": return ofAPIValue("#b78730", line);
 			case "U6": return ofAPIValue("#0472b3", line);
 			case "U7": return ofAPIValue("#468447,#dd3d4d", line);
-			case "U8": return ofAPIValue("#f39200,be1622", line);
+			case "U8": return ofAPIValue("#f39200,#be1622", line);
 			case "S1": return ofAPIValue("#79c6e7", line);
 			case "S2": return ofAPIValue("#9bc04c", line);
 			case "S3": return ofAPIValue("#942d8d", line);

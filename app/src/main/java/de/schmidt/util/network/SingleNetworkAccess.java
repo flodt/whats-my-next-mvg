@@ -40,6 +40,7 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 
 	@Override
 	protected void onPostExecute(Departure departure) {
+		//handle UI update
 		super.onPostExecute(departure);
 		act.get().handleUIUpdate(
 				(departure == null) ? Collections.emptyList() : Collections.singletonList(departure)
@@ -48,7 +49,7 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 
 	@Override
 	protected Departure doInBackground(Location... locations) {
-		//handle updates
+		//handle request based on selected station
 		Location loc = locations[0];
 
 		String[] keys = act.get().getResources().getStringArray(R.array.station_keys);

@@ -30,6 +30,7 @@ public class RoutingNetworkAccess extends AsyncTask<Void, Void, List<RouteConnec
 
 	@Override
 	protected List<RouteConnection> doInBackground(Void... voids) {
+		//do routing request
 		try {
 			return Requests.instance().getRoute(options);
 		} catch (JSONException e) {
@@ -40,6 +41,7 @@ public class RoutingNetworkAccess extends AsyncTask<Void, Void, List<RouteConnec
 
 	@Override
 	protected void onPostExecute(List<RouteConnection> routeConnections) {
+		//trigger UI update
 		super.onPostExecute(routeConnections);
 		if (act.get() != null) {
 			act.get().handleUIUpdate(routeConnections);

@@ -69,6 +69,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	public void handleUIUpdate(List<RouteConnection> dataSet) {
 		if (dataSet == null) return;
 
+		//copy data to field
 		this.connections.clear();
 		this.connections.addAll(dataSet);
 

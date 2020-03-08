@@ -25,6 +25,7 @@ public class RouteOptions implements Serializable {
 	}
 
 	private RouteOptions withKeyValueAdded(String key, String value) {
+		//builds up the RouteOptions for the api request (from, to, date/time)
 		Map<String, String> map = new HashMap<>(getProperties());
 		map.put(key, value);
 		return new RouteOptions(Collections.unmodifiableMap(map));
@@ -48,6 +49,7 @@ public class RouteOptions implements Serializable {
 	}
 
 	public String getParameterString() {
+		//returns the string used in the request url
 		return getProperties()
 				.entrySet()
 				.stream()

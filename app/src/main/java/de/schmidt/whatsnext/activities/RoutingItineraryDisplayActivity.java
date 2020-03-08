@@ -1,5 +1,6 @@
 package de.schmidt.whatsnext.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +26,7 @@ import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.ConnectionDisplayView;
 import de.schmidt.whatsnext.viewsupport.RunningView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,13 +71,16 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 		listView.setClickable(true);
 		listView.setOnItemClickListener((parent, view, position, id) -> {
 			List<ConnectionDisplayView> views = ConnectionDisplayView.getViewListFromRouteConnection(routeConnection);
+
+			//display the intermediate stops when we tap on a running line
 			if (views.get(position).isRunning()) {
 				RunningView running = (RunningView) views.get(position);
-				String stops = running.getStops()
+				@SuppressLint("SimpleDateFormat") String stops = running.getStops()
 						.stream()
-						.map(RouteIntermediateStop::getStation)
-						.map(Station::getName)
-						.map(str -> "- " + str)
+						.map(stop -> stop.getStation().getName()
+								+ " (" + new SimpleDateFormat("HH:mm").format(stop.getTime())
+								+ ")")
+						.map(str -> "• " + str)
 						.collect(Collectors.joining("\n"));
 
 				if (stops.length() != 0) {

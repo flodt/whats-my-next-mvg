@@ -49,6 +49,8 @@ public class ItineraryListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ConnectionDisplayView support = views.get(position);
 		convertView = LayoutInflater.from(context).inflate(support.getLayoutId(), null);
+
+		//now inflate the view dynamically with the info passed through the support wrapper objects
 		return support.inflate(convertView, support);
 	}
 }

@@ -38,11 +38,11 @@ public class RouteConnection implements Serializable {
 		return to;
 	}
 
-	public Date getDeparture() {
+	public Date getDepartureTime() {
 		return departure;
 	}
 
-	public Date getArrival() {
+	public Date getArrivalTime() {
 		return arrival;
 	}
 
@@ -54,10 +54,10 @@ public class RouteConnection implements Serializable {
 		return Color.parseColor(connectionParts.get(connectionParts.size() - 1).getColor().getPrimary());
 	}
 
-	public long getDeltaInMinutes() {
+	public long getDeltaToDepartureInMinutes() {
 		Duration diff = Duration.between(
 				LocalDateTime.now(),
-				LocalDateTime.ofInstant(getDeparture().toInstant(), ZoneId.systemDefault())
+				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault())
 		);
 
 		return Math.max(diff.toMinutes(), 0);
@@ -68,6 +68,7 @@ public class RouteConnection implements Serializable {
 	}
 
 	public static RouteConnection fromJSON(JSONObject json) throws JSONException {
+		//get from station
 		JSONObject jFrom = json.getJSONObject("from");
 		Station from = new Station(
 				jFrom.getString("id"),
@@ -76,6 +77,7 @@ public class RouteConnection implements Serializable {
 				jFrom.getDouble("longitude")
 		);
 
+		//get to station
 		JSONObject jTo = json.getJSONObject("to");
 		Station to = new Station(
 				jTo.getString("id"),
@@ -84,20 +86,20 @@ public class RouteConnection implements Serializable {
 				jTo.getDouble("longitude")
 		);
 
+		//parse departure and arrival times
 		long departure = json.getLong("departure");
 		long arrival = json.getLong("arrival");
 
+		//now get the individual connection parts (between interchanges)
 		List<RouteConnectionPart> partList = new ArrayList<>();
 		JSONArray connectionPartList = json.getJSONArray("connectionPartList");
 		for (int i = 0; i < connectionPartList.length(); i++) {
+			//parse and add each part to the list
 			JSONObject part = connectionPartList.getJSONObject(i);
-
-			//ignore the FOOTWAY types
-			//if (!part.getString("connectionPartType").equals("TRANSPORTATION")) continue;
-
 			partList.add(RouteConnectionPart.fromJSON(part));
 		}
 
+		//construct the single route connection (one itinerary)
 		return new RouteConnection(
 				from,
 				to,
@@ -118,10 +120,10 @@ public class RouteConnection implements Serializable {
 				'}';
 	}
 
-	public long getDuration() {
+	public long getDurationInMinutes() {
 		Duration diff = Duration.between(
-				LocalDateTime.ofInstant(getDeparture().toInstant(), ZoneId.systemDefault()),
-				LocalDateTime.ofInstant(getArrival().toInstant(), ZoneId.systemDefault())
+				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault()),
+				LocalDateTime.ofInstant(getArrivalTime().toInstant(), ZoneId.systemDefault())
 		);
 
 		return diff.toMinutes();

@@ -91,6 +91,7 @@ public class SingleDepartureActivity extends ActionBarBaseActivity implements Up
 	@Override
 	@SuppressLint("SetTextI18n")
 	public void handleUIUpdate(List<Departure> dataSet) {
+		//refresh UI based on result from network
 		if (dataSet.isEmpty()) {
 			runOnUiThread(() -> {
 				setTitle(R.string.app_name);

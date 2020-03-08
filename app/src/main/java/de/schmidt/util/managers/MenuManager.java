@@ -19,10 +19,20 @@ public class MenuManager {
 		return instance;
 	}
 
+	/**
+	 * Inflate the passed menu in the relevant context.
+	 * @param menu menu object to inflate
+	 * @param context in which context
+	 */
 	public void inflate(Menu menu, ActionBarBaseActivity context) {
 		context.getMenuInflater().inflate(R.menu.app_menu, menu);
 	}
 
+	/**
+	 * Dispatch the pressed menu item in context.
+	 * @param item the pressed item
+	 * @param context for calling the relevant methods (i.e. refreshing)
+	 */
 	public void dispatch(MenuItem item, Context context) {
 		switch (item.getItemId()) {
 			case R.id.refresh_button:

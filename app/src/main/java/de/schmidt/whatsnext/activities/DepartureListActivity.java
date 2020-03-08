@@ -93,9 +93,11 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		if (dataSet == null) return;
 
 		runOnUiThread(() -> {
+			//copy data to field
 			this.departures.clear();
 			this.departures.addAll(dataSet);
 
+			//set colors according to result
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
 				listView.setBackgroundColor(getColor(R.color.colorPrimary));

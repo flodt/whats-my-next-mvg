@@ -29,6 +29,7 @@ public class NavBarManager {
 			//if we are already in the activity the button was pressed for, do nothing
 			if (context.getNavButtonItemId() == menuItem.getItemId()) return false;
 
+			//dispatch the pressed button via activity switching intents
 			Intent intent;
 			switch (menuItem.getItemId()) {
 				case R.id.nav_single_button:

@@ -23,6 +23,11 @@ public class LocationManager {
 		return getCurrentGeoLocation(context);
 	}
 
+	/**
+	 * Get current location a single time.
+	 * @param context context for request
+	 * @return the requested location object
+	 */
 	private Location getCurrentGeoLocation(Context context) {
 		// Get LocationManager object
 		android.location.LocationManager locationManager = (android.location.LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

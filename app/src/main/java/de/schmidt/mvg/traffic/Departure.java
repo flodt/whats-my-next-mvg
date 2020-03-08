@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 public class Departure {
 	private final Station station;
@@ -79,5 +80,24 @@ public class Departure {
 				", delay=" + delay +
 				", product='" + product + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Departure departure = (Departure) o;
+		return departureTime == departure.departureTime &&
+				delay == departure.delay &&
+				Objects.equals(station, departure.station) &&
+				Objects.equals(line, departure.line) &&
+				Objects.equals(direction, departure.direction) &&
+				Objects.equals(lineBackgroundColor, departure.lineBackgroundColor) &&
+				Objects.equals(product, departure.product);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(station, line, direction, departureTime, lineBackgroundColor, delay, product);
 	}
 }

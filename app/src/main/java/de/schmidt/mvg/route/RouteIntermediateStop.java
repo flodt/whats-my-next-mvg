@@ -25,6 +25,7 @@ public class RouteIntermediateStop implements Serializable {
 	}
 
 	public static RouteIntermediateStop fromJSON(JSONObject json) throws JSONException {
+		//get the time and station for each stop
 		long time = json.getLong("time");
 		JSONObject jStation = json.getJSONObject("location");
 		Station at = new Station(

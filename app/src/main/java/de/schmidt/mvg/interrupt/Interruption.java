@@ -96,6 +96,7 @@ public class Interruption {
 		//get duration object
 		JSONObject duration = json.getJSONObject("duration");
 
+		//construct the interruption object
 		return new Interruption(
 				json.getLong("id"),
 				json.getString("title"),

@@ -5,6 +5,9 @@ import de.schmidt.mvg.interrupt.Interruption;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Wrapper class around a list of Departures in use for caching.
+ */
 public class InterruptionsCache {
 	private static final InterruptionsCache instance = new InterruptionsCache();
 	private List<Interruption> interruptions;

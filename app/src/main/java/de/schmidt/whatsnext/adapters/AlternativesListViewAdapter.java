@@ -56,13 +56,13 @@ public class AlternativesListViewAdapter extends BaseAdapter {
 				.collect(Collectors.joining(", "));
 		means.setText((lines.length() == 0) ? "Walking" : Html.fromHtml(lines));
 
-		delta.setText("in " + connection.getDeltaInMinutes() + " min.");
+		delta.setText("in " + connection.getDeltaToDepartureInMinutes() + " min.");
 
-		duration.setText("(" + connection.getDuration() + " min.)");
+		duration.setText("(" + connection.getDurationInMinutes() + " min.)");
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		timeRange.setText(
-				df.format(connection.getDeparture()) + " - " + df.format(connection.getArrival())
+				df.format(connection.getDepartureTime()) + " - " + df.format(connection.getArrivalTime())
 		);
 
 		//set the color to interchanging grey and light grey

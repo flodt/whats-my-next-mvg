@@ -43,6 +43,7 @@ public class RouteConnectionPart implements Serializable {
 	}
 
 	public static RouteConnectionPart fromJSON(JSONObject json) throws JSONException {
+		//parse from station
 		JSONObject jFrom = json.getJSONObject("from");
 		Station from = new Station(
 				jFrom.getString("id"),
@@ -51,6 +52,7 @@ public class RouteConnectionPart implements Serializable {
 				jFrom.getDouble("longitude")
 		);
 
+		//parse to station
 		JSONObject jTo = json.getJSONObject("to");
 		Station to = new Station(
 				jTo.getString("id"),
@@ -59,26 +61,29 @@ public class RouteConnectionPart implements Serializable {
 				jTo.getDouble("longitude")
 		);
 
+		//parse the path sent by the API (a list of coordinate pairs representing the path taken by the transport)
 		List<RoutePathLocation> path = new ArrayList<>();
 		JSONArray jPath = json.getJSONArray("path");
 		for (int i = 0; i < jPath.length(); i++) {
 			path.add(i, RoutePathLocation.fromJSON(jPath.getJSONObject(i)));
 		}
 
+		//parse the list of intermediate stops for that part of the connection (station and date pairs)
 		List<RouteIntermediateStop> stops = new ArrayList<>();
 		try {
 			JSONArray jStops = json.getJSONArray("stops");
 			for (int i = 0; i < jStops.length(); i++) {
 				stops.add(i, RouteIntermediateStop.fromJSON(jStops.getJSONObject(i)));
 			}
-		} catch (JSONException ignored) {
-			//no stops: footway!
+		} catch (JSONException e) {
+			//no stops object found means footway, so we leave the list of stops empty
 		}
 
+		//parse departure/arrival times
 		long departure = json.getLong("departure");
 		long arrival = json.getLong("arrival");
 
-		//delay field might not be present (FOOTWAY type)
+		//delay field might not be present (again for the footway type)
 		int delay;
 		try {
 			delay = json.getInt("delay");

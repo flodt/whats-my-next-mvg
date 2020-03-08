@@ -138,9 +138,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 					return;
 				}
 
+				//get station objects from fields
 				Station start = Requests.instance().getStationByName(fromInput.getText().toString().trim());
 				Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
 
+				//generate route options
 				RouteOptions options = RouteOptions.getBase()
 						.withStart(start)
 						.withDestination(finish);
@@ -154,8 +156,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 				RouteOptions finalOptions = options;
 				Log.d(TAG, "onClick: request with " + finalOptions);
 
+				//switch activity to AlternativesView which will do the network access based on the options
 				runOnUiThread(() -> {
 					Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
+
+					//pass the options through the intent
 					intent.putExtra(getString(R.string.key_parameters), finalOptions);
 					startActivity(intent);
 				});
