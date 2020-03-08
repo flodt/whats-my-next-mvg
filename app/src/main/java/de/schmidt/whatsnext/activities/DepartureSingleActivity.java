@@ -12,9 +12,11 @@ import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.util.*;
+import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.PreferenceManager;
@@ -28,7 +30,7 @@ import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class SingleDepartureActivity extends ActionBarBaseActivity implements Updatable<Departure> {
+public class DepartureSingleActivity extends ActionBarBaseActivity implements Updatable<Departure> {
 	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
@@ -37,6 +39,7 @@ public class SingleDepartureActivity extends ActionBarBaseActivity implements Up
 
 	private String customName;
 	private BottomNavigationView navBar;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class SingleDepartureActivity extends ActionBarBaseActivity implements Up
 
 		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
 																											getResources().getString(R.string.default_custom_station_name));
+
+		fab = findViewById(R.id.fab_single_switch_station);
+		FabManager.getInstance().initializeForStationSelection(fab, this);
 
 		pullToRefresh = findViewById(R.id.pull_to_refresh);
 		pullToRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));

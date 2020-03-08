@@ -18,7 +18,7 @@ public abstract class ConnectionDisplayView {
 			if (part.getFrom().equals(connection.getFrom())) { //starting element in list
 				views.add(new DepartingView(
 						part.getFrom(),
-						part.getDeparture(),
+						part.getDepartureTime(),
 						part.getDeparturePlatform(),
 						part.getDelay(),
 						part.getDirection(),
@@ -30,8 +30,8 @@ public abstract class ConnectionDisplayView {
 						part.getFrom(),
 						parts.get(i - 1).getColor(),
 						part.getColor(),
-						parts.get(i - 1).getArrival(),
-						part.getDeparture(),
+						parts.get(i - 1).getArrivalTime(),
+						part.getDepartureTime(),
 						parts.get(i - 1).getArrivalPlatform(),
 						part.getDeparturePlatform(),
 						part.getLine(),
@@ -41,13 +41,14 @@ public abstract class ConnectionDisplayView {
 
 			views.add(new RunningView(
 					part.getColor(),
-					part.getStops()
+					part.getStops(),
+					part.getDurationInMinutes()
 			));
 
 			if (part.getTo().equals(connection.getTo())) { //ending element in list
 				views.add(new ArrivingView(
 						part.getTo(),
-						part.getArrival(),
+						part.getArrivalTime(),
 						part.getArrivalPlatform(),
 						part.getColor()
 				));

@@ -7,6 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -149,12 +152,21 @@ public class RouteConnectionPart implements Serializable {
 		return path;
 	}
 
-	public Date getDeparture() {
+	public Date getDepartureTime() {
 		return departure;
 	}
 
-	public Date getArrival() {
+	public Date getArrivalTime() {
 		return arrival;
+	}
+
+	public long getDurationInMinutes() {
+		Duration diff = Duration.between(
+				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault()),
+				LocalDateTime.ofInstant(getArrivalTime().toInstant(), ZoneId.systemDefault())
+		);
+
+		return diff.toMinutes();
 	}
 
 	public int getDelay() {

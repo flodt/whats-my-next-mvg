@@ -8,6 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.util.ColorUtils;
+import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
@@ -17,6 +18,7 @@ import de.schmidt.whatsnext.base.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection> {
 	private static final String TAG = "RoutingAlternativesActivity";
@@ -25,6 +27,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	private ListView listView;
 	private List<RouteConnection> connections;
 	private AlternativesListViewAdapter adapter;
+	private RouteOptions options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,9 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 			swipeRefresh.setRefreshing(false);
 		});
 
+		//add back arrow to action bar
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
 		listView = findViewById(R.id.alternative_list);
 		adapter = new AlternativesListViewAdapter(this, connections);
 		listView.setAdapter(adapter);
@@ -62,7 +68,15 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
 		RouteOptions options = (RouteOptions) getIntent().getSerializableExtra(getString(R.string.key_parameters));
-		new RoutingNetworkAccess(this, options).execute();
+
+		//the intent does not contain the extra if the activity is launched over the back button!
+		// - so we handle this here by caching the RouteOptions until we next visit the entry activity
+		if (options != null) {
+			RoutingOptionsCache.getInstance().setCache(options);
+			new RoutingNetworkAccess(this, options).execute();
+		} else if (RoutingOptionsCache.getInstance().isPresent()) {
+			new RoutingNetworkAccess(this, RoutingOptionsCache.getInstance().getCache()).execute();
+		}
 	}
 
 	@Override

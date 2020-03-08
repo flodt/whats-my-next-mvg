@@ -1,6 +1,5 @@
 package de.schmidt.util.managers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,9 +39,6 @@ public class MenuManager {
 				break;
 			case R.id.exclude_button:
 				PreferenceManager.getInstance().updateExclusions(context);
-				break;
-			case R.id.select_station_button:
-				PreferenceManager.getInstance().updateStationSelection(context);
 				break;
 		}
 	}

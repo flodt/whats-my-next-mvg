@@ -13,9 +13,6 @@ import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class DepartingView extends ConnectionDisplayView {
 	private final Station from;

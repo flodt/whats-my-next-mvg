@@ -9,8 +9,10 @@ import android.widget.EditText;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PreferenceManager {
 	public static final String PREFERENCE_KEY = "WhatsMyNext";
@@ -73,6 +75,55 @@ public class PreferenceManager {
 		}
 
 		return exclusions;
+	}
+
+	public void updateInterruptionsFilter(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
+
+		//read InterruptionsFilter from prefs
+		String filter = prefs.getString(context.getResources().getString(R.string.pref_key_inter_filter), "");
+
+		//EditText for user input
+		EditText input = new EditText(context);
+		input.setText(filter);
+		input.setHint("comma-separated lines…");
+
+		//build the dialog
+		new AlertDialog.Builder(context)
+				.setTitle("Interruptions filter…")
+				.setMessage("Enter lines for interruptions…")
+				.setIcon(R.drawable.ic_interruptions_black)
+				.setView(input)
+				.setPositiveButton(R.string.save_settings, (dialog, which) -> {
+					String entry = input.getText().toString();
+
+					//cleanup string
+					String clean = Arrays.stream(entry.split(","))
+							.map(String::trim)
+							.filter(str -> str.length() != 0)
+							.distinct()
+							.collect(Collectors.joining(", "));
+
+					//save to preferences
+					prefs.edit()
+							.putString(context.getResources().getString(R.string.pref_key_inter_filter), clean)
+							.apply();
+
+					dialog.dismiss();
+					refresh(context);
+				})
+				.setCancelable(true)
+				.setNegativeButton(R.string.dismiss_settings, null)
+				.setNeutralButton(R.string.reset, (dialog, which) -> {
+					input.setText("");
+					prefs.edit()
+							.putString(context.getResources().getString(R.string.pref_key_inter_filter), "")
+							.apply();
+					dialog.dismiss();
+					refresh(context);
+				})
+				.create()
+				.show();
 	}
 
 	public void updateStationSelection(Context context) {

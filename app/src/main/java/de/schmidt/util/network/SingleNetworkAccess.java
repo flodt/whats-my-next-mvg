@@ -10,7 +10,7 @@ import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.caching.DepartureCache;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.activities.SingleDepartureActivity;
+import de.schmidt.whatsnext.activities.DepartureSingleActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	private static final String TAG = "NetworkAccessLog";
-	private final WeakReference<SingleDepartureActivity> act;
+	private final WeakReference<DepartureSingleActivity> act;
 	private final int stationMenuIndex;
 	private final String stationMenuName;
 	private final Set<String> exclusions;
@@ -27,7 +27,7 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 
 	public SingleNetworkAccess(Context context, int stationMenuIndex,
 							   @Nullable String stationMenuName, Set<String> exclusions) {
-		this.act = new WeakReference<>((SingleDepartureActivity) context);
+		this.act = new WeakReference<>((DepartureSingleActivity) context);
 		this.stationMenuIndex = stationMenuIndex;
 		this.stationMenuName = stationMenuName;
 		this.exclusions = exclusions;

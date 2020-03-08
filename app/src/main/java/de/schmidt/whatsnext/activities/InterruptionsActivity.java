@@ -5,8 +5,10 @@ import android.widget.ListView;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.interrupt.Interruption;
 import de.schmidt.util.ColorUtils;
+import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.caching.InterruptionsCache;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
@@ -25,6 +27,7 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	private List<Interruption> interruptions;
 	private InterruptionsListViewAdapter adapter;
 	private BottomNavigationView navBar;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,9 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 			refresh();
 			swipeRefresh.setRefreshing(false);
 		});
+
+		fab = findViewById(R.id.fab_interruptions_filter);
+		FabManager.getInstance().initializeForInterruptionsFilter(fab, this);
 
 		listView = findViewById(R.id.interruption_list);
 		adapter = new InterruptionsListViewAdapter(this, interruptions);

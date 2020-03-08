@@ -8,7 +8,7 @@ import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.activities.InterruptionsActivity;
-import de.schmidt.whatsnext.activities.SingleDepartureActivity;
+import de.schmidt.whatsnext.activities.DepartureSingleActivity;
 
 public class NavBarManager {
 	private static final NavBarManager instance = new NavBarManager();
@@ -33,7 +33,7 @@ public class NavBarManager {
 			Intent intent;
 			switch (menuItem.getItemId()) {
 				case R.id.nav_single_button:
-					intent = new Intent(context, SingleDepartureActivity.class);
+					intent = new Intent(context, DepartureSingleActivity.class);
 					break;
 				case R.id.nav_list_button:
 					intent = new Intent(context, DepartureListActivity.class);

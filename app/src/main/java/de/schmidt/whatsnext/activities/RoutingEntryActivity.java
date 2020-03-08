@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
+import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
@@ -188,6 +188,9 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		navBar.setBackgroundColor(getColor(R.color.white));
 		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+
+		//clear the route options cache, as we are in the process of entering a new input
+		RoutingOptionsCache.getInstance().clearCache();
 
 		super.onResume();
 	}

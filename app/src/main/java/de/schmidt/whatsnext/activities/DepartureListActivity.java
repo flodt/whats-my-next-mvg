@@ -10,9 +10,11 @@ import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.util.*;
+import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.PreferenceManager;
@@ -38,6 +40,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 	private String customName;
 	private ActionBar actionBar;
 	private BottomNavigationView navBar;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 
 		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
 																											getResources().getString(R.string.default_custom_station_name));
+
+		fab = findViewById(R.id.fab_list_switch_station);
+		FabManager.getInstance().initializeForStationSelection(fab, this);
 
 		listView = findViewById(R.id.departure_list);
 		adapter = new DepartureListViewAdapter(this, departures);

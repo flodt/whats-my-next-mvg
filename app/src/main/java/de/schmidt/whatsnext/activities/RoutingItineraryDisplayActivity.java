@@ -6,17 +6,13 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.mvg.route.RouteIntermediateStop;
-import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.whatsnext.R;
@@ -29,6 +25,7 @@ import de.schmidt.whatsnext.viewsupport.RunningView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView> {
@@ -45,7 +42,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_itinerary_display);
+		setContentView(R.layout.activity_routing_itinerary_display);
 
 		navBar = findViewById(R.id.bottom_nav_bar_routing_itinerary);
 		NavBarManager.getInstance().initialize(navBar, this);
@@ -64,6 +61,9 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 			refresh();
 			swipeRefresh.setRefreshing(false);
 		});
+
+		//add back arrow to action bar
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 		listView = findViewById(R.id.itinerary_list);
 		adapter = new ItineraryListViewAdapter(this, views);
@@ -95,13 +95,10 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 		});
 
 		fab = findViewById(R.id.fab_show_on_map);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(RoutingItineraryDisplayActivity.this, RoutingOnMapActivity.class);
-				intent.putExtra(getResources().getString(R.string.key_route_map), routeConnection);
-				startActivity(intent);
-			}
+		fab.setOnClickListener(v -> {
+			Intent intent = new Intent(RoutingItineraryDisplayActivity.this, RoutingOnMapActivity.class);
+			intent.putExtra(getResources().getString(R.string.key_route_map), routeConnection);
+			startActivity(intent);
 		});
 	}
 

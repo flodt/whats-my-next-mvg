@@ -14,10 +14,12 @@ import java.util.List;
 public class RunningView extends ConnectionDisplayView {
 	private final LineColor color;
 	private final List<RouteIntermediateStop> stops;
+	private final long durationInMinutes;
 
-	public RunningView(LineColor color, List<RouteIntermediateStop> stops) {
+	public RunningView(LineColor color, List<RouteIntermediateStop> stops, long durationInMinutes) {
 		this.color = color;
 		this.stops = stops;
+		this.durationInMinutes = durationInMinutes;
 	}
 
 	public LineColor getColor() {
@@ -26,6 +28,10 @@ public class RunningView extends ConnectionDisplayView {
 
 	public List<RouteIntermediateStop> getStops() {
 		return stops;
+	}
+
+	public long getDurationInMinutes() {
+		return durationInMinutes;
 	}
 
 	@Override
@@ -51,8 +57,11 @@ public class RunningView extends ConnectionDisplayView {
 
 		bar.setBackground(new ColorDrawable(Color.parseColor(running.getColor().getPrimary())));
 
-		String stopsText = running.getStops().isEmpty() ? "" : "(" + running.getStops().size() + " stops)";
-		info.setText(stopsText);
+		String infoText = "(" +
+				(running.getStops().isEmpty() ? "" : running.getStops().size() + " stops, ") +
+				running.getDurationInMinutes() + " min." +
+				")";
+		info.setText(infoText);
 
 		return view;
 	}

@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.schmidt.mvg.route.RouteConnection;
+import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AlternativesListViewAdapter extends BaseAdapter {
 	private final Activity context;
@@ -50,10 +52,33 @@ public class AlternativesListViewAdapter extends BaseAdapter {
 		TextView timeRange = convertView.findViewById(R.id.alternative_time_range);
 
 		RouteConnection connection = connections.get(position);
-		String lines = connection.getConnectionParts()
+
+		//determine the amount of lines we can fit on the screen (max 20 chars)
+		List<Integer> lengths = connection.getConnectionParts()
 				.stream()
+				.map(RouteConnectionPart::getLine)
+				.map(String::length)
+				.collect(Collectors.toList());
+
+		int i, sum = 0;
+		boolean showAll = true;
+		for (i = 0; i < lengths.size(); i++) {
+			sum += lengths.get(i);
+
+			final int maxNumberOfCharsForTextView = 22;
+			if (sum >= maxNumberOfCharsForTextView) {
+				showAll = false;
+				break;
+			}
+		}
+
+		//i is now the number of lines we can show on screen
+		//get that many items, concatenate … when we don't get to show the entirety
+		String lines = IntStream.range(0, i)
+				.mapToObj(connection.getConnectionParts()::get)
 				.map(cp -> "<font color=" + cp.getColor().getPrimary() + ">" + cp.getLine() + "</font>")
-				.collect(Collectors.joining(", "));
+				.collect(Collectors.joining(", ")) +
+				(showAll ? "" : ", …");
 		means.setText((lines.length() == 0) ? "Walking" : Html.fromHtml(lines));
 
 		delta.setText("in " + connection.getDeltaToDepartureInMinutes() + " min.");
