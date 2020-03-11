@@ -73,7 +73,7 @@
     <string name="navbar_route">Route</string>
     <string name="navbar_inter">Interruptions</string>
     <string name="label_stations">Stations</string>
-    <string name="hint_from_input">From…</string>
+    <string name="hint_from_input">From… (Current location if empty)</string>
     <string name="hint_to_input">To…</string>
     <string name="label_time">Time</string>
     <string name="radio_departure">Departure</string>
@@ -90,4 +90,5 @@
     <string name="title_activity_routing_on_map">Route</string>
     <string name="key_route_map">route_for_map</string>
     <string name="pref_key_inter_filter">INTERRUPT_FILTER</string>
+    <string name="pref_key_recents">RECENT_ROUTE_ENTRIES</string>
 </resources>

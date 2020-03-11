@@ -27,7 +27,6 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	private ListView listView;
 	private List<RouteConnection> connections;
 	private AlternativesListViewAdapter adapter;
-	private RouteOptions options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

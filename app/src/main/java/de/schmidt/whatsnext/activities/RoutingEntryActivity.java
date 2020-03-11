@@ -1,5 +1,6 @@
 package de.schmidt.whatsnext.activities;
 
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -17,6 +18,7 @@ import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
+import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
@@ -132,14 +134,25 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		});
 
 		goButton.setOnClickListener(v -> new Thread(() -> {
+			//show progress dialog while loading data for route options
+			ProgressDialog dialog = new ProgressDialog(this);
+			dialog.setMessage("Loading…");
+			dialog.setCancelable(false);
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			runOnUiThread(dialog::show);
+
 			try {
-				if (fromInput.getText().toString().length() == 0 || toInput.getText().toString().length() == 0) {
-					Toast.makeText(this, "Input is empty!", Toast.LENGTH_SHORT).show();
+				if (toInput.getText().toString().length() == 0) {
+					Toast.makeText(this, "Destination is empty!", Toast.LENGTH_SHORT).show();
 					return;
 				}
 
-				//get station objects from fields
-				Station start = Requests.instance().getStationByName(fromInput.getText().toString().trim());
+				//initialize start station by field or by location if the field is empty
+				Station start = (fromInput.getText().length() != 0) ?
+						Requests.instance().getStationByName(fromInput.getText().toString().trim()) :
+						Requests.instance().getNearestStation(LocationManager.getInstance().getLocation(this));
+
+				//initialize finish by field content
 				Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
 
 				//generate route options
@@ -162,6 +175,9 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 
 					//pass the options through the intent
 					intent.putExtra(getString(R.string.key_parameters), finalOptions);
+
+					//dismiss the progress dialog and start the next activity to take over
+					dialog.dismiss();
 					startActivity(intent);
 				});
 			} catch (Exception e) {

@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
+import de.schmidt.mvg.route.RouteStationSelection;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -191,6 +193,29 @@ public class PreferenceManager {
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+
+	public void setRecents(Context context, List<RouteStationSelection> selections) {
+		//parse recents to Strings and save to preferences
+		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.edit()
+				.putString(
+						context.getResources().getString(R.string.pref_key_recents),
+						selections.stream()
+								.map(RouteStationSelection::wrapToString)
+								.collect(Collectors.joining(","))
+				)
+				.apply();
+	}
+
+	public List<RouteStationSelection> getRecents(Context context) {
+		String rawRecents = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.getString(context.getResources().getString(R.string.pref_key_recents), "");
+
+		//unwrap strings
+		return Arrays.stream(rawRecents.split(","))
+				.map(RouteStationSelection::unwrapFromString)
+				.collect(Collectors.toList());
 	}
 
 	private void setCustomNameFieldInContext(String userInput, Context context) {
