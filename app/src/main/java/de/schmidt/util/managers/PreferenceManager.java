@@ -11,7 +11,9 @@ import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 import java.util.*;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PreferenceManager {
 	public static final String PREFERENCE_KEY = "WhatsMyNext";
@@ -193,6 +195,11 @@ public class PreferenceManager {
 	}
 
 	public void setRecents(Context context, List<RouteStationSelection> selections) {
+		//limit list size to 10 elements
+		selections = selections.stream()
+				.limit(10)
+				.collect(Collectors.toList());
+
 		//parse recents to Strings and save to preferences
 		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
 				.edit()
@@ -218,6 +225,7 @@ public class PreferenceManager {
 
 	public void addToRecents(Context context, RouteStationSelection selection) {
 		List<RouteStationSelection> recents = getRecents(context);
+		recents.remove(selection);
 		recents.add(0, selection);
 		setRecents(context, recents);
 	}

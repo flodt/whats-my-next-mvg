@@ -77,11 +77,13 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		adapter = new RecentsListViewAdapter(this, recents);
 		recentsList.setAdapter(adapter);
 		recentsList.setClickable(true);
-		recentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//parse the entry todo
-			}
+		recentsList.setOnItemClickListener((parent, view, position, id) -> {
+			//add input to the EditTexts
+			RouteStationSelection selection = recents.get(position);
+			runOnUiThread(() -> {
+				fromInput.setText(selection.getStart().getName());
+				toInput.setText(selection.getDestination().getName());
+			});
 		});
 
 		fromInput.setThreshold(1);

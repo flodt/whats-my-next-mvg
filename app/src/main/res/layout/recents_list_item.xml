@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    android:layout_width="match_parent"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:background="@color/light_gray"
+                                                   android:background="@color/white"
                                                    android:layout_height="wrap_content">
 
     <TextView
@@ -13,7 +13,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="normal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="15dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -41,10 +41,8 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="3dp"
             android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="@id/recents_from_label"
-            app:layout_constraintBottom_toBottomOf="@id/recents_from_label"
             app:layout_constraintLeft_toRightOf="@id/recents_from_label"
     />
 
@@ -60,6 +58,7 @@
             android:layout_marginStart="10dp"
             app:layout_constraintTop_toBottomOf="@id/recents_from_station"
             app:layout_constraintLeft_toRightOf="@id/recents_from_label"
-            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>
