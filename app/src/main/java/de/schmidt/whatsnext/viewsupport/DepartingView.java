@@ -107,7 +107,7 @@ public class DepartingView extends ConnectionDisplayView {
 		if (departure.getDirection().equals("")) {
 			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(departure.getLine()));
 		} else {
-			destFromHtml = Html.fromHtml(String.join(": ", LineColor.getHtmlColored(departure.getLine()), departure.getDirection()));
+			destFromHtml = Html.fromHtml(String.join(" ▸ ", LineColor.getHtmlColored(departure.getLine()), departure.getDirection()));
 		}
 		destination.setText(destFromHtml);
 

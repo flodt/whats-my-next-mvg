@@ -1,5 +1,6 @@
 package de.schmidt.mvg.route;
 
+import android.util.Log;
 import de.schmidt.mvg.traffic.Station;
 
 import java.util.Arrays;
@@ -50,12 +51,17 @@ public class RouteStationSelection {
 	}
 
 	public String wrapToString() {
-		return start.getId() + ";" + start.getName() + ";" + start.getLatitude() + ";" + start.getLongitude() + ";" +
-				destination.getId() + ";" + destination.getName() + ";" + destination.getLatitude() + ";" + destination.getLongitude();
+		String splitter = "%";
+		return start.getId() + splitter + start.getName() + splitter + start.getLatitude() + splitter + start.getLongitude() + splitter +
+				destination.getId() + splitter + destination.getName() + splitter + destination.getLatitude() + splitter + destination.getLongitude();
 	}
 
 	public static RouteStationSelection unwrapFromString(String str) {
-		String[] split = str.split(";");
+		Log.d("PreferenceManager", "unwrapFromString: " + str);
+
+		if (str.length() == 0) return null;
+
+		String[] split = str.split("%");
 		return new RouteStationSelection(
 				new Station(
 						split[0], split[1], Double.parseDouble(split[2]), Double.parseDouble(split[3])

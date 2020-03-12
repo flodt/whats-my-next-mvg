@@ -10,10 +10,7 @@ import de.schmidt.mvg.route.RouteStationSelection;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PreferenceManager {
@@ -203,7 +200,7 @@ public class PreferenceManager {
 						context.getResources().getString(R.string.pref_key_recents),
 						selections.stream()
 								.map(RouteStationSelection::wrapToString)
-								.collect(Collectors.joining(","))
+								.collect(Collectors.joining("$"))
 				)
 				.apply();
 	}
@@ -213,9 +210,20 @@ public class PreferenceManager {
 				.getString(context.getResources().getString(R.string.pref_key_recents), "");
 
 		//unwrap strings
-		return Arrays.stream(rawRecents.split(","))
+		return Arrays.stream(rawRecents.split("\\$"))
 				.map(RouteStationSelection::unwrapFromString)
-				.collect(Collectors.toList());
+				.filter(Objects::nonNull)
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	public void addToRecents(Context context, RouteStationSelection selection) {
+		List<RouteStationSelection> recents = getRecents(context);
+		recents.add(0, selection);
+		setRecents(context, recents);
+	}
+
+	public void clearRecents(Context context) {
+		setRecents(context, Collections.emptyList());
 	}
 
 	private void setCustomNameFieldInContext(String userInput, Context context) {

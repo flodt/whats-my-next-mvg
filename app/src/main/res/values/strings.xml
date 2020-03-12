@@ -91,4 +91,11 @@
     <string name="key_route_map">route_for_map</string>
     <string name="pref_key_inter_filter">INTERRUPT_FILTER</string>
     <string name="pref_key_recents">RECENT_ROUTE_ENTRIES</string>
+    <string name="recents_from_label">From:</string>
+    <string name="recents_to_label">To:</string>
+    <string name="label_recents">Recents</string>
+    <string name="clear_recents_title">Clear recents?</string>
+    <string name="clear_recents_message">Do you want to clear the recent routes?</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="yes_dialog">Yes</string>
 </resources>

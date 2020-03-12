@@ -131,7 +131,7 @@ public class InterchangeView extends ConnectionDisplayView {
 		if (inter.getDirection().equals("")) {
 			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(inter.getLine()));
 		} else {
-			destFromHtml = Html.fromHtml(String.join(": ", LineColor.getHtmlColored(inter.getLine()), inter.getDirection()));
+			destFromHtml = Html.fromHtml(String.join(" ▸ ", LineColor.getHtmlColored(inter.getLine()), inter.getDirection()));
 		}
 		destination.setText(destFromHtml);
 

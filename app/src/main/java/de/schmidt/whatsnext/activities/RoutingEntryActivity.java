@@ -1,13 +1,16 @@
 package de.schmidt.whatsnext.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
@@ -15,18 +18,22 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteOptions;
+import de.schmidt.mvg.route.RouteStationSelection;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.adapters.RecentsListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.fragments.TimePickerFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class RoutingEntryActivity extends ActionBarBaseActivity implements TimePickerDialog.OnTimeSetListener {
 	private static final String TAG = "RoutingEntry";
@@ -41,6 +48,9 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	private TextView selectedTimeLabel;
 	private Button resetButton;
 	private Button flipButton;
+	private ListView recentsList;
+	private List<RouteStationSelection> recents;
+	private RecentsListViewAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +71,18 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		goButton = findViewById(R.id.go_button);
 		resetButton = findViewById(R.id.reset_button);
 		flipButton = findViewById(R.id.flip_button);
+
+		recentsList = findViewById(R.id.entry_recents_list);
+		recents = PreferenceManager.getInstance().getRecents(this);
+		adapter = new RecentsListViewAdapter(this, recents);
+		recentsList.setAdapter(adapter);
+		recentsList.setClickable(true);
+		recentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//parse the entry todo
+			}
+		});
 
 		fromInput.setThreshold(1);
 		toInput.setThreshold(1);
@@ -133,58 +155,90 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			radio.check(R.id.radio_dept);
 		});
 
-		goButton.setOnClickListener(v -> new Thread(() -> {
+		resetButton.setLongClickable(true);
+		resetButton.setOnLongClickListener(v -> {
+			new AlertDialog.Builder(RoutingEntryActivity.this)
+					.setTitle(getResources().getString(R.string.clear_recents_title))
+					.setMessage(getResources().getString(R.string.clear_recents_message))
+					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
+					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
+						PreferenceManager.getInstance().clearRecents(RoutingEntryActivity.this);
+						refreshRecentsList();
+						dialog.dismiss();
+					})
+					.create()
+					.show();
+
+			return true;
+		});
+
+		goButton.setOnClickListener(v -> {
 			//show progress dialog while loading data for route options
 			ProgressDialog dialog = new ProgressDialog(this);
 			dialog.setMessage("Loading…");
 			dialog.setCancelable(false);
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			runOnUiThread(dialog::show);
+			dialog.show();
 
-			try {
-				if (toInput.getText().toString().length() == 0) {
-					Toast.makeText(this, "Destination is empty!", Toast.LENGTH_SHORT).show();
-					return;
-				}
+			new Thread(() -> {
+				try {
+					if (toInput.getText().toString().length() == 0) {
+						dialog.dismiss();
+						runOnUiThread(() -> Toast.makeText(this, "Destination is empty!", Toast.LENGTH_SHORT).show());
+						return;
+					}
 
-				//initialize start station by field or by location if the field is empty
-				Station start = (fromInput.getText().length() != 0) ?
-						Requests.instance().getStationByName(fromInput.getText().toString().trim()) :
-						Requests.instance().getNearestStation(LocationManager.getInstance().getLocation(this));
+					//initialize start station by field or by location if the field is empty
+					Station start = (fromInput.getText().length() != 0) ?
+							Requests.instance().getStationByName(fromInput.getText().toString().trim()) :
+							Requests.instance().getNearestStation(LocationManager.getInstance().getLocation(this));
 
-				//initialize finish by field content
-				Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
+					//initialize finish by field content
+					Station finish = Requests.instance().getStationByName(toInput.getText().toString().trim());
 
-				//generate route options
-				RouteOptions options = RouteOptions.getBase()
-						.withStart(start)
-						.withDestination(finish);
+					//set the text field accordingly
+					runOnUiThread(() -> {
+						fromInput.setText(start.getName());
+						toInput.setText(finish.getName());
+					});
 
-				if (selectedTime != null) {
-					options = options.withTime(
-							selectedTime, radio.getCheckedRadioButtonId() == R.id.radio_dept
-					);
-				}
+					//generate route options
+					RouteOptions options = RouteOptions.getBase()
+							.withStart(start)
+							.withDestination(finish);
 
-				RouteOptions finalOptions = options;
-				Log.d(TAG, "onClick: request with " + finalOptions);
+					if (selectedTime != null) {
+						options = options.withTime(
+								selectedTime, radio.getCheckedRadioButtonId() == R.id.radio_dept
+						);
+					}
 
-				//switch activity to AlternativesView which will do the network access based on the options
-				runOnUiThread(() -> {
-					Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
+					RouteOptions finalOptions = options;
+					Log.d(TAG, "onClick: request with " + finalOptions);
 
-					//pass the options through the intent
-					intent.putExtra(getString(R.string.key_parameters), finalOptions);
+					//switch activity to AlternativesView which will do the network access based on the options
+					runOnUiThread(() -> {
+						//add entry to preferences
+						PreferenceManager.getInstance().addToRecents(
+								RoutingEntryActivity.this, RouteStationSelection.fromRoute(start, finish));
+						refreshRecentsList();
 
-					//dismiss the progress dialog and start the next activity to take over
+						Intent intent = new Intent(RoutingEntryActivity.this, RoutingAlternativesActivity.class);
+
+						//pass the options through the intent
+						intent.putExtra(getString(R.string.key_parameters), finalOptions);
+
+						//dismiss the progress dialog and start the next activity to take over
+						dialog.dismiss();
+						startActivity(intent);
+					});
+				} catch (Exception e) {
 					dialog.dismiss();
-					startActivity(intent);
-				});
-			} catch (Exception e) {
-				runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
-				Log.e(TAG, "onClick: error in json parsing for route", e);
-			}
-		}).start());
+					runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
+					Log.e(TAG, "onClick: error in json parsing for route", e);
+				}
+			}).start();
+		});
 
 		flipButton.setOnClickListener(v -> {
 			String first = fromInput.getText().toString();
@@ -207,6 +261,8 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 
 		//clear the route options cache, as we are in the process of entering a new input
 		RoutingOptionsCache.getInstance().clearCache();
+
+		refreshRecentsList();
 
 		super.onResume();
 	}
@@ -236,5 +292,16 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		//noinspection deprecation
 		selectedTime = new Date(year - 1900, month, day, hourOfDay, minute);
 		selectedTimeLabel.setText(new SimpleDateFormat("HH:mm").format(selectedTime));
+	}
+
+	public void refreshRecentsList() {
+		//refresh contents of recents object
+		recents.clear();
+		recents.addAll(PreferenceManager.getInstance().getRecents(this));
+
+		//refresh listview
+		adapter.notifyDataSetChanged();
+		recentsList.invalidateViews();
+		recentsList.refreshDrawableState();
 	}
 }
