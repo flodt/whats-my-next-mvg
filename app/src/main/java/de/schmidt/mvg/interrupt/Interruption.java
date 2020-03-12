@@ -1,5 +1,7 @@
 package de.schmidt.mvg.interrupt;
 
+import android.content.Context;
+import de.schmidt.whatsnext.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,8 +82,8 @@ public class Interruption {
 		return modificationDate;
 	}
 
-	public String getModificationDateAsString() {
-		return "Stand: " + modificationDate.toString();
+	public String getModificationDateAsString(Context context) {
+		return context.getResources().getString(R.string.modification_date_prefix) + modificationDate.toString();
 	}
 
 	public static Interruption ofJSON(JSONObject json) throws JSONException {

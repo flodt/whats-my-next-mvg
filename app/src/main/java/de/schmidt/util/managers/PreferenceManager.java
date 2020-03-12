@@ -41,7 +41,7 @@ public class PreferenceManager {
 
 		//ask for exclusions
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Select means of transport…");
+		builder.setTitle(context.getResources().getString(R.string.dialog_transport_means_title));
 		builder.setIcon(R.drawable.ic_excluded_black);
 		builder.setMultiChoiceItems(readable, selected, (dialog, which, isChecked) -> selected[which] = isChecked);
 		builder.setCancelable(true);
@@ -87,12 +87,12 @@ public class PreferenceManager {
 		//EditText for user input
 		EditText input = new EditText(context);
 		input.setText(filter);
-		input.setHint("comma-separated lines…");
+		input.setHint(context.getResources().getString(R.string.interrupt_filter_hint));
 
 		//build the dialog
 		new AlertDialog.Builder(context)
-				.setTitle("Interruptions filter…")
-				.setMessage("Enter lines for interruptions…")
+				.setTitle(context.getResources().getString(R.string.interrupt_filter_title))
+				.setMessage(context.getResources().getString(R.string.interrupt_filter_descr))
 				.setIcon(R.drawable.ic_interruptions_black)
 				.setView(input)
 				.setPositiveButton(R.string.save_settings, (dialog, which) -> {

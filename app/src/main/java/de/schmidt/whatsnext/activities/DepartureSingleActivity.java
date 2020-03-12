@@ -102,7 +102,7 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 			runOnUiThread(() -> {
 				setTitle(R.string.app_name);
 				inMinutes.setText("");
-				direction.setText("No departures found");
+				direction.setText(getResources().getString(R.string.no_departures_found));
 				line.setText("");
 				minutesFixedLabel.setText("");
 				direction.setTextColor(getColor(R.color.white));

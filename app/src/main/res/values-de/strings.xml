@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="alternatives_title">Reisemöglichkeiten</string>
+    <string name="cancel_dialog">Abbrechen</string>
+    <string name="clear_recents_message">Zuletzt gesuchte Routen löschen?</string>
+    <string name="clear_recents_title">Liste leeren?</string>
+    <string name="custom_station_name_title">Eigenen Stationsnamen eingeben…</string>
+    <string name="dialog_transport_means_title">Verkehrsmittel auswählen…</string>
+    <string name="dismiss_settings">Schließen</string>
+    <string name="exclude">Verkehrsmittel ausschließen…</string>
+    <string name="go_button">Los</string>
+    <string name="hint_from_input">Von… (aktueller Standort)</string>
+    <string name="hint_to_input">Nach…</string>
+    <string name="inter_arrival_elem">Ankunft:</string>
+    <string name="inter_departure_elem">; Abfahrt:</string>
+    <string name="intermediate_stops_title">Zwischenhalte</string>
+    <string name="interrupt_filter_descr">Linien für die Betriebsstörungsnachrichten eingeben</string>
+    <string name="interrupt_filter_hint">Linien (getrennt durch Kommata)</string>
+    <string name="interrupt_filter_title">Betriebsstörungsfilter</string>
+    <string name="interruptions_button">Betriebsstörungen anzeigen</string>
+    <string name="interruptions_title">Störungen</string>
+    <string name="itinerary_title">Verbindung</string>
+    <string name="label_recents">Zuletzt gesucht</string>
+    <string name="label_stations">Stationen</string>
+    <string name="label_time">Zeit</string>
+    <string name="loading_progress_dialog">Laden…</string>
+    <string name="minutes">Minuten</string>
+    <string name="modification_date_prefix">"Stand: "</string>
+    <string name="navbar_inter">Störungen</string>
+    <string name="navbar_list">Abfahrten</string>
+    <string name="navbar_route">Route</string>
+    <string name="navbar_single">Einzelne</string>
+    <string name="no_departures_found">Keine Abfahrten gefunden</string>
+    <string name="now">Jetzt</string>
+    <string name="radio_arrival">Ankunft</string>
+    <string name="radio_departure">Abfahrt</string>
+    <string name="recents_from_label">Ab:</string>
+    <string name="recents_to_label">An:</string>
+    <string name="refresh">Neu laden</string>
+    <string name="reset">Löschen</string>
+    <string name="running_stops_infix">" Zwischenhalt(e), "</string>
+    <string name="save_settings">Speichern</string>
+    <string name="select_station_title">Bahnhof auswählen…</string>
+    <string name="select_time_button">Zeit…</string>
+    <string name="switch_view_button">Ansicht wechseln…</string>
+    <string name="title_activity_routing_on_map">Route</string>
+    <string name="toast_invalid_input">Fehler! Ungültige Eingabe</string>
+    <string name="toast_nodestination">Zielbahnhof ist leer!</string>
+    <string name="yes_dialog">Ja</string>
+    <string-array name="station_readable">
+        <item>Aktueller Standort</item>
+        <item>Hauptbahnhof</item> <!-- Hbf -->
+        <item>Marienplatz</item> <!-- Marienplatz -->
+        <item>Fröttmaning</item> <!-- Fröttmaning -->
+        <item>Garching, Forschungszentrum</item> <!-- Garching, Forschungszentr. -->
+        <item>Bahnhof auswählen…</item>
+    </string-array>
+</resources>

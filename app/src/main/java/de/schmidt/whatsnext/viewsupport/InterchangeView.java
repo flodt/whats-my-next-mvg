@@ -113,7 +113,8 @@ public class InterchangeView extends ConnectionDisplayView {
 		atLabel.setText(inter.getAt().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-		String infoText = "Arrival: " + df.format( inter.getArrival()) + "; Departure: ";
+		String infoText = view.getResources().getString(R.string.inter_arrival_elem) + df.format(inter.getArrival())
+				+ view.getResources().getString(R.string.inter_departure_elem);
 		if (inter.getDeparturePlatform().length() != 0) {
 			infoText += String.join(", ",
 								   inter.getDeparturePlatform(),

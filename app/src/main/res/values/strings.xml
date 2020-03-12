@@ -1,24 +1,24 @@
 <resources>
-    <string name="app_name">What\'s My Next</string>
+    <string name="app_name" translatable="false">What\'s My Next</string>
     <string name="interruptions_title">Interruptions</string>
     <string name="minutes">minutes</string>
-    <string name="example_station">Garching, Forschungszentrum</string>
-    <string name="example_delta">3</string>
-    <string name="example_line">U6</string>
+    <string name="example_station" translatable="false">Garching, Forschungszentrum</string>
+    <string name="example_delta" translatable="false">3</string>
+    <string name="example_line" translatable="false">U6</string>
     <string name="refresh">Refresh</string>
     <string name="exclude">Exclude transport means…</string>
-    <string name="selection_bus">bus_select</string>
-    <string name="selection_ubahn">u_select</string>
-    <string name="selection_sbahn">s_select</string>
-    <string name="selection_tram">tram_select</string>
-    <string name="selection_bahn">bahn_select</string>
+    <string name="selection_bus" translatable="false">bus_select</string>
+    <string name="selection_ubahn" translatable="false">u_select</string>
+    <string name="selection_sbahn" translatable="false">s_select</string>
+    <string name="selection_tram" translatable="false">tram_select</string>
+    <string name="selection_bahn" translatable="false">bahn_select</string>
     <string name="save_settings">Save</string>
     <string name="dismiss_settings">Dismiss</string>
-    <string name="selection_station_in_menu">SELECTED_STATION</string>
+    <string name="selection_station_in_menu" translatable="false">SELECTED_STATION</string>
     <string name="select_station_title">Select station…</string>
     <string name="custom_station_name_title">Enter custom station name…</string>
-    <string name="default_custom_station_name">Hauptbahnhof</string>
-    <string name="selection_custom_station_entry">CUSTOM_STATION_ENTRY</string>
+    <string name="default_custom_station_name" translatable="false">Hauptbahnhof</string>
+    <string name="selection_custom_station_entry" translatable="false">CUSTOM_STATION_ENTRY</string>
     <string name="switch_view_button">Switch view…</string>
     <string name="interruptions_button">Show interruptions…</string>
     <string-array name="transport_keys">
@@ -53,11 +53,11 @@
         <item>Choose by name…</item>
     </string-array>
 
-    <string name="example_int_title">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor: Unterbrechung wegen
+    <string name="example_int_title" translatable="false">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor: Unterbrechung wegen
         Gleisbauarbeiten
     </string>
-    <string name="example_int_duration">25.03.2020 - 26.03.2020</string>
-    <string name="example_int_text">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße ist der
+    <string name="example_int_duration" translatable="false">25.03.2020 - 26.03.2020</string>
+    <string name="example_int_text" translatable="false">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße ist der
         Streckenabschnitt Karlsplatz (Stachus) - Sendlinger Tor am Mittwoch, 25. März und Donnerstag, 26. März 2020 von
         ca. 01.40 bis 04.15 Uhr gesperrt. An der (H) Sendlinger Tor fahren die Tramlinien N17 > Effnerplatz und N27 >
         Großhesseloher Brücke in der Brunnenschleife (vor der Kirche) ab. Die NachtTram N17 ist zwischen den (H)
@@ -66,7 +66,7 @@
         die NachtBuslinien N40, N41 und N45. Die Züge in Richtung Petuelring fahren an der (H) Karlsplatz (Stachus) von
         der Halteposition 6 in der Prielmayerstraße ab.
     </string>
-    <string name="example_int_mod_date">Stand: 2020-03-17 13:30 UTC</string>
+    <string name="example_int_mod_date" translatable="false">Stand: 2020-03-17 13:30 UTC</string>
 
     <string name="navbar_single">Single</string>
     <string name="navbar_list">Departures</string>
@@ -82,15 +82,15 @@
     <string name="go_button">Go</string>
     <string name="reset">Clear</string>
     <string name="now">Now</string>
-    <string name="key_parameters">request_parameters</string>
+    <string name="key_parameters" translatable="false">request_parameters</string>
     <string name="alternatives_title">Alternatives</string>
     <string name="itinerary_title">Itinerary</string>
-    <string name="key_itinerary">route_itinerary</string>
+    <string name="key_itinerary" translatable="false">route_itinerary</string>
     <string name="intermediate_stops_title">Intermediate stops</string>
     <string name="title_activity_routing_on_map">Route</string>
-    <string name="key_route_map">route_for_map</string>
-    <string name="pref_key_inter_filter">INTERRUPT_FILTER</string>
-    <string name="pref_key_recents">RECENT_ROUTE_ENTRIES</string>
+    <string name="key_route_map" translatable="false">route_for_map</string>
+    <string name="pref_key_inter_filter" translatable="false">INTERRUPT_FILTER</string>
+    <string name="pref_key_recents" translatable="false">RECENT_ROUTE_ENTRIES</string>
     <string name="recents_from_label">From:</string>
     <string name="recents_to_label">To:</string>
     <string name="label_recents">Recents</string>
@@ -98,4 +98,16 @@
     <string name="clear_recents_message">Do you want to clear the recent routes?</string>
     <string name="cancel_dialog">Cancel</string>
     <string name="yes_dialog">Yes</string>
+    <string name="no_departures_found">No departures found</string>
+    <string name="inter_arrival_elem">Arrival:</string>
+    <string name="inter_departure_elem">; Departure:</string>
+    <string name="modification_date_prefix">"Last updated: "</string>
+    <string name="dialog_transport_means_title">Select means of transport…</string>
+    <string name="interrupt_filter_hint">comma-separated lines…</string>
+    <string name="interrupt_filter_title">Interruptions filter…</string>
+    <string name="interrupt_filter_descr">Enter lines for interruptions…</string>
+    <string name="loading_progress_dialog">Loading…</string>
+    <string name="toast_nodestination">Destination is empty!</string>
+    <string name="toast_invalid_input">Error! Invalid input</string>
+    <string name="running_stops_infix">" stop(s), "</string>
 </resources>

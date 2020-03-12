@@ -53,7 +53,7 @@ public class InterruptionsListViewAdapter extends BaseAdapter {
 		);
 		text.setText(interruption.getDescriptionText());
 		duration.setText(interruption.getDurationAsText());
-		updated.setText(interruption.getModificationDateAsString());
+		updated.setText(interruption.getModificationDateAsString(context));
 
 		//set the color to interchanging grey and light grey
 		convertView.setBackgroundColor(

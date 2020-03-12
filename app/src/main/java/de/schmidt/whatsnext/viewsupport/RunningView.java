@@ -58,7 +58,7 @@ public class RunningView extends ConnectionDisplayView {
 		bar.setBackground(new ColorDrawable(Color.parseColor(running.getColor().getPrimary())));
 
 		String infoText = "(" +
-				(running.getStops().isEmpty() ? "" : running.getStops().size() + " stops, ") +
+				(running.getStops().isEmpty() ? "" : running.getStops().size() + view.getResources().getString(R.string.running_stops_infix)) +
 				running.getDurationInMinutes() + " min." +
 				")";
 		info.setText(infoText);

@@ -177,7 +177,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		goButton.setOnClickListener(v -> {
 			//show progress dialog while loading data for route options
 			ProgressDialog dialog = new ProgressDialog(this);
-			dialog.setMessage("Loading…");
+			dialog.setMessage(getResources().getString(R.string.loading_progress_dialog));
 			dialog.setCancelable(false);
 			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			dialog.show();
@@ -186,7 +186,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 				try {
 					if (toInput.getText().toString().length() == 0) {
 						dialog.dismiss();
-						runOnUiThread(() -> Toast.makeText(this, "Destination is empty!", Toast.LENGTH_SHORT).show());
+						runOnUiThread(() -> Toast.makeText(this, getResources().getString(R.string.toast_nodestination), Toast.LENGTH_SHORT).show());
 						return;
 					}
 
@@ -236,7 +236,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 					});
 				} catch (Exception e) {
 					dialog.dismiss();
-					runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, "Error! Invalid input", Toast.LENGTH_SHORT).show());
+					runOnUiThread(() -> Toast.makeText(RoutingEntryActivity.this, getResources().getString(R.string.toast_invalid_input), Toast.LENGTH_SHORT).show());
 					Log.e(TAG, "onClick: error in json parsing for route", e);
 				}
 			}).start();
