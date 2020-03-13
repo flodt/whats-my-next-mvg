@@ -68,12 +68,12 @@
     </string>
     <string name="example_int_mod_date" translatable="false">Stand: 2020-03-17 13:30 UTC</string>
 
-    <string name="navbar_single">Single</string>
+    <string name="navbar_single">Next</string>
     <string name="navbar_list">Departures</string>
     <string name="navbar_route">Route</string>
     <string name="navbar_inter">Interruptions</string>
     <string name="label_stations">Stations</string>
-    <string name="hint_from_input">From… (Current location if empty)</string>
+    <string name="hint_from_input">From… (current location if empty)</string>
     <string name="hint_to_input">To…</string>
     <string name="label_time">Time</string>
     <string name="radio_departure">Departure</string>
@@ -99,8 +99,8 @@
     <string name="cancel_dialog">Cancel</string>
     <string name="yes_dialog">Yes</string>
     <string name="no_departures_found">No departures found</string>
-    <string name="inter_arrival_elem">Arrival:</string>
-    <string name="inter_departure_elem">; Departure:</string>
+    <string name="inter_arrival_elem">"Arrival: "</string>
+    <string name="inter_departure_elem">"; Departure: "</string>
     <string name="modification_date_prefix">"Last updated: "</string>
     <string name="dialog_transport_means_title">Select means of transport…</string>
     <string name="interrupt_filter_hint">comma-separated lines…</string>
@@ -110,4 +110,6 @@
     <string name="toast_nodestination">Destination is empty!</string>
     <string name="toast_invalid_input">Error! Invalid input</string>
     <string name="running_stops_infix">" stop(s), "</string>
+    <string name="remove_recent_title">Remove element?</string>
+    <string name="remove_recent_message">Do you want to remove this entry?</string>
 </resources>

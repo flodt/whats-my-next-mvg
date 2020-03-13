@@ -230,6 +230,12 @@ public class PreferenceManager {
 		setRecents(context, recents);
 	}
 
+	public void removeFromRecents(Context context, RouteStationSelection selection) {
+		List<RouteStationSelection> recents = getRecents(context);
+		recents.remove(selection);
+		setRecents(context, recents);
+	}
+
 	public void clearRecents(Context context) {
 		setRecents(context, Collections.emptyList());
 	}

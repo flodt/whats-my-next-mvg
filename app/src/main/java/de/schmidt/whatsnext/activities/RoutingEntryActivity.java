@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.ActionBar;
@@ -84,6 +85,29 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 				fromInput.setText(selection.getStart().getName());
 				toInput.setText(selection.getDestination().getName());
 			});
+		});
+		recentsList.setLongClickable(true);
+		recentsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				//ask for confirmation
+				new AlertDialog.Builder(RoutingEntryActivity.this)
+						.setTitle(getResources().getString(R.string.remove_recent_title))
+						.setMessage(getResources().getString(R.string.remove_recent_message))
+						.setIcon(R.drawable.ic_warning)
+						.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
+						.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
+							//remove the element from the list
+							PreferenceManager.getInstance()
+									.removeFromRecents(RoutingEntryActivity.this, recents.get(position));
+							refreshRecentsList();
+							dialog.dismiss();
+						})
+						.create()
+						.show();
+
+				return true;
+			}
 		});
 
 		fromInput.setThreshold(1);
@@ -162,6 +186,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			new AlertDialog.Builder(RoutingEntryActivity.this)
 					.setTitle(getResources().getString(R.string.clear_recents_title))
 					.setMessage(getResources().getString(R.string.clear_recents_message))
+					.setIcon(R.drawable.ic_warning)
 					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
 					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
 						PreferenceManager.getInstance().clearRecents(RoutingEntryActivity.this);

@@ -11,8 +11,8 @@
     <string name="go_button">Los</string>
     <string name="hint_from_input">Von… (aktueller Standort)</string>
     <string name="hint_to_input">Nach…</string>
-    <string name="inter_arrival_elem">Ankunft:</string>
-    <string name="inter_departure_elem">; Abfahrt:</string>
+    <string name="inter_arrival_elem">"Ankunft: "</string>
+    <string name="inter_departure_elem">"; Abfahrt: "</string>
     <string name="intermediate_stops_title">Zwischenhalte</string>
     <string name="interrupt_filter_descr">Linien für die Betriebsstörungsnachrichten eingeben</string>
     <string name="interrupt_filter_hint">Linien (getrennt durch Kommata)</string>
@@ -29,7 +29,7 @@
     <string name="navbar_inter">Störungen</string>
     <string name="navbar_list">Abfahrten</string>
     <string name="navbar_route">Route</string>
-    <string name="navbar_single">Einzelne</string>
+    <string name="navbar_single">Nächste</string>
     <string name="no_departures_found">Keine Abfahrten gefunden</string>
     <string name="now">Jetzt</string>
     <string name="radio_arrival">Ankunft</string>
@@ -55,4 +55,6 @@
         <item>Garching, Forschungszentrum</item> <!-- Garching, Forschungszentr. -->
         <item>Bahnhof auswählen…</item>
     </string-array>
+    <string name="remove_recent_message">Diesen Eintrag der letzten Ziele löschen?</string>
+    <string name="remove_recent_title">Eintrag löschen?</string>
 </resources>

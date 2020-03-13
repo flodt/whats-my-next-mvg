@@ -106,6 +106,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			//set colors according to result
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
+
 				listView.setBackgroundColor(getColor(R.color.colorPrimary));
 				actionBar.setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimary)));
 				getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));

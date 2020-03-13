@@ -1,0 +1,21 @@
+**Short**
+Reiseplaner sowie Abfahrts- und Störungsanzeige für Fahrten im Gebiet des Münchner Verkehrsverbundes
+--
+Travel planner as well as departure and interruptions monitor for public transit in the MVV in Munich, Germany
+
+**Full description**
+Ein einfacher Reiseplaner sowie Abfahrts- und Störungsanzeige für das Gebiet des MVV.
+
+Erlaubt Routenplanung inklusive Zugriff auf letzte Ziele, bequeme Auswahl der Reiseverbindung, Sichten von Details zur gewählten Verbindung sowie die Anzeige derselben auf einer Karte - alles in einem schönen, minimaoistischen und anschaulichen Design.
+
+Weiterhin inbegriffen ist die Anzeige der nächsten Abfahrten oder der nächsten Abfahrt an bestimmten Stationen unter Einbezug eventuell ausgeschlossener Verkehrsmittel.
+
+Auch Betriebsstörungen im MVV-Netz können live und aktuell sowie gefiltert nach Relevanz für die benötigten Linien direkt von der Quelle bezogen werden.
+--
+A simple public transit planner as well as departure and interruptions monitor for the MVV in Munich.
+
+Features include route planning (allowing access to recently used destinations), convenient selection of the travel connections as well as viewing the details of the selected itinerary in a well-designed, minimalistic interface.
+
+The departure board feature also shows the next departures at the selected station while allowing the exclusion and filtering for specified means of transport.
+
+Service interruptions in the network of the MVV can also be viewed with live and up-to-date data stemming straight from the MVV.
