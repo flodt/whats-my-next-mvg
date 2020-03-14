@@ -1,18 +1,30 @@
 package de.schmidt.whatsnext.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import de.schmidt.mvg.Requests;
+import de.schmidt.mvg.route.RouteConnection;
+import de.schmidt.mvg.route.RouteConnectionPart;
+import de.schmidt.mvg.route.RouteIntermediateStop;
+import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
+import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.*;
 import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.LocationManager;
@@ -24,9 +36,16 @@ import de.schmidt.whatsnext.adapters.DepartureListViewAdapter;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
+import de.schmidt.whatsnext.viewsupport.ArrivingView;
+import de.schmidt.whatsnext.viewsupport.ConnectionDisplayView;
+import de.schmidt.whatsnext.viewsupport.DepartingView;
+import de.schmidt.whatsnext.viewsupport.StopView;
+import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
@@ -71,7 +90,55 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		listView = findViewById(R.id.departure_list);
 		adapter = new DepartureListViewAdapter(this, departures);
 		listView.setAdapter(adapter);
-		listView.setClickable(false);
+		listView.setClickable(true);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				ProgressDialog dialog = new ProgressDialog(DepartureListActivity.this);
+				dialog.setMessage(getResources().getString(R.string.loading_progress_dialog));
+				dialog.setCancelable(false);
+				dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				dialog.show();
+
+				//get the clicked departure
+				Departure clicked = departures.get(position);
+
+				//try and get the same departure for viewing it in a different activity
+				new Thread(() -> {
+					try {
+						Requests requests = Requests.instance();
+
+						Station start = clicked.getStation();
+						Station destination = requests.getStationByName(clicked.getDirection());
+						RouteOptions opt = RouteOptions.getBase()
+								.withStart(start)
+								.withDestination(destination);
+
+						RouteConnection connection = requests.getRoute(opt)
+								.stream()
+								.filter(conn -> conn.getConnectionParts()
+										.stream()
+										.allMatch(rcp -> Objects.equals(rcp.getDepartureId(), clicked.getDepartureId())))
+								.findFirst()
+								.orElseThrow(RuntimeException::new);
+
+						Intent intent = new Intent(DepartureListActivity.this, RoutingItineraryDisplayActivity.class);
+						intent.putExtra(getString(R.string.key_itinerary), connection);
+						intent.putExtra(getString(R.string.key_back_button_action_bar), false);
+						intent.putExtra(getString(R.string.key_display_expanded), true);
+						startActivity(intent);
+					} catch (JSONException e) {
+						Log.e(TAG, "onItemClick: json error in getting departure details", e);
+						runOnUiThread(() -> Toast.makeText(DepartureListActivity.this, getResources().getString(R.string.no_dept_details_avail), Toast.LENGTH_SHORT).show());
+					} catch (RuntimeException e) {
+						Log.e(TAG, "onItemClick: departure cannot be found", e);
+						runOnUiThread(() -> Toast.makeText(DepartureListActivity.this, getResources().getString(R.string.no_dept_details_avail), Toast.LENGTH_SHORT).show());
+					} finally {
+						dialog.dismiss();
+					}
+				}).start();
+			}
+		});
 	}
 
 	@Override

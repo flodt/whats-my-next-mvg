@@ -59,6 +59,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 
 			Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingItineraryDisplayActivity.class);
 			intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
+			intent.putExtra(getString(R.string.key_back_button_action_bar), true);
 			startActivity(intent);
 		});
 	}

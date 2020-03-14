@@ -38,6 +38,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	private RouteConnection routeConnection;
 	private ActionBar actionBar;
 	private FloatingActionButton fab;
+	private boolean expanded = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,13 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 
 		routeConnection = (RouteConnection) getIntent().getSerializableExtra(getResources().getString(R.string.key_itinerary));
 
+		//add back arrow to action bar if we should
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(
+				getIntent().getBooleanExtra(getResources().getString(R.string.key_back_button_action_bar), false)
+		);
+
+		expanded = getIntent().getBooleanExtra(getResources().getString(R.string.key_display_expanded), false);
+
 		swipeRefresh = findViewById(R.id.pull_to_refresh_itinerary);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
 		swipeRefresh.setOnRefreshListener(() -> {
@@ -62,37 +70,18 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 			swipeRefresh.setRefreshing(false);
 		});
 
-		//add back arrow to action bar
-		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
 		listView = findViewById(R.id.itinerary_list);
 		adapter = new ItineraryListViewAdapter(this, views);
 		listView.setAdapter(adapter);
 		listView.setClickable(true);
 		listView.setOnItemClickListener((parent, view, position, id) -> {
-			List<ConnectionDisplayView> views = ConnectionDisplayView.getViewListFromRouteConnection(routeConnection);
-
-			//display the intermediate stops when we tap on a running line
-			if (views.get(position).isRunning()) {
-				RunningView running = (RunningView) views.get(position);
-				@SuppressLint("SimpleDateFormat") String stops = running.getStops()
-						.stream()
-						.map(stop -> stop.getStation().getName()
-								+ " (" + new SimpleDateFormat("HH:mm").format(stop.getTime())
-								+ ")")
-						.map(str -> "• " + str)
-						.collect(Collectors.joining("\n"));
-
-				if (stops.length() != 0) {
-					new AlertDialog.Builder(this)
-							.setTitle(getResources().getString(R.string.intermediate_stops_title))
-							.setMessage(stops)
-							.setPositiveButton("OK", null)
-							.setIcon(getResources().getDrawable(R.drawable.ic_stops))
-							.show();
-				}
-			}
+			//flip expansion of list, then refresh
+			expanded = !expanded;
+			refresh();
 		});
+
+		// TODO: 15.03.20 handle long press to show pressed station on the map!
+		//use hasStationForMap and getStationForMap in ConnectionDisplayView
 
 		fab = findViewById(R.id.fab_show_on_map);
 		fab.setOnClickListener(v -> {
@@ -105,7 +94,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	@Override
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
-		handleUIUpdate(ConnectionDisplayView.getViewListFromRouteConnection(routeConnection));
+		handleUIUpdate(ConnectionDisplayView.getViewListFromRouteConnection(routeConnection, expanded));
 	}
 
 	@Override

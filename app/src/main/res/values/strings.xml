@@ -112,4 +112,7 @@
     <string name="running_stops_infix">" stop(s), "</string>
     <string name="remove_recent_title">Remove element?</string>
     <string name="remove_recent_message">Do you want to remove this entry?</string>
+    <string name="no_dept_details_avail">No details available</string>
+    <string name="key_back_button_action_bar" translatable="false">show_back_button_in_bar</string>
+    <string name="key_display_expanded" translatable="false">show_expanded_running_view</string>
 </resources>

@@ -14,8 +14,10 @@ public class Departure {
 	private final String lineBackgroundColor;
 	private final int delay;
 	private final String product;
+	private final String departureId;
+	private final String platform;
 
-	public Departure(Station atStation, String line, String direction, long departureTime, String lineBackgroundColor, int delay, String product) {
+	public Departure(Station atStation, String line, String direction, long departureTime, String lineBackgroundColor, int delay, String product, String departureId, String platform) {
 		this.station = atStation;
 		this.line = line;
 		this.direction = direction;
@@ -23,6 +25,8 @@ public class Departure {
 		this.lineBackgroundColor = lineBackgroundColor;
 		this.delay = delay;
 		this.product = product;
+		this.departureId = departureId;
+		this.platform = platform;
 	}
 
 	public Station getStation() {
@@ -66,6 +70,14 @@ public class Departure {
 		return product;
 	}
 
+	public String getDepartureId() {
+		return departureId;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
 	public String toHumanReadable() {
 		return line + " -> " + direction + ": " + getDeltaInMinutes() + " mins (" + delay + "min delay)";
 	}
@@ -93,11 +105,12 @@ public class Departure {
 				Objects.equals(line, departure.line) &&
 				Objects.equals(direction, departure.direction) &&
 				Objects.equals(lineBackgroundColor, departure.lineBackgroundColor) &&
-				Objects.equals(product, departure.product);
+				Objects.equals(product, departure.product) &&
+				Objects.equals(departureId, departure.departureId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(station, line, direction, departureTime, lineBackgroundColor, delay, product);
+		return Objects.hash(station, line, direction, departureTime, lineBackgroundColor, delay, product, departureId);
 	}
 }

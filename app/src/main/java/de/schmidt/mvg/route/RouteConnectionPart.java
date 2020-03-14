@@ -21,6 +21,7 @@ public class RouteConnectionPart implements Serializable {
 	private final Station to;
 	private final List<RouteIntermediateStop> stops;
 	private final List<RoutePathLocation> path;
+	private final List<RoutePathLocation> interchangePath;
 	private final Date departure;
 	private final Date arrival;
 	private final int delay;
@@ -29,12 +30,14 @@ public class RouteConnectionPart implements Serializable {
 	private final String departurePlatform;
 	private final String arrivalPlatform;
 	private final LineColor color;
+	private final String departureId;
 
-	public RouteConnectionPart(Station from, Station to, List<RouteIntermediateStop> stops, List<RoutePathLocation> path, Date departure, Date arrival, int delay, String line, String direction, String departurePlatform, String arrivalPlatform) {
+	public RouteConnectionPart(Station from, Station to, List<RouteIntermediateStop> stops, List<RoutePathLocation> path, List<RoutePathLocation> interchangePath, Date departure, Date arrival, int delay, String line, String direction, String departurePlatform, String arrivalPlatform, String departureId) {
 		this.from = from;
 		this.to = to;
 		this.stops = stops;
 		this.path = path;
+		this.interchangePath = interchangePath;
 		this.departure = departure;
 		this.arrival = arrival;
 		this.delay = delay;
@@ -43,6 +46,7 @@ public class RouteConnectionPart implements Serializable {
 		this.departurePlatform = departurePlatform;
 		this.arrivalPlatform = arrivalPlatform;
 		this.color = LineColor.getForLine(line);
+		this.departureId = departureId;
 	}
 
 	public static RouteConnectionPart fromJSON(JSONObject json) throws JSONException {
@@ -69,6 +73,13 @@ public class RouteConnectionPart implements Serializable {
 		JSONArray jPath = json.getJSONArray("path");
 		for (int i = 0; i < jPath.length(); i++) {
 			path.add(i, RoutePathLocation.fromJSON(jPath.getJSONObject(i)));
+		}
+
+		//parse the interchange path sent by the API (a list of coordinate pairs representing the path during interchange)
+		List<RoutePathLocation> interchangePath = new ArrayList<>();
+		JSONArray jInterPath = json.getJSONArray("interchangePath");
+		for (int i = 0; i < jInterPath.length(); i++) {
+			interchangePath.add(i, RoutePathLocation.fromJSON(jInterPath.getJSONObject(i)));
 		}
 
 		//parse the list of intermediate stops for that part of the connection (station and date pairs)
@@ -121,18 +132,27 @@ public class RouteConnectionPart implements Serializable {
 			arrivalPlatform = "";
 		}
 
+		String departureId;
+		try {
+			departureId = json.getString("departureId");
+		} catch (JSONException e) {
+			departureId = "";
+		}
+
 		return new RouteConnectionPart(
 				from,
 				to,
 				Collections.unmodifiableList(stops),
 				Collections.unmodifiableList(path),
+				Collections.unmodifiableList(interchangePath),
 				new Date(departure),
 				new Date(arrival),
 				delay,
 				line,
 				direction,
 				departurePlatform,
-				arrivalPlatform
+				arrivalPlatform,
+				departureId
 		);
 	}
 
@@ -150,6 +170,10 @@ public class RouteConnectionPart implements Serializable {
 
 	public List<RoutePathLocation> getPath() {
 		return path;
+	}
+
+	public List<RoutePathLocation> getInterchangePath() {
+		return interchangePath;
 	}
 
 	public Date getDepartureTime() {
@@ -193,6 +217,10 @@ public class RouteConnectionPart implements Serializable {
 		return color;
 	}
 
+	public String getDepartureId() {
+		return departureId;
+	}
+
 	@Override
 	public String toString() {
 		return "RouteConnectionPart{" +
@@ -200,6 +228,7 @@ public class RouteConnectionPart implements Serializable {
 				", to=" + to +
 				", stops=" + stops +
 				", path=" + path +
+				", interchangePath=" + interchangePath +
 				", departure=" + departure +
 				", arrival=" + arrival +
 				", delay=" + delay +
@@ -208,6 +237,7 @@ public class RouteConnectionPart implements Serializable {
 				", departurePlatform='" + departurePlatform + '\'' +
 				", arrivalPlatform='" + arrivalPlatform + '\'' +
 				", color=" + color +
+				", departureId='" + departureId + '\'' +
 				'}';
 	}
 }

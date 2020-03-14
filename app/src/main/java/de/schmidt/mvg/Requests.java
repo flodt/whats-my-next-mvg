@@ -155,7 +155,9 @@ public class Requests {
 						single.getLong("departureTime"),
 						single.getString("lineBackgroundColor"),
 						single.getInt("delay"),
-						single.getString("product")
+						single.getString("product"),
+						single.getString("departureId"),
+						single.getString("platform")
 				);
 			} catch (JSONException e) {
 				result[i] = null;

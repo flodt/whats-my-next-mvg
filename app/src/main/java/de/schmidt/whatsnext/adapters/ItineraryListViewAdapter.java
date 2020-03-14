@@ -41,7 +41,7 @@ public class ItineraryListViewAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		return 4;
+		return 5;
 	}
 
 	@SuppressLint({"ViewHolder", "SetTextI18n"})

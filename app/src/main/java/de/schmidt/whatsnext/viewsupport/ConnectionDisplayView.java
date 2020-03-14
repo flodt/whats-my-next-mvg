@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ConnectionDisplayView {
-	public static List<ConnectionDisplayView> getViewListFromRouteConnection(RouteConnection connection) {
+	public static List<ConnectionDisplayView> getViewListFromRouteConnection(RouteConnection connection, boolean expanded) {
 		List<ConnectionDisplayView> views = new ArrayList<>();
 
 		List<RouteConnectionPart> parts = connection.getConnectionParts();
@@ -39,11 +39,19 @@ public abstract class ConnectionDisplayView {
 				));
 			}
 
-			views.add(new RunningView(
-					part.getColor(),
-					part.getStops(),
-					part.getDurationInMinutes()
-			));
+			if (expanded) {
+				part.getStops()
+						.stream()
+						.map(ris -> new StopView(part.getColor(), ris))
+						.forEach(views::add);
+			} else {
+				views.add(new RunningView(
+						part.getColor(),
+						part.getStops(),
+						part.getDurationInMinutes()
+				));
+			}
+
 
 			if (part.getTo().equals(connection.getTo())) { //ending element in list
 				views.add(new ArrivingView(
@@ -61,10 +69,9 @@ public abstract class ConnectionDisplayView {
 	public abstract int getLayoutId();
 
 	/**
-	 * This needs to be different than the layoutId, as the ListView uses a list with indices [0..4) internally!
+	 * This needs to be different than the layoutId, as the ListView uses a list with indices [0..5) internally!
 	 * @return view type id int
 	 */
 	public abstract int getViewType();
 	public abstract View inflate(View view, ConnectionDisplayView content);
-	public abstract boolean isRunning();
 }

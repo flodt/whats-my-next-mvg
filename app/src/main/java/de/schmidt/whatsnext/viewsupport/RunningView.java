@@ -67,11 +67,6 @@ public class RunningView extends ConnectionDisplayView {
 	}
 
 	@Override
-	public boolean isRunning() {
-		return true;
-	}
-
-	@Override
 	public int getViewType() {
 		return 1;
 	}

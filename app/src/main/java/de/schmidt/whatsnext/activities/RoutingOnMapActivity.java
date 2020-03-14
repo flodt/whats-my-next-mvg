@@ -84,6 +84,25 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 						.clickable(false))
 				.forEach(mMap::addPolyline);
 
+		//add polylines for all interchange paths
+		connectionParts
+				.stream()
+				.map(rcp -> new PolylineOptions()
+						.addAll(
+								rcp.getInterchangePath()
+										.stream()
+										.map(RoutePathLocation::getLatLongForMaps)
+										.collect(Collectors.toList())
+						)
+						.color(getResources().getColor(R.color.colorPrimaryDark))
+						.width(10.0f)
+						.zIndex(0.0f)
+						.pattern(
+								Arrays.asList(new Dot(), new Gap(10.0f))
+						)
+						.clickable(false))
+				.forEach(mMap::addPolyline);
+
 		//add point for every intermediate stop
 		connectionParts
 				.stream()
