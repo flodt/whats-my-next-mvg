@@ -83,7 +83,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 				Intent intent = new Intent(RoutingItineraryDisplayActivity.this, RoutingOnMapActivity.class);
 				intent.putExtra(getResources().getString(R.string.key_route_map), routeConnection);
 				intent.putExtra(getResources().getString(R.string.key_route_station), station);
-				intent.putExtra(getResources().getString(R.string.key_show_entire_route), false);
+				intent.putExtra(getResources().getString(R.string.key_show_station_detail), true);
 				startActivity(intent);
 				return true;
 			} else {

@@ -36,7 +36,8 @@ public abstract class ConnectionDisplayView {
 						parts.get(i - 1).getArrivalPlatform(),
 						part.getDeparturePlatform(),
 						part.getLine(),
-						part.getDirection()
+						part.getDirection(),
+						part.getDelay()
 				));
 			}
 

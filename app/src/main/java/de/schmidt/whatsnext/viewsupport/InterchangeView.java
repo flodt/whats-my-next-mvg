@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
+import de.schmidt.util.ColorUtils;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +25,9 @@ public class InterchangeView extends ConnectionDisplayView {
 	private final String departurePlatform;
 	private final String line;
 	private final String direction;
+	private final int delay;
 
-	public InterchangeView(Station at, LineColor formerColor, LineColor nextColor, Date arrival, Date departure, String arrivalPlatform, String departurePlatform, String line, String direction) {
+	public InterchangeView(Station at, LineColor formerColor, LineColor nextColor, Date arrival, Date departure, String arrivalPlatform, String departurePlatform, String line, String direction, int delay) {
 		this.at = at;
 		this.formerColor = formerColor;
 		this.nextColor = nextColor;
@@ -35,6 +37,7 @@ public class InterchangeView extends ConnectionDisplayView {
 		this.departurePlatform = departurePlatform;
 		this.line = line;
 		this.direction = direction;
+		this.delay = delay;
 	}
 
 	public Station getAt() {
@@ -71,6 +74,10 @@ public class InterchangeView extends ConnectionDisplayView {
 
 	public String getDirection() {
 		return direction;
+	}
+
+	public int getDelay() {
+		return delay;
 	}
 
 	@Override
@@ -122,7 +129,10 @@ public class InterchangeView extends ConnectionDisplayView {
 		} else {
 			infoText += df.format(inter.getDeparture());
 		}
-		info.setText(infoText);
+		if (inter.getDelay() != 0) {
+			infoText += " " + ColorUtils.getHtmlColored("(+" + inter.getDelay() + ")", "#FF0000");
+		}
+		info.setText(Html.fromHtml(infoText));
 
 		destination.setText(
 				Html.fromHtml(LineColor.getHtmlColored(inter.getLine()) + ": " + inter.getDirection())

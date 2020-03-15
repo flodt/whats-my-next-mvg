@@ -34,4 +34,8 @@ public class ColorUtils {
 				context.getResources().getColor(R.color.mvg_8)
 		};
 	}
+
+	public static String getHtmlColored(String text, String color) {
+		return "<font color=" + color + ">" + text + "</font>";
+	}
 }

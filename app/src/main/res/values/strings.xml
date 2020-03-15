@@ -116,5 +116,5 @@
     <string name="no_dept_details_avail">No details available</string>
     <string name="key_back_button_action_bar" translatable="false">show_back_button_in_bar</string>
     <string name="key_display_expanded" translatable="false">show_expanded_running_view</string>
-    <string name="key_show_entire_route" translatable="false">mode_of_map</string>
+    <string name="key_show_station_detail" translatable="false">show_station_detail_on_map</string>
 </resources>

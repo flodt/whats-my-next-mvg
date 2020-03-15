@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
+import de.schmidt.util.ColorUtils;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
@@ -101,7 +102,10 @@ public class DepartingView extends ConnectionDisplayView {
 		} else {
 			infoText = df.format(departure.getDeparture());
 		}
-		info.setText(infoText);
+		if (departure.getDelay() != 0) {
+			infoText += " " + ColorUtils.getHtmlColored("(+" + departure.getDelay() + ")", "#FF0000");
+		}
+		info.setText(Html.fromHtml(infoText));
 
 		Spanned destFromHtml;
 		if (departure.getDirection().equals("")) {
