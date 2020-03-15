@@ -1,18 +1,16 @@
 package de.schmidt.whatsnext.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
-import android.view.View;
 import android.widget.ListView;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.route.RouteConnection;
+import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.whatsnext.R;
@@ -20,13 +18,10 @@ import de.schmidt.whatsnext.adapters.ItineraryListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.ConnectionDisplayView;
-import de.schmidt.whatsnext.viewsupport.RunningView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView> {
 	private static final String TAG = "ItineraryDisplayActivity";
@@ -79,9 +74,22 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 			expanded = !expanded;
 			refresh();
 		});
+		listView.setLongClickable(true);
+		listView.setOnItemLongClickListener((parent, view, position, id) -> {
+			ConnectionDisplayView tapped = views.get(position);
 
-		// TODO: 15.03.20 handle long press to show pressed station on the map!
-		//use hasStationForMap and getStationForMap in ConnectionDisplayView
+			if (tapped.hasStationForMap()) {
+				Station station = tapped.getStationForMap();
+				Intent intent = new Intent(RoutingItineraryDisplayActivity.this, RoutingOnMapActivity.class);
+				intent.putExtra(getResources().getString(R.string.key_route_map), routeConnection);
+				intent.putExtra(getResources().getString(R.string.key_route_station), station);
+				intent.putExtra(getResources().getString(R.string.key_show_entire_route), false);
+				startActivity(intent);
+				return true;
+			} else {
+				return false;
+			}
+		});
 
 		fab = findViewById(R.id.fab_show_on_map);
 		fab.setOnClickListener(v -> {

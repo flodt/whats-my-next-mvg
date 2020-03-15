@@ -119,4 +119,14 @@ public class DepartingView extends ConnectionDisplayView {
 	public int getViewType() {
 		return 0;
 	}
+
+	@Override
+	public boolean hasStationForMap() {
+		return true;
+	}
+
+	@Override
+	public Station getStationForMap() {
+		return from;
+	}
 }

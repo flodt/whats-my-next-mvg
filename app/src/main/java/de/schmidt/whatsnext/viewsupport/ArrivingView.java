@@ -87,4 +87,14 @@ public class ArrivingView extends ConnectionDisplayView {
 	public int getViewType() {
 		return 3;
 	}
+
+	@Override
+	public boolean hasStationForMap() {
+		return true;
+	}
+
+	@Override
+	public Station getStationForMap() {
+		return to;
+	}
 }

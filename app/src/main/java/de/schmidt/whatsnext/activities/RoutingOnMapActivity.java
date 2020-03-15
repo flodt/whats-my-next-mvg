@@ -51,8 +51,73 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
 
+		//get display mode: true -> show entire route, false -> show station detail
+		boolean entireRoute = getIntent().getBooleanExtra(getString(R.string.key_show_entire_route), true);
+
 		//grab the route connection from the intent
 		RouteConnection routeConnection = (RouteConnection) getIntent().getSerializableExtra(getString(R.string.key_route_map));
+
+		if (entireRoute) {
+			//draw the route from the info in the RouteConnection object
+			drawEntireRoute(routeConnection);
+		} else {
+			//draw route line and set pin at selected station
+			//get Station from Intent
+			Station station = (Station) getIntent().getSerializableExtra(getString(R.string.key_route_station));
+			drawStationDetail(routeConnection, station);
+		}
+	}
+
+	private void drawStationDetail(RouteConnection routeConnection, Station station) {
+		Objects.requireNonNull(station);
+		List<RouteConnectionPart> connectionParts = Objects.requireNonNull(routeConnection).getConnectionParts();
+
+		//drop pin at station
+		mMap.addMarker(new MarkerOptions()
+							   .position(station.getLatLongForMaps())
+							   .title(station.getName()));
+
+		//add polylines for each path segment in the routeconnection
+		connectionParts
+				.stream()
+				.map(rcp -> new PolylineOptions()
+						.addAll(
+								rcp.getPath()
+										.stream()
+										.map(RoutePathLocation::getLatLongForMaps)
+										.collect(Collectors.toList())
+						)
+						.color(Color.parseColor(rcp.getColor().getPrimary()))
+						.width(10.0f)
+						.zIndex(0.0f)
+						.pattern(
+								rcp.getLine().equals("Walking") ? Arrays.asList(new Dot(), new Gap(10.0f)) : null
+						)
+						.clickable(false))
+				.forEach(mMap::addPolyline);
+
+		//add point for every intermediate stop
+		Stream.concat(
+				connectionParts
+						.stream()
+						.map(RouteConnectionPart::getStops)
+						.flatMap(List::stream)
+						.map(RouteIntermediateStop::getStation),
+				Stream.of(routeConnection.getFrom(), routeConnection.getTo()))
+				.map(Station::getLatLongForMaps)
+				.map(loc -> new CircleOptions()
+						.center(loc)
+						.radius(15.0d)
+						.strokeWidth(5.0f)
+						.fillColor(getColor(R.color.white))
+						.zIndex(1.0f)
+						.clickable(false))
+				.forEach(mMap::addCircle);
+
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(station.getLatLongForMaps(), 14.5f));
+	}
+
+	public void drawEntireRoute(RouteConnection routeConnection) {
 		List<RouteConnectionPart> connectionParts = Objects.requireNonNull(routeConnection).getConnectionParts();
 
 		//drop pins at all of the interchange stations

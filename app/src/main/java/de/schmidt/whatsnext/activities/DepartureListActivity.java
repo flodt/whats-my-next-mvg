@@ -31,6 +31,7 @@ import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.caching.DepartureCache;
+import de.schmidt.util.network.DepartureDetailNetworkAccess;
 import de.schmidt.util.network.ListableNetworkAccess;
 import de.schmidt.whatsnext.adapters.DepartureListViewAdapter;
 import de.schmidt.whatsnext.R;
@@ -103,40 +104,8 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 				//get the clicked departure
 				Departure clicked = departures.get(position);
 
-				//try and get the same departure for viewing it in a different activity
-				new Thread(() -> {
-					try {
-						Requests requests = Requests.instance();
-
-						Station start = clicked.getStation();
-						Station destination = requests.getStationByName(clicked.getDirection());
-						RouteOptions opt = RouteOptions.getBase()
-								.withStart(start)
-								.withDestination(destination);
-
-						RouteConnection connection = requests.getRoute(opt)
-								.stream()
-								.filter(conn -> conn.getConnectionParts()
-										.stream()
-										.allMatch(rcp -> Objects.equals(rcp.getDepartureId(), clicked.getDepartureId())))
-								.findFirst()
-								.orElseThrow(RuntimeException::new);
-
-						Intent intent = new Intent(DepartureListActivity.this, RoutingItineraryDisplayActivity.class);
-						intent.putExtra(getString(R.string.key_itinerary), connection);
-						intent.putExtra(getString(R.string.key_back_button_action_bar), false);
-						intent.putExtra(getString(R.string.key_display_expanded), true);
-						startActivity(intent);
-					} catch (JSONException e) {
-						Log.e(TAG, "onItemClick: json error in getting departure details", e);
-						runOnUiThread(() -> Toast.makeText(DepartureListActivity.this, getResources().getString(R.string.no_dept_details_avail), Toast.LENGTH_SHORT).show());
-					} catch (RuntimeException e) {
-						Log.e(TAG, "onItemClick: departure cannot be found", e);
-						runOnUiThread(() -> Toast.makeText(DepartureListActivity.this, getResources().getString(R.string.no_dept_details_avail), Toast.LENGTH_SHORT).show());
-					} finally {
-						dialog.dismiss();
-					}
-				}).start();
+				//start network access and pass to other activity
+				new DepartureDetailNetworkAccess(DepartureListActivity.this, dialog, clicked).execute();
 			}
 		});
 	}

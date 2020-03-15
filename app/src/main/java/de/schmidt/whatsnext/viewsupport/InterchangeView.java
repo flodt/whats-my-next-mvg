@@ -143,4 +143,14 @@ public class InterchangeView extends ConnectionDisplayView {
 	public int getViewType() {
 		return 2;
 	}
+
+	@Override
+	public boolean hasStationForMap() {
+		return true;
+	}
+
+	@Override
+	public Station getStationForMap() {
+		return at;
+	}
 }

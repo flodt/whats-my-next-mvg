@@ -3,6 +3,7 @@ package de.schmidt.whatsnext.viewsupport;
 import android.view.View;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
+import de.schmidt.mvg.traffic.Station;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,4 +75,6 @@ public abstract class ConnectionDisplayView {
 	 */
 	public abstract int getViewType();
 	public abstract View inflate(View view, ConnectionDisplayView content);
+	public abstract boolean hasStationForMap();
+	public abstract Station getStationForMap();
 }

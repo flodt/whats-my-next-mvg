@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.traffic.LineColor;
+import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 
 import java.util.List;
@@ -69,5 +70,15 @@ public class RunningView extends ConnectionDisplayView {
 	@Override
 	public int getViewType() {
 		return 1;
+	}
+
+	@Override
+	public boolean hasStationForMap() {
+		return false;
+	}
+
+	@Override
+	public Station getStationForMap() {
+		return null;
 	}
 }

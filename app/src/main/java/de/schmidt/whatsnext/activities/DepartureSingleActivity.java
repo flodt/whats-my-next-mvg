@@ -1,12 +1,15 @@
 package de.schmidt.whatsnext.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,16 +24,18 @@ import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.caching.DepartureCache;
+import de.schmidt.util.network.DepartureDetailNetworkAccess;
 import de.schmidt.util.network.SingleNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
 
+import java.security.interfaces.DSAKey;
 import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class DepartureSingleActivity extends ActionBarBaseActivity implements Updatable<Departure> {
+public class DepartureSingleActivity extends ActionBarBaseActivity implements Updatable<Departure>, View.OnClickListener {
 	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
@@ -40,6 +45,7 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 	private String customName;
 	private BottomNavigationView navBar;
 	private FloatingActionButton fab;
+	private Departure displayed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +75,19 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 			refresh();
 			pullToRefresh.setRefreshing(false);
 		});
+
+		//allow tapping of all these components to go to detail view
+		inMinutes.setOnClickListener(this);
+		direction.setOnClickListener(this);
+		line.setOnClickListener(this);
+		minutesFixedLabel.setOnClickListener(this);
 	}
 
 	@Override
 	public void refresh() {
 		pullToRefresh.setRefreshing(true);
+
+		displayed = null;
 
 		//get station menu index from preferences, default to Hbf
 		SharedPreferences prefs = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE);
@@ -116,6 +130,8 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 		} else {
 			runOnUiThread(() -> {
 				Departure dept = dataSet.get(0);
+				this.displayed = dept;
+
 				setTitle(dept.getStation().getName());
 				inMinutes.setText("" + dept.getDeltaInMinutes());
 				direction.setText(dept.getDirection());
@@ -165,5 +181,17 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 	@Override
 	public void updateFromCache() {
 		handleUIUpdate(DepartureCache.getInstance().getCache());
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (displayed != null) {
+			ProgressDialog dialog = new ProgressDialog(DepartureSingleActivity.this);
+			dialog.setMessage(getResources().getString(R.string.loading_progress_dialog));
+			dialog.setCancelable(false);
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.show();
+			new DepartureDetailNetworkAccess(DepartureSingleActivity.this, dialog, displayed).execute();
+		}
 	}
 }

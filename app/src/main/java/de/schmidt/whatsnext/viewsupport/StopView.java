@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.traffic.LineColor;
+import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
@@ -65,5 +66,15 @@ public class StopView extends ConnectionDisplayView {
 	@Override
 	public int getViewType() {
 		return 4;
+	}
+
+	@Override
+	public boolean hasStationForMap() {
+		return true;
+	}
+
+	@Override
+	public Station getStationForMap() {
+		return stop.getStation();
 	}
 }

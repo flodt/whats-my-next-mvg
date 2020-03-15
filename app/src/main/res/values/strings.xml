@@ -89,6 +89,7 @@
     <string name="intermediate_stops_title">Intermediate stops</string>
     <string name="title_activity_routing_on_map">Route</string>
     <string name="key_route_map" translatable="false">route_for_map</string>
+    <string name="key_route_station" translatable="false">station_for_map</string>
     <string name="pref_key_inter_filter" translatable="false">INTERRUPT_FILTER</string>
     <string name="pref_key_recents" translatable="false">RECENT_ROUTE_ENTRIES</string>
     <string name="recents_from_label">From:</string>
@@ -115,4 +116,5 @@
     <string name="no_dept_details_avail">No details available</string>
     <string name="key_back_button_action_bar" translatable="false">show_back_button_in_bar</string>
     <string name="key_display_expanded" translatable="false">show_expanded_running_view</string>
+    <string name="key_show_entire_route" translatable="false">mode_of_map</string>
 </resources>
