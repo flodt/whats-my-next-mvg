@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "de.schmidt.whatsnext"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 4
         versionName "1.0.3"

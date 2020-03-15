@@ -1,18 +1,28 @@
 package de.schmidt.whatsnext.viewsupport;
 
+import android.content.Context;
 import android.view.View;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.mvg.traffic.Station;
+import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.RoutingItineraryDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ConnectionDisplayView {
-	public static List<ConnectionDisplayView> getViewListFromRouteConnection(RouteConnection connection, boolean expanded) {
+	public static List<ConnectionDisplayView> getViewListFromRouteConnection(RouteConnection connection, boolean expanded, double average, Context context) {
 		List<ConnectionDisplayView> views = new ArrayList<>();
 
 		List<RouteConnectionPart> parts = connection.getConnectionParts();
+
+		//issue warnings if necessary:
+		//connection duration warning
+		if (connection.getDurationInMinutes() > 1.50 * average) {
+			views.add(new WarningView(context.getResources().getString(R.string.warning_long_travel_time)));
+		}
+
 		for (int i = 0; i < parts.size(); i++) {
 			RouteConnectionPart part = parts.get(i);
 

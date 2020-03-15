@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
+import de.schmidt.util.ColorUtils;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
@@ -83,7 +84,16 @@ public class AlternativesListViewAdapter extends BaseAdapter {
 
 		delta.setText("in " + connection.getDeltaToDepartureInMinutes() + " min.");
 
-		duration.setText("(" + connection.getDurationInMinutes() + " min.)");
+		//color the duration orange when it is higher than 1.5x the average duration of all connections
+		double average = connections
+				.stream()
+				.mapToLong(RouteConnection::getDurationInMinutes)
+				.mapToInt(l -> (int) l)
+				.average()
+				.orElse(Double.POSITIVE_INFINITY);
+		String color = connection.getDurationInMinutes() > 1.50 * average ? "#FF0000" : "#000000";
+		String text = "(" + connection.getDurationInMinutes() + " min.)";
+		duration.setText(Html.fromHtml(ColorUtils.getHtmlColored(text, color)));
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		timeRange.setText(

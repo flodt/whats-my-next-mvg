@@ -115,6 +115,9 @@
     <string name="remove_recent_message">Do you want to remove this entry?</string>
     <string name="no_dept_details_avail">No details available</string>
     <string name="key_back_button_action_bar" translatable="false">show_back_button_in_bar</string>
+    <string name="key_average_duration" translatable="false">average_duration_of_connections</string>
     <string name="key_display_expanded" translatable="false">show_expanded_running_view</string>
     <string name="key_show_station_detail" translatable="false">show_station_detail_on_map</string>
+    <string name="warning_header">Warning</string>
+    <string name="warning_long_travel_time">This connection has a significantly longer travel time than the alternatives. Consider re-checking travel options.</string>
 </resources>

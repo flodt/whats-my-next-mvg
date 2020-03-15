@@ -34,6 +34,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	private ActionBar actionBar;
 	private FloatingActionButton fab;
 	private boolean expanded = false;
+	private double average;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 		);
 
 		expanded = getIntent().getBooleanExtra(getResources().getString(R.string.key_display_expanded), false);
+		average = getIntent().getDoubleExtra(getString(R.string.key_average_duration), Double.POSITIVE_INFINITY);
 
 		swipeRefresh = findViewById(R.id.pull_to_refresh_itinerary);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
@@ -102,7 +104,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	@Override
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
-		handleUIUpdate(ConnectionDisplayView.getViewListFromRouteConnection(routeConnection, expanded));
+		handleUIUpdate(ConnectionDisplayView.getViewListFromRouteConnection(routeConnection, expanded, average, this));
 	}
 
 	@Override

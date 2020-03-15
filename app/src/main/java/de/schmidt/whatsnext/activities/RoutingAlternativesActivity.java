@@ -60,6 +60,13 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 			Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingItineraryDisplayActivity.class);
 			intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
 			intent.putExtra(getString(R.string.key_back_button_action_bar), true);
+			double average = connections
+					.stream()
+					.mapToLong(RouteConnection::getDurationInMinutes)
+					.mapToInt(l -> (int) l)
+					.average()
+					.orElse(Double.POSITIVE_INFINITY);
+			intent.putExtra(getString(R.string.key_average_duration), average);
 			startActivity(intent);
 		});
 	}
