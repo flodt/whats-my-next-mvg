@@ -77,7 +77,7 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 							   .position(station.getLatLongForMaps())
 							   .title(station.getName()));
 
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(station.getLatLongForMaps(), 14.5f));
+		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(station.getLatLongForMaps(), 14.5f));
 	}
 
 	public void drawEntireRoute(RouteConnection routeConnection) {
@@ -148,7 +148,8 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 				.forEach(mMap::addCircle);
 
 		//move camera to the center point of the route
-		LatLng[] locations = Stream.concat(
+		LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+		Stream.concat(
 				connectionParts.stream()
 						.map(RouteConnectionPart::getStops)
 						.flatMap(List::stream)
@@ -156,10 +157,11 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 				Stream.of(routeConnection.getFrom(), routeConnection.getTo())
 		)
 				.map(Station::getLatLongForMaps)
-				.toArray(LatLng[]::new);
+				.forEach(bounds::include);
 
-		LatLng cameraLocation = getGeographicCenter(locations);
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 11.0f));
+		//move camera to fit bounds of markers
+		final int padding = 150;
+		mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), padding));
 	}
 
 	/**
