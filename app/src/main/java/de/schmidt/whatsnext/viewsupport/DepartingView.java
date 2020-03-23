@@ -96,9 +96,7 @@ public class DepartingView extends ConnectionDisplayView {
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		String infoText;
 		if (departure.getDeparturePlatform().length() != 0) {
-			infoText = String.join(", ",
-								   departure.getDeparturePlatform(),
-								   df.format(departure.getDeparture()));
+			infoText = departure.getDeparturePlatform() + ", " + df.format(departure.getDeparture());
 		} else {
 			infoText = df.format(departure.getDeparture());
 		}
@@ -111,7 +109,7 @@ public class DepartingView extends ConnectionDisplayView {
 		if (departure.getDirection().equals("")) {
 			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(departure.getLine()));
 		} else {
-			destFromHtml = Html.fromHtml(String.join(" ▸ ", LineColor.getHtmlColored(departure.getLine()), departure.getDirection()));
+			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(departure.getLine()) + " ▸ " + departure.getDirection());
 		}
 		destination.setText(destFromHtml);
 

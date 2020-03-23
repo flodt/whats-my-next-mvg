@@ -28,11 +28,6 @@ public class InterruptionsNetworkAccess extends AsyncTask<Void, Void, List<Inter
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
 	protected void onPostExecute(List<Interruption> interruptions) {
 		//set cache, trigger UI update
 		super.onPostExecute(interruptions);

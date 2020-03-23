@@ -8,8 +8,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class RouteStationSelection {
-	private Station start;
-	private Station destination;
+	private final Station start;
+	private final Station destination;
 
 	private RouteStationSelection(Station start, Station destination) {
 		this.start = start;

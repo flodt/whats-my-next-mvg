@@ -33,11 +33,6 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
 	protected void onPostExecute(Departure[] departures) {
 		//save to cache and trigger UI update
 		super.onPostExecute(departures);

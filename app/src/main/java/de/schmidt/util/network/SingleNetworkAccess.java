@@ -34,11 +34,6 @@ public class SingleNetworkAccess extends AsyncTask<Location, Void, Departure> {
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
 	protected void onPostExecute(Departure departure) {
 		//handle UI update
 		super.onPostExecute(departure);

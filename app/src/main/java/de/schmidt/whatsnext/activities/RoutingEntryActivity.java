@@ -87,27 +87,24 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			});
 		});
 		recentsList.setLongClickable(true);
-		recentsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				//ask for confirmation
-				new AlertDialog.Builder(RoutingEntryActivity.this)
-						.setTitle(getResources().getString(R.string.remove_recent_title))
-						.setMessage(getResources().getString(R.string.remove_recent_message))
-						.setIcon(R.drawable.ic_warning)
-						.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
-						.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
-							//remove the element from the list
-							PreferenceManager.getInstance()
-									.removeFromRecents(RoutingEntryActivity.this, recents.get(position));
-							refreshRecentsList();
-							dialog.dismiss();
-						})
-						.create()
-						.show();
+		recentsList.setOnItemLongClickListener((parent, view, position, id) -> {
+			//ask for confirmation
+			new AlertDialog.Builder(RoutingEntryActivity.this)
+					.setTitle(getResources().getString(R.string.remove_recent_title))
+					.setMessage(getResources().getString(R.string.remove_recent_message))
+					.setIcon(R.drawable.ic_warning)
+					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
+					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
+						//remove the element from the list
+						PreferenceManager.getInstance()
+								.removeFromRecents(RoutingEntryActivity.this, recents.get(position));
+						refreshRecentsList();
+						dialog.dismiss();
+					})
+					.create()
+					.show();
 
-				return true;
-			}
+			return true;
 		});
 
 		fromInput.setThreshold(1);

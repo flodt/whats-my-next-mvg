@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Departure {
 	private final Station station;
@@ -58,12 +59,9 @@ public class Departure {
 	}
 
 	public long getDeltaInMinutes() {
-		Duration diff = Duration.between(
-				LocalDateTime.now(),
-				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault()).plusMinutes(delay)
-		);
-
-		return Math.max(diff.toMinutes(), 0);
+		long duration = getDepartureTime().getTime() - System.currentTimeMillis();
+		long diff = TimeUnit.MILLISECONDS.toMinutes(duration);
+		return Math.max(diff, 0);
 	}
 
 	public String getProduct() {

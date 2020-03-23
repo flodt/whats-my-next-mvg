@@ -16,13 +16,13 @@ public class Interruption {
 	private final long id;
 	private final String title;
 	private final List<InterruptionLine> lines;
-	private final LocalDateTime from;
-	private final LocalDateTime until;
+	private final Date from;
+	private final Date until;
 	private final String durationAsText;
 	private final String descriptionText;
-	private final LocalDateTime modificationDate;
+	private final Date modificationDate;
 
-	private Interruption(long id, String title, List<InterruptionLine> lines, LocalDateTime from, LocalDateTime until, String durationAsText, String descriptionText, LocalDateTime modificationDate) {
+	private Interruption(long id, String title, List<InterruptionLine> lines, Date from, Date until, String durationAsText, String descriptionText, Date modificationDate) {
 		this.id = id;
 		this.title = title;
 		this.lines = lines;
@@ -62,11 +62,11 @@ public class Interruption {
 		return sb.toString();
 	}
 
-	public LocalDateTime getFrom() {
+	public Date getFrom() {
 		return from;
 	}
 
-	public LocalDateTime getUntil() {
+	public Date getUntil() {
 		return until;
 	}
 
@@ -78,7 +78,7 @@ public class Interruption {
 		return descriptionText;
 	}
 
-	public LocalDateTime getModificationDate() {
+	public Date getModificationDate() {
 		return modificationDate;
 	}
 
@@ -103,11 +103,11 @@ public class Interruption {
 				json.getLong("id"),
 				json.getString("title"),
 				lines,
-				LocalDateTime.ofInstant(new Date(duration.getLong("from")).toInstant(), ZoneId.systemDefault()),
-				LocalDateTime.ofInstant(new Date(duration.getLong("until")).toInstant(), ZoneId.systemDefault()),
+				new Date(duration.getLong("from")),
+				new Date(duration.getLong("until")),
 				duration.getString("text"),
 				json.getString("text"),
-				LocalDateTime.ofInstant(new Date(json.getLong("modificationDate")).toInstant(), ZoneId.systemDefault())
+				new Date(json.getLong("modificationDate"))
 		);
 	}
 

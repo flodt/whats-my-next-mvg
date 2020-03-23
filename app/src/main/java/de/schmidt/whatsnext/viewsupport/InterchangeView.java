@@ -123,9 +123,7 @@ public class InterchangeView extends ConnectionDisplayView {
 		String infoText = view.getResources().getString(R.string.inter_arrival_elem) + df.format(inter.getArrival())
 				+ view.getResources().getString(R.string.inter_departure_elem);
 		if (inter.getDeparturePlatform().length() != 0) {
-			infoText += String.join(", ",
-								   inter.getDeparturePlatform(),
-								   df.format(inter.getDeparture()));
+			infoText += inter.getDeparturePlatform() + ", " + df.format(inter.getDeparture());
 		} else {
 			infoText += df.format(inter.getDeparture());
 		}
@@ -142,7 +140,7 @@ public class InterchangeView extends ConnectionDisplayView {
 		if (inter.getDirection().equals("")) {
 			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(inter.getLine()));
 		} else {
-			destFromHtml = Html.fromHtml(String.join(" ▸ ", LineColor.getHtmlColored(inter.getLine()), inter.getDirection()));
+			destFromHtml = Html.fromHtml(LineColor.getHtmlColored(inter.getLine()) + " ▸ " + inter.getDirection());
 		}
 		destination.setText(destFromHtml);
 

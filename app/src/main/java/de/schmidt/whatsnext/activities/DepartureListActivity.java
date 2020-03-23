@@ -92,21 +92,18 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		adapter = new DepartureListViewAdapter(this, departures);
 		listView.setAdapter(adapter);
 		listView.setClickable(true);
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				ProgressDialog dialog = new ProgressDialog(DepartureListActivity.this);
-				dialog.setMessage(getResources().getString(R.string.loading_progress_dialog));
-				dialog.setCancelable(false);
-				dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				dialog.show();
+		listView.setOnItemClickListener((parent, view, position, id) -> {
+			ProgressDialog dialog = new ProgressDialog(DepartureListActivity.this);
+			dialog.setMessage(getResources().getString(R.string.loading_progress_dialog));
+			dialog.setCancelable(false);
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.show();
 
-				//get the clicked departure
-				Departure clicked = departures.get(position);
+			//get the clicked departure
+			Departure clicked = departures.get(position);
 
-				//start network access and pass to other activity
-				new DepartureDetailNetworkAccess(DepartureListActivity.this, dialog, clicked).execute();
-			}
+			//start network access and pass to other activity
+			new DepartureDetailNetworkAccess(DepartureListActivity.this, dialog, clicked).execute();
 		});
 	}
 

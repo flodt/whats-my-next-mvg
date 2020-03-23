@@ -24,11 +24,6 @@ public class RoutingNetworkAccess extends AsyncTask<Void, Void, List<RouteConnec
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
 	protected List<RouteConnection> doInBackground(Void... voids) {
 		//do routing request
 		try {

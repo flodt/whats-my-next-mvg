@@ -72,9 +72,7 @@ public class ArrivingView extends ConnectionDisplayView {
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		String infoText;
 		if (arrival.getArrivalPlatform().length() != 0) {
-			infoText = String.join(", ",
-								   arrival.getArrivalPlatform(),
-								   df.format(arrival.getArrival()));
+			infoText = arrival.getArrivalPlatform() + ", " + df.format(arrival.getArrival());
 		} else {
 			infoText = df.format(arrival.getArrival());
 		}

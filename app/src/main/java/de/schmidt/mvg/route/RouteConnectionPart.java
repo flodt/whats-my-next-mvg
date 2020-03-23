@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RouteConnectionPart implements Serializable {
 	private static final String TAG = "RouteConnectionPart";
@@ -185,12 +186,8 @@ public class RouteConnectionPart implements Serializable {
 	}
 
 	public long getDurationInMinutes() {
-		Duration diff = Duration.between(
-				LocalDateTime.ofInstant(getDepartureTime().toInstant(), ZoneId.systemDefault()),
-				LocalDateTime.ofInstant(getArrivalTime().toInstant(), ZoneId.systemDefault())
-		);
-
-		return diff.toMinutes();
+		long duration = getArrivalTime().getTime() - getDepartureTime().getTime();
+		return TimeUnit.MILLISECONDS.toMinutes(duration);
 	}
 
 	public int getDelay() {
