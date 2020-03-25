@@ -67,6 +67,9 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 			drawStationDetail(station);
 		}
 
+		mMap.getUiSettings().setCompassEnabled(true);
+		mMap.getUiSettings().setMapToolbarEnabled(true);
+		mMap.getUiSettings().setMyLocationButtonEnabled(true);
 	}
 
 	private void drawStationDetail(Station station) {
