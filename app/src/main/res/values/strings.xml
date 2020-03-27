@@ -53,11 +53,13 @@
         <item>Choose by name…</item>
     </string-array>
 
-    <string name="example_int_title" translatable="false">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor: Unterbrechung wegen
+    <string name="example_int_title" translatable="false">Hauptbahnhof bzw. Karlsplatz (Stachus) - Sendlinger Tor:
+        Unterbrechung wegen
         Gleisbauarbeiten
     </string>
     <string name="example_int_duration" translatable="false">25.03.2020 - 26.03.2020</string>
-    <string name="example_int_text" translatable="false">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße ist der
+    <string name="example_int_text" translatable="false">Wegen Gleisbauarbeiten im Bereich Sonnen-/Schwanthalerstraße
+        ist der
         Streckenabschnitt Karlsplatz (Stachus) - Sendlinger Tor am Mittwoch, 25. März und Donnerstag, 26. März 2020 von
         ca. 01.40 bis 04.15 Uhr gesperrt. An der (H) Sendlinger Tor fahren die Tramlinien N17 > Effnerplatz und N27 >
         Großhesseloher Brücke in der Brunnenschleife (vor der Kirche) ab. Die NachtTram N17 ist zwischen den (H)
@@ -119,6 +121,12 @@
     <string name="key_display_expanded" translatable="false">show_expanded_running_view</string>
     <string name="key_show_station_detail" translatable="false">show_station_detail_on_map</string>
     <string name="warning_header">Warning</string>
-    <string name="warning_long_travel_time">This connection has a significantly longer travel time than the alternatives. Consider re-checking travel options.</string>
+    <string name="warning_long_travel_time">This connection has a significantly longer travel time than the
+        alternatives. Consider re-checking travel options.
+    </string>
     <string name="current_location">Current location</string>
+    <string name="pref_key_stations">STATION_LIST</string>
+    <string name="pref_key_selected_station_in_list">SELECTED_STATION_IN_LIST</string>
+    <string name="remove_station_title">Remove station?</string>
+    <string name="remove_station_message">Do you want to remove this station?</string>
 </resources>

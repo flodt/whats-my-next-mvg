@@ -1,6 +1,7 @@
 package de.schmidt.mvg.adapters;
 
 import android.content.Context;
+import androidx.annotation.Nullable;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 
@@ -28,5 +29,10 @@ public class GeoLocationSwitchStationListItem extends SwitchStationListItem {
 	@Override
 	public String wrapToString() {
 		return "loc";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof GeoLocationSwitchStationListItem;
 	}
 }

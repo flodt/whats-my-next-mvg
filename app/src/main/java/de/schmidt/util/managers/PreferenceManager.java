@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
 import de.schmidt.mvg.adapters.RouteStationSelection;
+import de.schmidt.mvg.adapters.SwitchStationListItem;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
@@ -125,71 +126,70 @@ public class PreferenceManager {
 				.show();
 	}
 
-	public void updateStationSelection(Context context) {
+	public List<SwitchStationListItem> getStationList(Context context) {
+		//get the raw data from shared preferences and unwrap
 		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
+		final String defaultListValue = "loc";
+		String raw = prefs.getString(context.getString(R.string.pref_key_stations), defaultListValue);
 
-		//read selected station from prefs
-		String[] keys = context.getResources().getStringArray(R.array.station_keys);
-		String[] readable = context.getResources().getStringArray(R.array.station_readable);
-		int checked = prefs.getInt(context.getResources().getString(R.string.selection_station_in_menu), 1);
-
-		//show dialog for selection
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle(R.string.select_station_title);
-		builder.setIcon(R.drawable.ic_station_selection_black);
-		builder.setSingleChoiceItems(readable, checked, (dialog, which) -> {
-			//save selection to preferences, this is read by the other activities
-			prefs.edit().putInt(context.getResources().getString(R.string.selection_station_in_menu), which).apply();
-
-			//handle custom name here
-			if (keys[which].equals("BY_NAME")) {
-				getUserInputForCustomStationName(dialog, context);
-				return;
-			}
-
-			dialog.cancel();
-			refresh(context);
-		});
-		builder.setNeutralButton(R.string.dismiss_settings, (dialog, which) -> {
-			dialog.dismiss();
-			refresh(context);
-		});
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
+		return Arrays.stream(raw.split("\\$"))
+				.map(SwitchStationListItem::unwrapFromString)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 	}
 
-	public void getUserInputForCustomStationName(DialogInterface parent, Context context) {
-		//input dialog for custom station name
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle(context.getResources().getString(R.string.custom_station_name_title));
+	public void setStationList(Context context, List<SwitchStationListItem> stations) {
+		//save the list to shared preferences
+		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.edit()
+				.putString(
+						context.getString(R.string.pref_key_stations),
+						stations.stream()
+								.map(SwitchStationListItem::wrapToString)
+								.collect(Collectors.joining("$"))
+				)
+				.apply();
+	}
 
-		EditText input = new EditText(context);
-		input.setInputType(InputType.TYPE_CLASS_TEXT);
-		builder.setView(input);
+	public void addToStationList(Context context, SwitchStationListItem item) {
+		//read, add, save back to preferences
+		final List<SwitchStationListItem> list = getStationList(context);
+		list.add(item);
+		setStationList(context, list);
+	}
 
-		builder.setPositiveButton(R.string.save_settings, (dialog, which) -> {
-			String userInput = input.getText().toString().trim();
-			setCustomNameFieldInContext(userInput, context);
+	public void removeFromStationList(Context context, SwitchStationListItem item) {
+		//read, remove, save back to preferences
+		final List<SwitchStationListItem> list = getStationList(context);
+		list.remove(item);
+		setStationList(context, list);
+	}
 
-			//save custom input to preferences (this is read by the other activities)
-			context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
-					.edit()
-					.putString(
-							context.getResources().getString(R.string.selection_custom_station_entry),
-							userInput
-					)
-					.apply();
+	public SwitchStationListItem getSelectedStation(Context context) {
+		//get the selected station index from preferences, return that element
+		final int selectedIndex = context
+				.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.getInt(context.getString(R.string.pref_key_selected_station_in_list), 0);
 
-			parent.cancel();
-			dialog.cancel();
-			refresh(context);
-		});
+		return getStationList(context).get(selectedIndex);
+	}
 
-		builder.setCancelable(false);
+	public void setSelectedStation(Context context, SwitchStationListItem item) {
+		//get the index of our selection
+		final int index = getStationList(context).indexOf(item);
+		setSelectedStation(context, index);
+	}
 
-		AlertDialog dialog = builder.create();
-		dialog.show();
+	public boolean isCurrentlySelected(Context context, SwitchStationListItem item) {
+		return Objects.equals(getSelectedStation(context), item);
+	}
+
+	public void setSelectedStation(Context context, int index) {
+		//save that index to shared preferences
+		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.edit()
+				.putInt(context.getString(R.string.pref_key_selected_station_in_list), index)
+				.apply();
 	}
 
 	public void setRecents(Context context, List<RouteStationSelection> selections) {
@@ -236,14 +236,6 @@ public class PreferenceManager {
 
 	public void clearRecents(Context context) {
 		setRecents(context, Collections.emptyList());
-	}
-
-	private void setCustomNameFieldInContext(String userInput, Context context) {
-		//sets the custom name field for the activities that need it
-		//this is used in the network access to avoid reading the preferences again
-		if (context instanceof ActionBarBaseActivity) {
-			((ActionBarBaseActivity) context).setCustomName(userInput);
-		}
 	}
 
 	private void refresh(Context context) {

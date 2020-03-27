@@ -3,6 +3,7 @@ package de.schmidt.mvg.adapters;
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
@@ -13,6 +14,7 @@ public abstract class SwitchStationListItem {
 	public abstract boolean isCurrentLocation();
 	public abstract Station getFixedStation();
 	public abstract String wrapToString();
+	public abstract boolean equals(Object o);
 
 	public static SwitchStationListItem unwrapFromString(String str) {
 		if (str.length() == 0) return null;

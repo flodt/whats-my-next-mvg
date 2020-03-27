@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:background="@color/light_gray"
+                android:layout_height="wrap_content">
+    <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_dark_train"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/station_icon"
+            tools:ignore="ContentDescription"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/station_name"
+            android:text="@string/current_location"
+            android:textSize="18sp"
+            android:layout_alignTop="@id/station_icon"
+            android:layout_alignBottom="@id/station_icon"
+            android:layout_toEndOf="@id/station_icon"
+            android:layout_marginStart="15dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+    />
+</RelativeLayout>

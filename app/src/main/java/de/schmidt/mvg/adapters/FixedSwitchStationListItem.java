@@ -37,4 +37,13 @@ public class FixedSwitchStationListItem extends SwitchStationListItem {
 		return station.getId() + splitter + station.getName()
 				+ splitter + station.getLatitude() + splitter + station.getLongitude();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof FixedSwitchStationListItem) {
+			return ((FixedSwitchStationListItem) o).getFixedStation().equals(station);
+		} else {
+			return false;
+		}
+	}
 }
