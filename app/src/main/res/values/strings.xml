@@ -120,4 +120,5 @@
     <string name="key_show_station_detail" translatable="false">show_station_detail_on_map</string>
     <string name="warning_header">Warning</string>
     <string name="warning_long_travel_time">This connection has a significantly longer travel time than the alternatives. Consider re-checking travel options.</string>
+    <string name="current_location">Current location</string>
 </resources>

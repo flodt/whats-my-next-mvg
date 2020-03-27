@@ -2,20 +2,15 @@ package de.schmidt.whatsnext.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import de.schmidt.mvg.route.RouteStationSelection;
-import de.schmidt.mvg.traffic.Departure;
-import de.schmidt.mvg.traffic.LineColor;
+import de.schmidt.mvg.adapters.RouteStationSelection;
 import de.schmidt.whatsnext.R;
 
 import java.util.List;
-
-import static de.schmidt.util.ColorUtils.modifyColor;
 
 public class RecentsListViewAdapter extends BaseAdapter {
 	private final Activity context;

@@ -6,14 +6,12 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.widget.EditText;
-import de.schmidt.mvg.route.RouteStationSelection;
+import de.schmidt.mvg.adapters.RouteStationSelection;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 
 import java.util.*;
-import java.util.function.IntFunction;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class PreferenceManager {
 	public static final String PREFERENCE_KEY = "WhatsMyNext";

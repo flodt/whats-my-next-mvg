@@ -1,11 +1,9 @@
-package de.schmidt.mvg.route;
+package de.schmidt.mvg.adapters;
 
 import android.util.Log;
 import de.schmidt.mvg.traffic.Station;
 
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class RouteStationSelection {
 	private final Station start;
