@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -71,14 +72,17 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 			final SwitchStationListItem clicked = stations.get(position);
 
 			//don't allow long click on current location
-			if (clicked.isCurrentLocation()) return false;
+			if (clicked.isCurrentLocation()) {
+				runOnUiThread(() -> Toast.makeText(this, getString(R.string.cannot_delete_location), Toast.LENGTH_SHORT).show());
+				return true;
+			}
 
 			//delete element after asking for confirmation
 			//ask for confirmation
 			new AlertDialog.Builder(StationSelectionActivity.this)
 					.setTitle(getResources().getString(R.string.remove_station_title))
 					.setMessage(getResources().getString(R.string.remove_station_message))
-					.setIcon(R.drawable.ic_warning)
+					.setIcon(R.drawable.ic_dark_delete)
 					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
 					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
 						//remove the element from the list

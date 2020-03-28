@@ -89,7 +89,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			new AlertDialog.Builder(RoutingEntryActivity.this)
 					.setTitle(getResources().getString(R.string.remove_recent_title))
 					.setMessage(getResources().getString(R.string.remove_recent_message))
-					.setIcon(R.drawable.ic_warning)
+					.setIcon(R.drawable.ic_dark_delete)
 					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
 					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
 						//remove the element from the list
@@ -180,7 +180,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			new AlertDialog.Builder(RoutingEntryActivity.this)
 					.setTitle(getResources().getString(R.string.clear_recents_title))
 					.setMessage(getResources().getString(R.string.clear_recents_message))
-					.setIcon(R.drawable.ic_warning)
+					.setIcon(R.drawable.ic_dark_delete)
 					.setNegativeButton(getResources().getString(R.string.cancel_dialog), null)
 					.setPositiveButton(getResources().getString(R.string.yes_dialog), (dialog, which) -> {
 						PreferenceManager.getInstance().clearRecents(RoutingEntryActivity.this);
