@@ -60,4 +60,11 @@
     <string name="no_dept_details_avail">Keine Details verfügbar</string>
     <string name="warning_header">Achtung</string>
     <string name="warning_long_travel_time">Die Reisezeit dieser Verbindung ist deutlich länger als die der Alternativen. Ein Überprüfen der gewählten Verbindung könnte sinnvoll sein.</string>
+    <string name="station_addition_descr">Weitere Station zur Liste hinzufügen…</string>
+    <string name="station_addition_error">Der eingegebene Bahnhofsname existiert nicht!</string>
+    <string name="station_addition_hint">Bahnhofsname</string>
+    <string name="station_addition_title">Station hinzufügen</string>
+    <string name="remove_station_message">Diesen Bahnhof aus der Liste entfernen?</string>
+    <string name="remove_station_title">Eintrag löschen?</string>
+    <string name="current_location">Aktueller Standort</string>
 </resources>
