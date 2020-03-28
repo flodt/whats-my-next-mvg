@@ -17,7 +17,7 @@ import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.ItineraryListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
-import de.schmidt.whatsnext.viewsupport.ConnectionDisplayView;
+import de.schmidt.whatsnext.viewsupport.route.ConnectionDisplayView;
 
 import java.util.ArrayList;
 import java.util.List;

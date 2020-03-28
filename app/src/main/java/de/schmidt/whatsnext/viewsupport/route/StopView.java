@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext.viewsupport;
+package de.schmidt.whatsnext.viewsupport.route;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -11,7 +11,6 @@ import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class StopView extends ConnectionDisplayView {
 	private final LineColor color;

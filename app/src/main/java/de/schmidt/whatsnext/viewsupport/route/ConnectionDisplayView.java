@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext.viewsupport;
+package de.schmidt.whatsnext.viewsupport.route;
 
 import android.content.Context;
 import android.view.View;
@@ -6,7 +6,6 @@ import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
-import de.schmidt.whatsnext.activities.RoutingItineraryDisplayActivity;
 
 import java.util.ArrayList;
 import java.util.List;

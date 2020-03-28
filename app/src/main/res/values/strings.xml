@@ -134,4 +134,6 @@
     <string name="station_addition_descr">Add a station to the list…</string>
     <string name="station_addition_error">The station name you entered does not exist!</string>
     <string name="cannot_delete_location">Current location cannot be deleted.</string>
+    <string name="time_earlier">Earlier</string>
+    <string name="time_later">Later</string>
 </resources>

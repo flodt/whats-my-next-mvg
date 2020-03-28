@@ -1,16 +1,10 @@
-package de.schmidt.whatsnext.viewsupport;
+package de.schmidt.whatsnext.viewsupport.route;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
-import de.schmidt.mvg.route.RouteIntermediateStop;
-import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
-
-import java.text.SimpleDateFormat;
 
 public class WarningView extends ConnectionDisplayView {
 	private final String message;

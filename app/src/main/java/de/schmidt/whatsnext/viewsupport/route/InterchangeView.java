@@ -1,4 +1,4 @@
-package de.schmidt.whatsnext.viewsupport;
+package de.schmidt.whatsnext.viewsupport.route;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;

@@ -1,12 +1,15 @@
 package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ListView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteOptions;
+import de.schmidt.mvg.route.TimeShift;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
@@ -15,17 +18,24 @@ import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
+import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
+import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesRouteView;
+import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesTimeChangeView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection> {
 	private static final String TAG = "RoutingAlternativesActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
-	private List<RouteConnection> connections;
+	private List<AlternativesDisplayView> views;
 	private AlternativesListViewAdapter adapter;
 
 	@Override
@@ -38,7 +48,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 
 		setTitle(getString(R.string.alternatives_title));
 
-		connections = new ArrayList<>();
+		views = new ArrayList<>();
 
 		swipeRefresh = findViewById(R.id.pull_to_refresh_alternatives);
 		swipeRefresh.setColorSchemeColors(ColorUtils.getSpriteColors(this));
@@ -51,24 +61,72 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 		listView = findViewById(R.id.alternative_list);
-		adapter = new AlternativesListViewAdapter(this, connections);
+		adapter = new AlternativesListViewAdapter(this, views);
 		listView.setAdapter(adapter);
 		listView.setClickable(true);
 		listView.setOnItemClickListener((parent, view, position, id) -> {
-			RouteConnection tappedConnection = connections.get(position);
+			AlternativesDisplayView tapped = views.get(position);
 
-			Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingItineraryDisplayActivity.class);
-			intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
-			intent.putExtra(getString(R.string.key_back_button_action_bar), true);
-			double average = connections
-					.stream()
-					.mapToLong(RouteConnection::getDurationInMinutes)
-					.mapToInt(l -> (int) l)
-					.average()
-					.orElse(Double.POSITIVE_INFINITY);
-			intent.putExtra(getString(R.string.key_average_duration), average);
-			startActivity(intent);
+			if (tapped.isTimeShiftButton()) {
+				TimeShift direction = ((AlternativesTimeChangeView) tapped).getTemporalDirection();
+
+				//if the tapped element is a time shift button, we need to refresh the screen with new RouteOptions
+				//get the options from the cached value (re-fetched from the intent at every refresh, if present)
+				RouteOptions options = RoutingOptionsCache.getInstance().getCache();
+
+				//add or subtract 1.5 hours to/from the request
+				long raw = Long.parseLong(
+						options
+								.getProperties()
+								.getOrDefault("time",
+											  Long.toString(new Date().getTime())
+								)
+				);
+				boolean wasArrival = Boolean.parseBoolean(options.getProperties().getOrDefault("arrival", "false"));
+
+				Date shifted = new Date(raw + direction.getOperation() * (TimeUnit.MINUTES.toMillis(90)));
+
+				RouteOptions modifiedOptions = options.withTime(shifted, !wasArrival);
+
+				//restart the activity with the new time
+				Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingAlternativesActivity.class);
+				intent.putExtra(getString(R.string.key_parameters), modifiedOptions);
+				startActivity(intent);
+			} else {
+				//if it's a connection, display details as usual
+				//get the tapped connection and show the details on it
+				RouteConnection tappedConnection = ((AlternativesRouteView) tapped).getRouteConnection();
+
+				Intent intent = new Intent(RoutingAlternativesActivity.this, RoutingItineraryDisplayActivity.class);
+				intent.putExtra(getString(R.string.key_itinerary), tappedConnection);
+				intent.putExtra(getString(R.string.key_back_button_action_bar), true);
+				double average = views
+						.stream()
+						.filter(AlternativesDisplayView::hasRouteConnection)
+						.map(adv -> (AlternativesRouteView) adv)
+						.map(AlternativesRouteView::getRouteConnection)
+						.mapToLong(RouteConnection::getDurationInMinutes)
+						.mapToInt(l -> (int) l)
+						.average()
+						.orElse(Double.POSITIVE_INFINITY);
+				intent.putExtra(getString(R.string.key_average_duration), average);
+				startActivity(intent);
+			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		//set colors
+		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
+		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
+		getWindow().setStatusBarColor(primaryAndDark[1]);
+
+		navBar.setBackgroundColor(getColor(R.color.white));
+		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 	}
 
 	@Override
@@ -90,9 +148,17 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	public void handleUIUpdate(List<RouteConnection> dataSet) {
 		if (dataSet == null) return;
 
-		//copy data to field
-		this.connections.clear();
-		this.connections.addAll(dataSet);
+		//clear and copy data to field
+		this.views.clear();
+
+		//add in the earlier and later buttons, wrap the RouteConnections in view support objects
+		Stream.of(
+				Stream.of(new AlternativesTimeChangeView(TimeShift.EARLIER)),
+				dataSet.stream().map(AlternativesRouteView::new),
+				Stream.of(new AlternativesTimeChangeView(TimeShift.LATER))
+		)
+				.flatMap(Function.identity())
+				.forEach(views::add);
 
 		runOnUiThread(() -> {
 			//refresh the list view

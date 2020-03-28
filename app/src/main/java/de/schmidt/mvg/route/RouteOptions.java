@@ -20,7 +20,7 @@ public class RouteOptions implements Serializable {
 		this.properties = Collections.unmodifiableMap(Collections.emptyMap());
 	}
 
-	private Map<String, String> getProperties() {
+	public Map<String, String> getProperties() {
 		return properties;
 	}
 
