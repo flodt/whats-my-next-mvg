@@ -13,6 +13,7 @@ import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
+import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesRouteView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -63,10 +64,11 @@ public class AlternativesListViewAdapter extends BaseAdapter {
 		//color the duration orange when it is higher than 1.5x the average duration of all connections
 		double average = connections
 				.stream()
-				.map(AlternativesDisplayView::getRouteConnection)
+				.filter(AlternativesDisplayView::hasRouteConnection)
+				.map(adv -> (AlternativesRouteView) adv)
+				.map(AlternativesRouteView::getRouteConnection)
 				.filter(Objects::nonNull)
 				.mapToLong(RouteConnection::getDurationInMinutes)
-				.mapToInt(l -> (int) l)
 				.average()
 				.orElse(Double.POSITIVE_INFINITY);
 

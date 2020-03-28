@@ -84,7 +84,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 				);
 				boolean wasArrival = Boolean.parseBoolean(options.getProperties().getOrDefault("arrival", "false"));
 
-				Date shifted = new Date(raw + direction.getOperation() * (TimeUnit.MINUTES.toMillis(90)));
+				Date shifted = new Date(raw + direction.getOperation() * (TimeUnit.MINUTES.toMillis(30)));
 
 				RouteOptions modifiedOptions = options.withTime(shifted, !wasArrival);
 
@@ -152,12 +152,17 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		this.views.clear();
 
 		//add in the earlier and later buttons, wrap the RouteConnections in view support objects
+		//there are some really fishy things going on in this Stream call chain with what I guess is a mixture of
+		//	grabbing the first fitting superclass of the two different Stream types in the flatMap
+		//	and determining the static type of the object for the consumer in forEach.
+		//	It compiles as a lambda (.flatMap(t -> t), but it does not compile for .flatMap(Function.identity()),
+		//	as it get's an object and cannot convert that into the AlternativesDisplayView class.
 		Stream.of(
 				Stream.of(new AlternativesTimeChangeView(TimeShift.EARLIER)),
 				dataSet.stream().map(AlternativesRouteView::new),
 				Stream.of(new AlternativesTimeChangeView(TimeShift.LATER))
 		)
-				.flatMap(Function.identity())
+				.flatMap(t -> t)
 				.forEach(views::add);
 
 		runOnUiThread(() -> {

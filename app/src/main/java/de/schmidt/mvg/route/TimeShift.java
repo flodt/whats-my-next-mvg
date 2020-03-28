@@ -21,9 +21,9 @@ public enum TimeShift {
 	public @DrawableRes int getArrow() {
 		switch (this) {
 			case EARLIER:
-				return R.drawable.ic_arrow_up;
+				return R.drawable.ic_arrow_up_white;
 			case LATER:
-				return R.drawable.ic_arrow_down;
+				return R.drawable.ic_arrow_down_white;
 			default:
 				return -1;
 		}

@@ -178,7 +178,7 @@ public class PreferenceManager {
 		//get the selected station index from preferences, return that element
 		int selectedIndex = context
 				.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
-				.getInt(context.getString(R.string.pref_key_selected_station_in_list), 0);
+				.getInt(context.getString(R.string.pref_key_selected_station_in_list), 1);
 
 		//bound the index to the list size
 		final List<SwitchStationListItem> list = getStationList(context);
