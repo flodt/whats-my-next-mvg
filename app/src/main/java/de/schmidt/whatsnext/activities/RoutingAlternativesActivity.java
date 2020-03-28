@@ -170,6 +170,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 			adapter.notifyDataSetChanged();
 			listView.invalidateViews();
 			listView.refreshDrawableState();
+			listView.setSelection(1); //scroll the "Earlier" button out of the screen
 			swipeRefresh.setRefreshing(false);
 		});
 	}

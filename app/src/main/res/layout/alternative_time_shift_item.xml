@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                android:background="@color/mvg_2"
+                android:background="@color/mvg_7"
                 android:layout_height="wrap_content">
     <ImageView
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:src="@drawable/ic_arrow_up_white"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginStart="27dp"
             android:id="@+id/arrow_icon_1"
             tools:ignore="ContentDescription"/>
