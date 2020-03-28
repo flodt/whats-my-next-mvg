@@ -1,7 +1,7 @@
 <h1 align="center">Welcome to What's My Next 🚈</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blue.svg?cacheSeconds=2592000" />
-  <img alt="Google Play" src="https://img.shields.io/badge/live%20on-Google%20Play-orange"/>
+  <a href="https://play.google.com/store/apps/details?id=de.schmidt.whatsnext"><img alt="Google Play" src="https://img.shields.io/badge/live%20on-Google%20Play-orange"/></a>
 </p>
 
 > What's My Next is a custom MVG public transit app, which uses the mvg-live.de API of the Munich public transit authority to get and display journey-planning information. It allows for departure board displays, interruption monitoring on the lines you choose as well as extensive route planning and mapping.
@@ -12,7 +12,7 @@
 
 👤 **Florian Schmidt**
 
-* Website: schmidt-allgaeu.de
+* Website: [schmidt-allgaeu.de](https://schmidt-allgaeu.de)
 * Github: [@flodt](https://github.com/flodt)
 
 ## 🤝 Contributing
