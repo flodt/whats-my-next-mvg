@@ -1,5 +1,6 @@
 package de.schmidt.util.managers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,7 +41,7 @@ public class FabManager {
 	 * @param button the fab object to initialize
 	 * @param context the context to initialize in
 	 */
-	public void initializeForStationAddition(FloatingActionButton button, Context context) {
+	public void initializeForStationAddition(FloatingActionButton button, Activity context) {
 		button.setOnClickListener(v -> PreferenceManager.getInstance().getUserInputForStationAddition(context));
 	}
 }

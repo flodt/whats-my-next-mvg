@@ -2,6 +2,8 @@ package de.schmidt.whatsnext.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,7 +41,7 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 		setContentView(R.layout.activity_station_selection);
 
 		//set back button
-		Objects.requireNonNull(getActionBar()).setDisplayHomeAsUpEnabled(true);
+		Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 		//initialize nav bar
 		navBar = findViewById(R.id.bottom_nav_bar_stations);
@@ -104,6 +106,19 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		//set colors
+		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
+		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
+		getWindow().setStatusBarColor(primaryAndDark[1]);
+
+		navBar.setBackgroundColor(getColor(R.color.white));
+		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		//handle back button in action bar as if user pressed back on nav bar
 		if (item.getItemId() == android.R.id.home) {
@@ -117,7 +132,7 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 	@Override
 	public void refresh() {
 		//grab the newest data from preferences, refresh UI with that
-		swipeRefresh.setRefreshing(true);
+		runOnUiThread(() -> swipeRefresh.setRefreshing(true));
 		final List<SwitchStationListItem> read = PreferenceManager.getInstance().getStationList(this);
 		handleUIUpdate(read);
 	}

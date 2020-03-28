@@ -139,7 +139,7 @@ public class PreferenceManager {
 	public List<SwitchStationListItem> getStationList(Context context) {
 		//get the raw data from shared preferences and unwrap
 		SharedPreferences prefs = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
-		final String defaultListValue = "loc";
+		final String defaultListValue = "loc$de:09162:6%Hauptbahnhof%48.14003%11.56107$de:09162:2%Marienplatz%48.13725%11.57542$de:09162:470%Fröttmaning%48.21181%11.61667$de:09184:460%Garching, Forschungszentrum%48.26486%11.67123";
 		String raw = prefs.getString(context.getString(R.string.pref_key_stations), defaultListValue);
 
 		return Arrays.stream(raw.split("\\$"))
@@ -150,14 +150,13 @@ public class PreferenceManager {
 
 	public void setStationList(Context context, List<SwitchStationListItem> stations) {
 		//save the list to shared preferences
+		final String serialized = stations.stream()
+				.map(SwitchStationListItem::serialize)
+				.collect(Collectors.joining("$"));
+		Log.d(TAG, "setStationList: save to preferences: " + serialized);
 		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
 				.edit()
-				.putString(
-						context.getString(R.string.pref_key_stations),
-						stations.stream()
-								.map(SwitchStationListItem::serialize)
-								.collect(Collectors.joining("$"))
-				)
+				.putString(context.getString(R.string.pref_key_stations), serialized)
 				.apply();
 	}
 
@@ -177,11 +176,15 @@ public class PreferenceManager {
 
 	public SwitchStationListItem getSelectedStation(Context context) {
 		//get the selected station index from preferences, return that element
-		final int selectedIndex = context
+		int selectedIndex = context
 				.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
 				.getInt(context.getString(R.string.pref_key_selected_station_in_list), 0);
 
-		return getStationList(context).get(selectedIndex);
+		//bound the index to the list size
+		final List<SwitchStationListItem> list = getStationList(context);
+		selectedIndex = Math.min(list.size() - 1, selectedIndex);
+		selectedIndex = Math.max(0, selectedIndex);
+		return list.get(selectedIndex);
 	}
 
 	public void setSelectedStation(Context context, SwitchStationListItem item) {
@@ -219,13 +222,15 @@ public class PreferenceManager {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if (s.length() == 0) return;
 				new Thread(() -> {
-					//grab suggestions and set adapter
-					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
-					context.runOnUiThread(() -> input.setAdapter(new ArrayAdapter<>(
-							context,
-							android.R.layout.select_dialog_item,
-							suggestions
-					)));
+					synchronized (s) {
+						//grab suggestions and set adapter
+						String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
+						context.runOnUiThread(() -> input.setAdapter(new ArrayAdapter<>(
+								context,
+								android.R.layout.select_dialog_item,
+								suggestions
+						)));
+					}
 				}).start();
 			}
 
