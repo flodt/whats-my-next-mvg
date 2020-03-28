@@ -1,13 +1,24 @@
 package de.schmidt.util.managers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
+import de.schmidt.mvg.Requests;
+import de.schmidt.mvg.adapters.FixedSwitchStationListItem;
 import de.schmidt.mvg.adapters.RouteStationSelection;
 import de.schmidt.mvg.adapters.SwitchStationListItem;
+import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
+import org.json.JSONException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +26,7 @@ import java.util.stream.Collectors;
 public class PreferenceManager {
 	public static final String PREFERENCE_KEY = "WhatsMyNext";
 	private static final PreferenceManager instance = new PreferenceManager();
+	private static final String TAG = "PreferenceManager";
 
 	private PreferenceManager() {
 
@@ -188,6 +200,72 @@ public class PreferenceManager {
 				.edit()
 				.putInt(context.getString(R.string.pref_key_selected_station_in_list), index)
 				.apply();
+	}
+
+	public void getUserInputForStationAddition(Activity context) {
+		//AutoCompleteTextView for user input
+		AutoCompleteTextView input = new AutoCompleteTextView(context);
+		input.setHint(context.getResources().getString(R.string.station_addition_hint));
+
+		//setup autocompletion
+		input.setThreshold(1);
+		input.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if (s.length() == 0) return;
+				new Thread(() -> {
+					//grab suggestions and set adapter
+					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
+					context.runOnUiThread(() -> input.setAdapter(new ArrayAdapter<>(
+							context,
+							android.R.layout.select_dialog_item,
+							suggestions
+					)));
+				}).start();
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+			}
+		});
+
+		//build the dialog
+		new AlertDialog.Builder(context)
+				.setTitle(context.getResources().getString(R.string.station_addition_title))
+				.setMessage(context.getResources().getString(R.string.station_addition_descr))
+				.setIcon(R.drawable.ic_dark_train)
+				.setView(input)
+				.setPositiveButton(R.string.save_settings, (dialog, which) -> {
+					String entry = input.getText().toString();
+
+					new Thread(() -> {
+						try {
+							//async get name for that station, write it to the SharedPreferences
+							SwitchStationListItem added = new FixedSwitchStationListItem(
+									Requests.instance().getStationByName(entry));
+							PreferenceManager.getInstance().addToStationList(context, added);
+						} catch (JSONException e) {
+							Log.e(TAG, "getUserInputForStationAddition: cannot find the entered station name", e);
+							context.runOnUiThread(() -> Toast.makeText(context,
+																	   context.getString(R.string.station_addition_error),
+																	   Toast.LENGTH_SHORT).show());
+						} finally {
+							dialog.dismiss();
+							refresh(context);
+						}
+
+					}).start();
+				})
+				.setCancelable(true)
+				.setNegativeButton(R.string.dismiss_settings, null)
+				.create()
+				.show();
 	}
 
 	public void setRecents(Context context, List<RouteStationSelection> selections) {

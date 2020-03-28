@@ -129,4 +129,8 @@
     <string name="pref_key_selected_station_in_list">SELECTED_STATION_IN_LIST</string>
     <string name="remove_station_title">Remove station?</string>
     <string name="remove_station_message">Do you want to remove this station?</string>
+    <string name="station_addition_hint">Station name</string>
+    <string name="station_addition_title">Add station</string>
+    <string name="station_addition_descr">Add a station to the list…</string>
+    <string name="station_addition_error">The station name you entered does not exist!</string>
 </resources>

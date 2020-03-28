@@ -34,4 +34,13 @@ public class FabManager {
 	public void initializeForInterruptionsFilter(FloatingActionButton button, Context context) {
 		button.setOnClickListener(v -> PreferenceManager.getInstance().updateInterruptionsFilter(context));
 	}
+
+	/**
+	 * Initialize the passed fab to add a station to the list.
+	 * @param button the fab object to initialize
+	 * @param context the context to initialize in
+	 */
+	public void initializeForStationAddition(FloatingActionButton button, Context context) {
+		button.setOnClickListener(v -> PreferenceManager.getInstance().getUserInputForStationAddition(context));
+	}
 }

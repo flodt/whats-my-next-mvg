@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.adapters.SwitchStationListItem;
 import de.schmidt.util.ColorUtils;
+import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
@@ -29,6 +31,7 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
 	private StationSelectionListViewAdapter adapter;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,10 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 			refresh();
 			swipeRefresh.setRefreshing(false);
 		});
+
+		//initialize fab for adding station
+		fab = findViewById(R.id.fab_add_station);
+		FabManager.getInstance().initializeForStationAddition(fab, this);
 	}
 
 	@Override
