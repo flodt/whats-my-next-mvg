@@ -1,8 +1,27 @@
-# whats-my-next-mvg
-Experimentation with the MVG api on Android
+<h1 align="center">Welcome to What's My Next 🚈</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Google Play" src="https://img.shields.io/badge/live%20on-Google%20Play-orange"/>
+</p>
 
-This uses the mvg-live online JSON API for requesting information on stations and public transit departures, populates different app layouts.
+> What's My Next is a custom MVG public transit app, which uses the mvg-live.de API of the Munich public transit authority to get and display journey-planning information. It allows for departure board displays, interruption monitoring on the lines you choose as well as extensive route planning and mapping.
 
-This serves as an experimentation project for trying out different Android programming concepts, design patterns and paradigmes.
+### ✨ [View on Google Play](https://play.google.com/store/apps/details?id=de.schmidt.whatsnext)
 
-See screenshots [here](https://github.com/flodt/whats-my-next-mvg/tree/master/screenshots).
+## Author
+
+👤 **Florian Schmidt**
+
+* Website: schmidt-allgaeu.de
+* Github: [@flodt](https://github.com/flodt)
+
+## 🤝 Contributing
+
+Issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/flodt/whats-my-next-mvg/issues). 
+
+## Show your support
+
+Give a ⭐️ if you like this project!
+
+***
+Built with ❤️ by Florian Schmidt.
