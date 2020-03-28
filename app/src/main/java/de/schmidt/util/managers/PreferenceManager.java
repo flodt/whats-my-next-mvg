@@ -2,9 +2,7 @@ package de.schmidt.util.managers;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.text.InputType;
 import android.widget.EditText;
 import de.schmidt.mvg.adapters.RouteStationSelection;
 import de.schmidt.mvg.adapters.SwitchStationListItem;
@@ -133,7 +131,7 @@ public class PreferenceManager {
 		String raw = prefs.getString(context.getString(R.string.pref_key_stations), defaultListValue);
 
 		return Arrays.stream(raw.split("\\$"))
-				.map(SwitchStationListItem::unwrapFromString)
+				.map(SwitchStationListItem::deserialize)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 	}
@@ -145,7 +143,7 @@ public class PreferenceManager {
 				.putString(
 						context.getString(R.string.pref_key_stations),
 						stations.stream()
-								.map(SwitchStationListItem::wrapToString)
+								.map(SwitchStationListItem::serialize)
 								.collect(Collectors.joining("$"))
 				)
 				.apply();
@@ -204,7 +202,7 @@ public class PreferenceManager {
 				.putString(
 						context.getResources().getString(R.string.pref_key_recents),
 						selections.stream()
-								.map(RouteStationSelection::wrapToString)
+								.map(RouteStationSelection::serialize)
 								.collect(Collectors.joining("$"))
 				)
 				.apply();
@@ -216,7 +214,7 @@ public class PreferenceManager {
 
 		//unwrap strings
 		return Arrays.stream(rawRecents.split("\\$"))
-				.map(RouteStationSelection::unwrapFromString)
+				.map(RouteStationSelection::deserialize)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toCollection(ArrayList::new));
 	}

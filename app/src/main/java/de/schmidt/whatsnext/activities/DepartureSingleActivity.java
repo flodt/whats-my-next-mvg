@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -30,7 +29,6 @@ import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
 
-import java.security.interfaces.DSAKey;
 import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
@@ -42,7 +40,6 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 	private ActionBar actionBar;
 	private SwipeRefreshLayout pullToRefresh;
 
-	private String customName;
 	private BottomNavigationView navBar;
 	private FloatingActionButton fab;
 	private Departure displayed;
@@ -62,9 +59,6 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 
 		navBar = findViewById(R.id.bottom_nav_bar_single);
 		NavBarManager.getInstance().initialize(navBar, this);
-
-		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
-																											getResources().getString(R.string.default_custom_station_name));
 
 		fab = findViewById(R.id.fab_single_switch_station);
 		FabManager.getInstance().initializeForStationSelection(fab, this);
@@ -89,23 +83,12 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 
 		displayed = null;
 
-		//get station menu index from preferences, default to Hbf
-		SharedPreferences prefs = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE);
-		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
-
+		//get selected station from SharedPreferences
 		new SingleNetworkAccess(
 				this,
-				stationIndex,
-				customName,
+				PreferenceManager.getInstance().getSelectedStation(this),
 				PreferenceManager.getInstance().getExcludableTransportMeans(this)
-		).execute(
-				LocationManager.getInstance().getLocation(this)
-		);
-	}
-
-	@Override
-	public void setCustomName(String customName) {
-		this.customName = customName;
+		).execute();
 	}
 
 	@Override

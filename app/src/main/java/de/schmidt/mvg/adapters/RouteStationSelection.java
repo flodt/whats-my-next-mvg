@@ -48,13 +48,13 @@ public class RouteStationSelection {
 				'}';
 	}
 
-	public String wrapToString() {
+	public String serialize() {
 		String splitter = "%";
 		return start.getId() + splitter + start.getName() + splitter + start.getLatitude() + splitter + start.getLongitude() + splitter +
 				destination.getId() + splitter + destination.getName() + splitter + destination.getLatitude() + splitter + destination.getLongitude();
 	}
 
-	public static RouteStationSelection unwrapFromString(String str) {
+	public static RouteStationSelection deserialize(String str) {
 		Log.d("PreferenceManager", "unwrapFromString: " + str);
 
 		if (str.length() == 0) return null;

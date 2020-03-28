@@ -79,6 +79,7 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 						//remove the element from the list
 						PreferenceManager.getInstance().removeFromStationList(StationSelectionActivity.this, clicked);
 						dialog.dismiss();
+						refresh();
 					})
 					.create()
 					.show();

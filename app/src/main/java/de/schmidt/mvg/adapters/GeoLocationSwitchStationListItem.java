@@ -27,7 +27,7 @@ public class GeoLocationSwitchStationListItem extends SwitchStationListItem {
 	}
 
 	@Override
-	public String wrapToString() {
+	public String serialize() {
 		return "loc";
 	}
 

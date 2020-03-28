@@ -32,7 +32,7 @@ public class FixedSwitchStationListItem extends SwitchStationListItem {
 	}
 
 	@Override
-	public String wrapToString() {
+	public String serialize() {
 		final String splitter = "%";
 		return station.getId() + splitter + station.getName()
 				+ splitter + station.getLatitude() + splitter + station.getLongitude();

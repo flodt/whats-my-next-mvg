@@ -28,10 +28,6 @@ public abstract class ActionBarBaseActivity extends AppCompatActivity implements
 		refresh();
 	}
 
-	public void setCustomName(String customName) {
-		//default intentionally left blank
-	}
-
 	public abstract void refresh();
 	public abstract int getNavButtonItemId();
 	public abstract BottomNavigationView getNavBar();

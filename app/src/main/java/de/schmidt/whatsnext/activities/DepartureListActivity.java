@@ -2,29 +2,18 @@ package de.schmidt.whatsnext.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import de.schmidt.mvg.Requests;
-import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.mvg.route.RouteConnectionPart;
-import de.schmidt.mvg.route.RouteIntermediateStop;
-import de.schmidt.mvg.route.RouteOptions;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
-import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.*;
 import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.LocationManager;
@@ -37,16 +26,9 @@ import de.schmidt.whatsnext.adapters.DepartureListViewAdapter;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Updatable;
-import de.schmidt.whatsnext.viewsupport.ArrivingView;
-import de.schmidt.whatsnext.viewsupport.ConnectionDisplayView;
-import de.schmidt.whatsnext.viewsupport.DepartingView;
-import de.schmidt.whatsnext.viewsupport.StopView;
-import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
@@ -57,7 +39,6 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 
 	private List<Departure> departures;
 	private DepartureListViewAdapter adapter;
-	private String customName;
 	private ActionBar actionBar;
 	private BottomNavigationView navBar;
 	private FloatingActionButton fab;
@@ -81,9 +62,6 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		});
 
 		departures = new ArrayList<>();
-
-		customName = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE).getString(getResources().getString(R.string.selection_custom_station_entry),
-																											getResources().getString(R.string.default_custom_station_name));
 
 		fab = findViewById(R.id.fab_list_switch_station);
 		FabManager.getInstance().initializeForStationSelection(fab, this);
@@ -111,20 +89,12 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
 
-		//get station menu index from preferences, default to Hbf
-		SharedPreferences prefs = getSharedPreferences(PreferenceManager.PREFERENCE_KEY, Context.MODE_PRIVATE);
-		int stationIndex = prefs.getInt(getResources().getString(R.string.selection_station_in_menu), 1);
-
+		//get selected station from SharedPerferences
 		new ListableNetworkAccess(
-				this, stationIndex, customName, PreferenceManager.getInstance().getExcludableTransportMeans(this)
-		).execute(
-				LocationManager.getInstance().getLocation(this)
-		);
-	}
-
-	@Override
-	public void setCustomName(String customName) {
-		this.customName = customName;
+				this,
+				PreferenceManager.getInstance().getSelectedStation(this),
+				PreferenceManager.getInstance().getExcludableTransportMeans(this)
+		).execute();
 	}
 
 	@Override

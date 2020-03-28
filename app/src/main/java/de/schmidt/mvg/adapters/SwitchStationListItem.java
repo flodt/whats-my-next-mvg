@@ -13,10 +13,10 @@ public abstract class SwitchStationListItem {
 	public abstract String getTitle(Context context);
 	public abstract boolean isCurrentLocation();
 	public abstract Station getFixedStation();
-	public abstract String wrapToString();
+	public abstract String serialize();
 	public abstract boolean equals(Object o);
 
-	public static SwitchStationListItem unwrapFromString(String str) {
+	public static SwitchStationListItem deserialize(String str) {
 		if (str.length() == 0) return null;
 		if (str.equals("loc")) return new GeoLocationSwitchStationListItem();
 

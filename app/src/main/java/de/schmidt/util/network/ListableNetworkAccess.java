@@ -6,30 +6,29 @@ import android.os.AsyncTask;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import de.schmidt.mvg.*;
+import de.schmidt.mvg.adapters.SwitchStationListItem;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.caching.DepartureCache;
+import de.schmidt.util.managers.LocationManager;
 import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.R;
+import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Set;
 
-public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]> {
+public class ListableNetworkAccess extends AsyncTask<Void, Void, Departure[]> {
 	private static final String TAG = "ListableNetworkAccessLog";
 	private final WeakReference<DepartureListActivity> act;
-	private final int stationMenuIndex;
-	private final String stationMenuName;
+	private final SwitchStationListItem selectedStation;
 	private final Set<String> exclusions;
 
-
-	public ListableNetworkAccess(Context context, int stationMenuIndex,
-								 @Nullable String stationMenuName, Set<String> exclusions) {
-		this.act = new WeakReference<>((DepartureListActivity) context);
-		this.stationMenuIndex = stationMenuIndex;
-		this.stationMenuName = stationMenuName;
-		this.exclusions = exclusions;
+	public ListableNetworkAccess(DepartureListActivity context, SwitchStationListItem selectedStation, Set<String> excludableTransportMeans) {
+		this.act = new WeakReference<>(context);
+		this.selectedStation = selectedStation;
+		this.exclusions = excludableTransportMeans;
 	}
 
 	@Override
@@ -41,39 +40,28 @@ public class ListableNetworkAccess extends AsyncTask<Location, Void, Departure[]
 	}
 
 	@Override
-	protected Departure[] doInBackground(Location... locations) {
-		//handle network request here depending on station selection
-		Location loc = locations[0];
+	protected Departure[] doInBackground(Void... voids) {
+		Station station;
 
-		String[] keys = act.get().getResources().getStringArray(R.array.station_keys);
-
-		if (keys[stationMenuIndex].equals("LOCATION")) {
-			Requests requests = Requests.instance();
+		//if current location is selected, get nearest station, else based on selection
+		if (selectedStation.isCurrentLocation()) {
 			try {
-				Station nearest = requests.getNearestStation(loc);
-				return requests.getNextDeparturesAtStation(nearest, exclusions);
-			} catch (Exception e) {
-				Log.e(TAG, "onCreate: network access", e);
-				return new Departure[0];
-			}
-		} else if (keys[stationMenuIndex].equals("BY_NAME")) {
-			Requests requests = Requests.instance();
-			try {
-				Station byName = requests.getStationByName(stationMenuName);
-				return requests.getNextDeparturesAtStation(byName, exclusions);
-			} catch (Exception e) {
-				Log.e(TAG, "onCreate: network access", e);
+				//get nearest to location
+				station = Requests.instance().getNearestStation(LocationManager.getInstance().getLocation(act.get()));
+			} catch (JSONException e) {
+				Log.e(TAG, "doInBackground: exception in json parsing with location", e);
 				return new Departure[0];
 			}
 		} else {
-			Requests requests = Requests.instance();
-			try {
-				Station byId = requests.getStationById(keys[stationMenuIndex]);
-				return requests.getNextDeparturesAtStation(byId, exclusions);
-			} catch (Exception e) {
-				Log.e(TAG, "onCreate: network access", e);
-				return new Departure[0];
-			}
+			//else the station is fixed with the selection
+			station = selectedStation.getFixedStation();
+		}
+
+		try {
+			return Requests.instance().getNextDeparturesAtStation(station, exclusions);
+		} catch (JSONException e) {
+			Log.e(TAG, "doInBackground: exception in network access", e);
+			return new Departure[0];
 		}
 	}
 }
