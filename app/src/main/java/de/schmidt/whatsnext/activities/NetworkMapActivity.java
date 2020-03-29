@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,6 +24,7 @@ import de.schmidt.whatsnext.base.Shortcutable;
 import java.util.Objects;
 
 public class NetworkMapActivity extends ActionBarBaseActivity implements Shortcutable {
+	private static final String TAG = "NetworkMapActivity";
 	private WebView webView;
 	private BottomNavigationView navBar;
 	private ActionBar actionBar;
@@ -76,7 +78,9 @@ public class NetworkMapActivity extends ActionBarBaseActivity implements Shortcu
 	public void refresh() {
 		//load the network map
 		final String googleViewer = "https://docs.google.com/gview?embedded=true&url=";
-		webView.loadUrl(googleViewer + Requests.URL_NETWORK_MAP);
+		final String url = googleViewer + Requests.URL_NETWORK_MAP;
+		Log.d(TAG, "refresh: loading " + url);
+		webView.loadUrl(url);
 	}
 
 	@Override
