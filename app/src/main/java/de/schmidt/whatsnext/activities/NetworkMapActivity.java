@@ -70,8 +70,8 @@ public class NetworkMapActivity extends ActionBarBaseActivity {
 	@Override
 	public void refresh() {
 		//load the network map
-		final String googleURL = "https://docs.google.com/gview?embedded=true&url=";
-		webView.loadUrl(googleURL + Requests.URL_NETWORK_MAP);
+		final String googleViewer = "https://docs.google.com/gview?embedded=true&url=";
+		webView.loadUrl(googleViewer + Requests.URL_NETWORK_MAP);
 	}
 
 	@Override
