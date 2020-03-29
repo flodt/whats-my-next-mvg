@@ -136,4 +136,9 @@
     <string name="cannot_delete_location">Current location cannot be deleted.</string>
     <string name="time_earlier">Earlier</string>
     <string name="time_later">Later</string>
+    <string name="create_shortcut">Create shortcut…</string>
+    <string name="create_shortcut_error">Cannot create a shortcut for this page.</string>
+    <string name="key_station_from_shortcut">STATION_TO_SHOW</string>
+    <string name="create_shortcut_not_supported">Shortcut creation is not supported by launcher.</string>
+    <string name="create_shortcut_success">Shortcut created!</string>
 </resources>

@@ -12,4 +12,10 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_excluded"
     />
+    <item
+            android:id="@+id/create_shortcut_button"
+            android:title="@string/create_shortcut"
+            app:showAsAction="never"
+            android:icon="@drawable/ic_create_shortcut"
+    />
 </menu>

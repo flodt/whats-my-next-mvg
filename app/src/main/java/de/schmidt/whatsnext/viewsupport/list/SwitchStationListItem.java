@@ -5,7 +5,9 @@ import android.util.Log;
 import androidx.annotation.DrawableRes;
 import de.schmidt.mvg.traffic.Station;
 
-public abstract class SwitchStationListItem {
+import java.io.Serializable;
+
+public abstract class SwitchStationListItem implements Serializable {
 	public abstract @DrawableRes int getDrawable();
 	public abstract String getTitle(Context context);
 	public abstract boolean isCurrentLocation();

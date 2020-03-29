@@ -2,13 +2,20 @@ package de.schmidt.whatsnext.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.TestLooperManager;
 import android.widget.ListView;
+import android.widget.Toast;
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,14 +32,17 @@ import de.schmidt.util.network.ListableNetworkAccess;
 import de.schmidt.whatsnext.adapters.DepartureListViewAdapter;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class DepartureListActivity extends ActionBarBaseActivity implements Updatable<Departure> {
+public class DepartureListActivity extends ActionBarBaseActivity implements Updatable<Departure>, Shortcutable {
 	private static final String TAG = "DepartureList";
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
@@ -89,10 +99,24 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
 
-		//get selected station from SharedPerferences
+		//get the selected station either from the calling intent (for shortcut), or from SharedPreferences
+		SwitchStationListItem selected;
+		String fromIntent = getIntent().getStringExtra(getString(R.string.key_station_from_shortcut));
+
+		if (fromIntent != null) {
+			//if the intent has the station, get it from there
+			selected = SwitchStationListItem.deserialize(fromIntent);
+		} else {
+			//else get it from SharedPreferences
+			selected = PreferenceManager.getInstance().getSelectedStation(this);
+		}
+
+		//update selection in SharedPreferences
+		PreferenceManager.getInstance().setSelectedStation(this, selected);
+
 		new ListableNetworkAccess(
 				this,
-				PreferenceManager.getInstance().getSelectedStation(this),
+				selected,
 				PreferenceManager.getInstance().getExcludableTransportMeans(this)
 		).execute();
 	}
@@ -156,4 +180,21 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 	public void updateFromCache() {
 		handleUIUpdate(DepartureCache.getInstance().getCache());
 	}
+
+	@Override
+	public void createShortcut() {
+		//build the intent that's called on tap
+		SwitchStationListItem selected = PreferenceManager.getInstance().getSelectedStation(this);
+		Intent launchIntent = new Intent(getApplicationContext(), DepartureListActivity.class);
+		launchIntent.putExtra(getString(R.string.key_station_from_shortcut), selected.serialize());
+		launchIntent.setAction(Intent.ACTION_MAIN);
+
+		final String label = selected.getTitle(this);
+		final @DrawableRes int icon = R.mipmap.ic_departure_list_shortcut_round;
+
+		//request shortcut in launcher
+		Shortcutable.requestShortcut(this, launchIntent, label, icon);
+	}
+
+
 }
