@@ -21,6 +21,8 @@ import java.util.*;
 public class Requests {
 	private static final Requests singleton = new Requests();
 
+	public static final String URL_NETWORK_MAP = "https://www.mvv-muenchen.de/fileadmin/mediapool/03-Plaene_Bahnhoefe/Netzplaene/MVV_Netzplan_S_U_R.pdf";
+
 	private static final String URL_STATION_BY_NAME = "https://www.mvg.de/api/fahrinfo/location/queryWeb?q={name}";
 	private static final String URL_STATION_BY_ID = "https://www.mvg.de/api/fahrinfo/location/query?q={id}";
 	private static final String URL_DEPARTURE_BY_ID = "https://www.mvg.de/api/fahrinfo/departure/{id}?footway=0";

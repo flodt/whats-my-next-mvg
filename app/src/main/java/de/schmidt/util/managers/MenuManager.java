@@ -1,9 +1,15 @@
 package de.schmidt.util.managers;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import de.schmidt.mvg.Requests;
+import de.schmidt.whatsnext.activities.NetworkMapActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.Shortcutable;
@@ -45,7 +51,16 @@ public class MenuManager {
 			case R.id.create_shortcut_button:
 				createShortcut(context);
 				break;
+			case R.id.show_subway_map_button:
+				showSubwayMap(context);
+				break;
 		}
+	}
+
+	private void showSubwayMap(Context context) {
+		if (context instanceof NetworkMapActivity) return;
+		Intent showMapIntent = new Intent(context, NetworkMapActivity.class);
+		context.startActivity(showMapIntent);
 	}
 
 	private void refresh(Context context) {

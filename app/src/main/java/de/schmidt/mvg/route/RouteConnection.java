@@ -57,7 +57,8 @@ public class RouteConnection implements Serializable {
 
 	public long getDeltaToDepartureInMinutes() {
 		long duration = getDepartureTime().getTime() - System.currentTimeMillis();
-		return TimeUnit.MILLISECONDS.toMinutes(duration);
+		long diff = TimeUnit.MILLISECONDS.toMinutes(duration);
+		return Math.max(diff, 0);
 	}
 
 	public List<RouteConnectionPart> getConnectionParts() {

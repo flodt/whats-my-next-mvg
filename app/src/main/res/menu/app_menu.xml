@@ -13,6 +13,12 @@
         android:icon="@drawable/ic_excluded"
     />
     <item
+            android:id="@+id/show_subway_map_button"
+            android:title="@string/show_subway_map"
+            app:showAsAction="never"
+            android:icon="@drawable/ic_document"
+    />
+    <item
             android:id="@+id/create_shortcut_button"
             android:title="@string/create_shortcut"
             app:showAsAction="never"
