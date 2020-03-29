@@ -77,19 +77,37 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 				//if the tapped element is a time shift button, we need to refresh the screen with new RouteOptions
 				//get the options from the cached value (re-fetched from the intent at every refresh, if present)
 				RouteOptions options = RoutingOptionsCache.getInstance().getCache();
-
-				//add or subtract 1.5 hours to/from the request
-				long raw = Long.parseLong(
-						options
-								.getProperties()
-								.getOrDefault("time",
-											  Long.toString(new Date().getTime())
-								)
-				);
 				boolean wasArrival = Boolean.parseBoolean(options.getProperties().getOrDefault("arrival", "false"));
 
-				Date shifted = new Date(raw + direction.getOperation() * (TimeUnit.MINUTES.toMillis(30)));
+				//get the first/last object in the currently displayed views as time baseline for the new request
+				long raw;
+				if (direction == TimeShift.EARLIER) {
+					//get first
+					raw = views.stream()
+							.filter(AlternativesDisplayView::hasRouteConnection)
+							.map(adv -> (AlternativesRouteView) adv)
+							.map(AlternativesRouteView::getRouteConnection)
+							.map(rc -> wasArrival ? rc.getArrivalTime() : rc.getDepartureTime())
+							.findFirst()
+							.orElse(new Date())
+							.getTime();
 
+					//subtract 30 minutes from the returned time
+					raw = raw - TimeUnit.MINUTES.toMillis(30);
+				} else {
+					//get last (views.size() - 3 as we filter out "Earlier"/"Later" buttons and skip all but the last
+					raw = views.stream()
+							.filter(AlternativesDisplayView::hasRouteConnection)
+							.map(adv -> (AlternativesRouteView) adv)
+							.map(AlternativesRouteView::getRouteConnection)
+							.map(rc -> wasArrival ? rc.getArrivalTime() : rc.getDepartureTime())
+							.skip(views.size() - 3)
+							.findFirst()
+							.orElse(new Date())
+							.getTime();
+				}
+
+				Date shifted = new Date(raw);
 				RouteOptions modifiedOptions = options.withTime(shifted, !wasArrival);
 
 				//restart the activity with the new time
@@ -110,7 +128,6 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 						.map(adv -> (AlternativesRouteView) adv)
 						.map(AlternativesRouteView::getRouteConnection)
 						.mapToLong(RouteConnection::getDurationInMinutes)
-						.mapToInt(l -> (int) l)
 						.average()
 						.orElse(Double.POSITIVE_INFINITY);
 				intent.putExtra(getString(R.string.key_average_duration), average);

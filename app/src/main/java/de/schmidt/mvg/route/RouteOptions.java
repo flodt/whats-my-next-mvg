@@ -57,15 +57,15 @@ public class RouteOptions implements Serializable {
 	}
 
 	public RouteOptions withTime(Date date, boolean departure) {
-		return withTime(String.valueOf(date.getTime()), String.valueOf(departure));
+		return withTime(String.valueOf(date.getTime()), String.valueOf(!departure));
 	}
 
-	public RouteOptions withTime(String rawDate, String rawDeparture) {
-		if (rawDate.equals("") || rawDeparture.equals("")) {
+	public RouteOptions withTime(String rawDate, String rawArrival) {
+		if (rawDate.equals("") || rawArrival.equals("")) {
 			return this;
 		} else {
 			return withKeyValueAdded("time", rawDate)
-					.withKeyValueAdded("arrival", rawDeparture);
+					.withKeyValueAdded("arrival", rawArrival);
 		}
 	}
 

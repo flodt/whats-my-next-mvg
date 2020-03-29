@@ -2,6 +2,7 @@ package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.widget.ListView;
 import android.os.Bundle;
 import androidx.annotation.DrawableRes;
@@ -24,6 +25,7 @@ import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class InterruptionsActivity extends ActionBarBaseActivity implements Updatable<Interruption>, Shortcutable {
 	private SwipeRefreshLayout swipeRefresh;
@@ -62,6 +64,19 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		//set colors
+		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_3));
+		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
+		getWindow().setStatusBarColor(primaryAndDark[1]);
+
+		navBar.setBackgroundColor(getColor(R.color.white));
+		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_3)));
+		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_3)));
+	}
+
+	@Override
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
 		new InterruptionsNetworkAccess(this).execute();
@@ -75,11 +90,6 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 			//copy data to field
 			InterruptionsActivity.this.interruptions.clear();
 			InterruptionsActivity.this.interruptions.addAll(interruptions);
-
-			//set colors accordingly
-			navBar.setBackgroundColor(getColor(R.color.white));
-			navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));
-			navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimaryDark)));
 
 			//refresh the list view
 			adapter.notifyDataSetChanged();
