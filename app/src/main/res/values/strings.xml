@@ -104,7 +104,7 @@
     <string name="no_departures_found">No departures found</string>
     <string name="inter_arrival_elem">"Arrival: "</string>
     <string name="inter_departure_elem">"; Departure: "</string>
-    <string name="modification_date_prefix">"Last updated: "</string>
+    <string name="modification_date_prefix">"Updated: "</string>
     <string name="dialog_transport_means_title">Select means of transport…</string>
     <string name="interrupt_filter_hint">comma-separated lines…</string>
     <string name="interrupt_filter_title">Interruptions filter…</string>

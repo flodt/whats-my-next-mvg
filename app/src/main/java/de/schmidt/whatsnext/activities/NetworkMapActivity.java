@@ -1,10 +1,13 @@
 package de.schmidt.whatsnext.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,15 +18,16 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Shortcutable;
 
 import java.util.Objects;
 
-public class NetworkMapActivity extends ActionBarBaseActivity {
+public class NetworkMapActivity extends ActionBarBaseActivity implements Shortcutable {
 	private WebView webView;
 	private BottomNavigationView navBar;
 	private ActionBar actionBar;
 
-
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +44,7 @@ public class NetworkMapActivity extends ActionBarBaseActivity {
 		webView = findViewById(R.id.network_map_webview);
 		webView.setWebViewClient(new WebViewClient());
 		webView.getSettings().setSupportZoom(true);
+		webView.getSettings().setJavaScriptEnabled(true);
 	}
 
 	@Override
@@ -82,5 +87,18 @@ public class NetworkMapActivity extends ActionBarBaseActivity {
 	@Override
 	public BottomNavigationView getNavBar() {
 		return navBar;
+	}
+
+	@Override
+	public void createShortcut() {
+		//build the intent that's called on tap
+		Intent launchIntent = new Intent(getApplicationContext(), NetworkMapActivity.class);
+		launchIntent.setAction(Intent.ACTION_MAIN);
+
+		final String label = getString(R.string.network_map_title);
+		final @DrawableRes int icon = R.mipmap.ic_subway_map_shortcut_round;
+
+		//request shortcut in launcher
+		Shortcutable.requestShortcut(this, launchIntent, label, icon);
 	}
 }

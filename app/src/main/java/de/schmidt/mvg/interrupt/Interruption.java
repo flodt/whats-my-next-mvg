@@ -1,11 +1,13 @@
 package de.schmidt.mvg.interrupt;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import de.schmidt.whatsnext.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -82,8 +84,10 @@ public class Interruption {
 		return modificationDate;
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	public String getModificationDateAsString(Context context) {
-		return context.getResources().getString(R.string.modification_date_prefix) + modificationDate.toString();
+		return context.getResources().getString(R.string.modification_date_prefix)
+				+ new SimpleDateFormat("EEE dd.MM.yyyy HH:mm:ss").format(modificationDate);
 	}
 
 	public static Interruption ofJSON(JSONObject json) throws JSONException {
