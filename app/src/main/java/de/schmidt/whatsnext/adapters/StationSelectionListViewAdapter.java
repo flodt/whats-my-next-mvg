@@ -3,24 +3,17 @@ package de.schmidt.whatsnext.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.schmidt.mvg.adapters.SwitchStationListItem;
-import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.mvg.route.RouteConnectionPart;
-import de.schmidt.util.ColorUtils;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class StationSelectionListViewAdapter extends BaseAdapter {
 	private final Activity context;

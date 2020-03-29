@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteOptions;
-import de.schmidt.mvg.adapters.RouteStationSelection;
+import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;

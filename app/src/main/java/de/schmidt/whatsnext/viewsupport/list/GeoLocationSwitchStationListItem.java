@@ -1,7 +1,6 @@
-package de.schmidt.mvg.adapters;
+package de.schmidt.whatsnext.viewsupport.list;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.whatsnext.R;
 

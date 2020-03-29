@@ -1,17 +1,13 @@
 package de.schmidt.util.network;
 
-import android.content.Context;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
-import androidx.annotation.Nullable;
-import de.schmidt.mvg.adapters.SwitchStationListItem;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.caching.DepartureCache;
 import de.schmidt.util.managers.LocationManager;
-import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.activities.DepartureSingleActivity;
 import org.json.JSONException;
 

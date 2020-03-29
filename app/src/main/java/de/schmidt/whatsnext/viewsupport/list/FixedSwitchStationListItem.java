@@ -1,4 +1,4 @@
-package de.schmidt.mvg.adapters;
+package de.schmidt.whatsnext.viewsupport.list;
 
 import android.content.Context;
 import de.schmidt.mvg.traffic.Station;

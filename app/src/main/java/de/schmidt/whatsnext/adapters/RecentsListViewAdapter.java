@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import de.schmidt.mvg.adapters.RouteStationSelection;
+import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.whatsnext.R;
 
 import java.util.List;

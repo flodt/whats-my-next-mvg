@@ -1,12 +1,9 @@
-package de.schmidt.mvg.adapters;
+package de.schmidt.whatsnext.viewsupport.list;
 
 import android.content.Context;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import de.schmidt.mvg.traffic.Station;
-import de.schmidt.whatsnext.R;
 
 public abstract class SwitchStationListItem {
 	public abstract @DrawableRes int getDrawable();
