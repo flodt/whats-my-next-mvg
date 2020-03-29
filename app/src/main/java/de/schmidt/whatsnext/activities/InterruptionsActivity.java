@@ -1,8 +1,10 @@
 package de.schmidt.whatsnext.activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.widget.ListView;
 import android.os.Bundle;
+import androidx.annotation.DrawableRes;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,17 +13,19 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.caching.InterruptionsCache;
+import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterruptionsActivity extends ActionBarBaseActivity implements Updatable<Interruption> {
-
+public class InterruptionsActivity extends ActionBarBaseActivity implements Updatable<Interruption>, Shortcutable {
 	private SwipeRefreshLayout swipeRefresh;
 	private ListView listView;
 	private List<Interruption> interruptions;
@@ -98,5 +102,18 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	@Override
 	public void updateFromCache() {
 		handleUIUpdate(InterruptionsCache.getInstance().getCache());
+	}
+
+	@Override
+	public void createShortcut() {
+		//build the intent that's called on tap
+		Intent launchIntent = new Intent(getApplicationContext(), InterruptionsActivity.class);
+		launchIntent.setAction(Intent.ACTION_MAIN);
+
+		final String label = getString(R.string.interruptions_title);
+		final @DrawableRes int icon = R.mipmap.ic_interruptions_shortcut_round;
+
+		//request shortcut in launcher
+		Shortcutable.requestShortcut(this, launchIntent, label, icon);
 	}
 }

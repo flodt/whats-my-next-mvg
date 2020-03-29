@@ -3,10 +3,7 @@ package de.schmidt.mvg.route;
 import de.schmidt.mvg.traffic.Station;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RouteOptions implements Serializable {
@@ -36,16 +33,40 @@ public class RouteOptions implements Serializable {
 	}
 
 	public RouteOptions withStart(Station start) {
-		return withKeyValueAdded("fromStation", start.getId());
+		return withStart(start.getId());
+	}
+
+	public RouteOptions withStart(String startId) {
+		if (startId.equals("")) {
+			return this;
+		} else {
+			return withKeyValueAdded("fromStation", startId);
+		}
 	}
 
 	public RouteOptions withDestination(Station destination) {
-		return withKeyValueAdded("toStation", destination.getId());
+		return withDestination(destination.getId());
+	}
+
+	public RouteOptions withDestination(String destinationId) {
+		if (destinationId.equals("")) {
+			return this;
+		} else {
+			return withKeyValueAdded("toStation", destinationId);
+		}
 	}
 
 	public RouteOptions withTime(Date date, boolean departure) {
-		return withKeyValueAdded("time", String.valueOf(date.getTime()))
-				.withKeyValueAdded("arrival", String.valueOf(!departure));
+		return withTime(String.valueOf(date.getTime()), String.valueOf(departure));
+	}
+
+	public RouteOptions withTime(String rawDate, String rawDeparture) {
+		if (rawDate.equals("") || rawDeparture.equals("")) {
+			return this;
+		} else {
+			return withKeyValueAdded("time", rawDate)
+					.withKeyValueAdded("arrival", rawDeparture);
+		}
 	}
 
 	public String getParameterString() {
@@ -55,6 +76,18 @@ public class RouteOptions implements Serializable {
 				.stream()
 				.map(e -> e.getKey() + "=" + e.getValue())
 				.collect(Collectors.joining("&"));
+	}
+
+	public static RouteOptions fromParameterString(String params) {
+		Map<String, String> raw = Arrays
+				.stream(params.split("&"))
+				.map(str -> str.split("="))
+				.collect(Collectors.toMap(arr -> arr[0], arr -> arr[1]));
+
+		return getBase()
+				.withStart(raw.getOrDefault("fromStation", ""))
+				.withDestination(raw.getOrDefault("toStation", ""))
+				.withTime(raw.getOrDefault("time", ""), raw.getOrDefault("arrival", ""));
 	}
 
 	@Override

@@ -111,8 +111,10 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			selected = PreferenceManager.getInstance().getSelectedStation(this);
 		}
 
-		//update selection in SharedPreferences
-		PreferenceManager.getInstance().setSelectedStation(this, selected);
+		//update selection in SharedPreferences if we have the station
+		if (PreferenceManager.getInstance().getStationList(this).contains(selected)) {
+			PreferenceManager.getInstance().setSelectedStation(this, selected);
+		}
 
 		new ListableNetworkAccess(
 				this,
@@ -195,6 +197,4 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 		//request shortcut in launcher
 		Shortcutable.requestShortcut(this, launchIntent, label, icon);
 	}
-
-
 }

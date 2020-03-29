@@ -3,12 +3,14 @@ package de.schmidt.whatsnext.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,13 +29,15 @@ import de.schmidt.util.network.DepartureDetailNetworkAccess;
 import de.schmidt.util.network.SingleNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.List;
 
 import static de.schmidt.util.ColorUtils.modifyColor;
 
-public class DepartureSingleActivity extends ActionBarBaseActivity implements Updatable<Departure>, View.OnClickListener {
+public class DepartureSingleActivity extends ActionBarBaseActivity implements Updatable<Departure>, View.OnClickListener, Shortcutable {
 	private static final String TAG = "SingleDepartureActivity";
 	private TextView line, direction, inMinutes, minutesFixedLabel;
 	private ConstraintLayout layoutBackground;
@@ -83,10 +87,26 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 
 		displayed = null;
 
-		//get selected station from SharedPreferences
+		//get the selected station either from the calling intent (for shortcut), or from SharedPreferences
+		SwitchStationListItem selected;
+		String fromIntent = getIntent().getStringExtra(getString(R.string.key_station_from_shortcut));
+
+		if (fromIntent != null) {
+			//if the intent has the station, get it from there
+			selected = SwitchStationListItem.deserialize(fromIntent);
+		} else {
+			//else get it from SharedPreferences
+			selected = PreferenceManager.getInstance().getSelectedStation(this);
+		}
+
+		//update selection in SharedPreferences if we have the station
+		if (PreferenceManager.getInstance().getStationList(this).contains(selected)) {
+			PreferenceManager.getInstance().setSelectedStation(this, selected);
+		}
+
 		new SingleNetworkAccess(
 				this,
-				PreferenceManager.getInstance().getSelectedStation(this),
+				selected,
 				PreferenceManager.getInstance().getExcludableTransportMeans(this)
 		).execute();
 	}
@@ -176,5 +196,20 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 			dialog.show();
 			new DepartureDetailNetworkAccess(DepartureSingleActivity.this, dialog, displayed).execute();
 		}
+	}
+
+	@Override
+	public void createShortcut() {
+		//build the intent that's called on tap
+		SwitchStationListItem selected = PreferenceManager.getInstance().getSelectedStation(this);
+		Intent launchIntent = new Intent(getApplicationContext(), DepartureSingleActivity.class);
+		launchIntent.putExtra(getString(R.string.key_station_from_shortcut), selected.serialize());
+		launchIntent.setAction(Intent.ACTION_MAIN);
+
+		final String label = selected.getTitle(this);
+		final @DrawableRes int icon = R.mipmap.ic_departure_single_shortcut_round;
+
+		//request shortcut in launcher
+		Shortcutable.requestShortcut(this, launchIntent, label, icon);
 	}
 }
