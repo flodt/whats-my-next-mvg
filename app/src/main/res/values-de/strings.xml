@@ -68,4 +68,12 @@
     <string name="remove_station_title">Eintrag löschen?</string>
     <string name="current_location">Aktueller Standort</string>
     <string name="cannot_delete_location">Aktueller Standort kann nicht gelöscht werden.</string>
+    <string name="create_shortcut">Verknüpfung erstellen…</string>
+    <string name="create_shortcut_error">Für diese Seite kann keine Verknüpfung erstellt werden.</string>
+    <string name="create_shortcut_not_supported">Verknüpfungen werden vom Launcher nicht unterstützt.</string>
+    <string name="create_shortcut_success">Verknüpfung erstellt!</string>
+    <string name="network_map_title">Netzplan</string>
+    <string name="show_subway_map">Netzplan anzeigen…</string>
+    <string name="time_earlier">Früher</string>
+    <string name="time_later">Später</string>
 </resources>

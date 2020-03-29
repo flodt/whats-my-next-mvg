@@ -138,10 +138,10 @@
     <string name="time_later">Later</string>
     <string name="create_shortcut">Create shortcut…</string>
     <string name="create_shortcut_error">Cannot create a shortcut for this page.</string>
-    <string name="key_station_from_shortcut">STATION_TO_SHOW</string>
+    <string name="key_station_from_shortcut" translatable="false">STATION_TO_SHOW</string>
     <string name="create_shortcut_not_supported">Shortcut creation is not supported by launcher.</string>
     <string name="create_shortcut_success">Shortcut created!</string>
-    <string name="key_route_options_from_shortcut">ROUTE_OPTIONS_SHORTCUT</string>
+    <string name="key_route_options_from_shortcut" translatable="false">ROUTE_OPTIONS_SHORTCUT</string>
     <string name="show_subway_map">Show subway map…</string>
     <string name="network_map_title">Subway map</string>
 </resources>
