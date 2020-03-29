@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ListView;
+import androidx.annotation.DrawableRes;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
@@ -13,14 +14,17 @@ import de.schmidt.mvg.route.TimeShift;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesRouteView;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesTimeChangeView;
+import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection> {
+public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection>, Shortcutable {
 	private static final String TAG = "RoutingAlternativesActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
@@ -132,16 +136,24 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	@Override
 	public void refresh() {
 		swipeRefresh.setRefreshing(true);
+
+		//try getting route options from intent (entry activity)
 		RouteOptions options = (RouteOptions) getIntent().getSerializableExtra(getString(R.string.key_parameters));
 
-		//the intent does not contain the extra if the activity is launched over the back button!
-		// - so we handle this here by caching the RouteOptions until we next visit the entry activity
+		//if it's not present, try getting it from the shortcut intent
+		String rawOptions = getIntent().getStringExtra(getString(R.string.key_route_options_from_shortcut));
+		if (options == null && rawOptions != null) {
+			options = RouteOptions.fromParameterString(rawOptions);
+		}
+
+		//if we now have a value, write it to the cache
 		if (options != null) {
 			RoutingOptionsCache.getInstance().setCache(options);
-			new RoutingNetworkAccess(this, options).execute();
-		} else if (RoutingOptionsCache.getInstance().isPresent()) {
-			new RoutingNetworkAccess(this, RoutingOptionsCache.getInstance().getCache()).execute();
 		}
+
+		//now get the value from the cache and execute network access
+		RouteOptions cached = RoutingOptionsCache.getInstance().getCache();
+		new RoutingNetworkAccess(this, cached).execute();
 	}
 
 	@Override
@@ -183,5 +195,20 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	@Override
 	public BottomNavigationView getNavBar() {
 		return navBar;
+	}
+
+	@Override
+	public void createShortcut() {
+		//build the intent that's called on tap
+		RouteOptions options = RoutingOptionsCache.getInstance().getCache();
+		Intent launchIntent = new Intent(getApplicationContext(), RoutingAlternativesActivity.class);
+		launchIntent.putExtra(getString(R.string.key_route_options_from_shortcut), options.getParameterString());
+		launchIntent.setAction(Intent.ACTION_MAIN);
+
+		final String label = getString(R.string.navbar_route);
+		final @DrawableRes int icon = R.mipmap.ic_route_shortcut_round;
+
+		//request shortcut in launcher
+		Shortcutable.requestShortcut(this, launchIntent, label, icon);
 	}
 }

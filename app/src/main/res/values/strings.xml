@@ -141,4 +141,5 @@
     <string name="key_station_from_shortcut">STATION_TO_SHOW</string>
     <string name="create_shortcut_not_supported">Shortcut creation is not supported by launcher.</string>
     <string name="create_shortcut_success">Shortcut created!</string>
+    <string name="key_route_options_from_shortcut">ROUTE_OPTIONS_SHORTCUT</string>
 </resources>
