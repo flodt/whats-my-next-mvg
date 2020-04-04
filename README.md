@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to What's My Next 🚈</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.1-blue.svg?cacheSeconds=2592000" />
   <a href="https://play.google.com/store/apps/details?id=de.schmidt.whatsnext"><img alt="Google Play" src="https://img.shields.io/badge/live%20on-Google%20Play-orange"/></a>
 </p>
 
