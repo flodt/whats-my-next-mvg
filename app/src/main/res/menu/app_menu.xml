@@ -24,4 +24,10 @@
             app:showAsAction="never"
             android:icon="@drawable/ic_create_shortcut"
     />
+    <item
+            android:id="@+id/send_notification_button"
+            android:title="@string/send_notification"
+            app:showAsAction="never"
+            android:icon="@drawable/ic_notify"
+    />
 </menu>

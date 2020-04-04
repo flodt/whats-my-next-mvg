@@ -13,9 +13,11 @@ import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.managers.NotificationManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.ItineraryListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Notifyable;
 import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.route.ConnectionDisplayView;
 
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView> {
+public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity implements Updatable<ConnectionDisplayView>, Notifyable {
 	private static final String TAG = "ItineraryDisplayActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
@@ -139,5 +141,10 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 			listView.refreshDrawableState();
 			swipeRefresh.setRefreshing(false);
 		});
+	}
+
+	@Override
+	public void sendToNotifcations() {
+		NotificationManager.getInstance().sendItinerary(routeConnection, this);
 	}
 }

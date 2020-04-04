@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import androidx.annotation.DrawableRes;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
@@ -14,11 +18,13 @@ import de.schmidt.mvg.route.TimeShift;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.managers.NotificationManager;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
+import de.schmidt.whatsnext.base.Notifyable;
 import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
@@ -34,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection>, Shortcutable {
+public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection>, Shortcutable, Notifyable {
 	private static final String TAG = "RoutingAlternativesActivity";
 	private BottomNavigationView navBar;
 	private SwipeRefreshLayout swipeRefresh;
@@ -227,5 +233,29 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 
 		//request shortcut in launcher
 		Shortcutable.requestShortcut(this, launchIntent, label, icon);
+	}
+
+	@Override
+	public void sendToNotifcations() {
+		RouteOptions options = RoutingOptionsCache.getInstance().getCache();
+		String connection = views.stream()
+				.filter(adv -> !adv.isTimeShiftButton())
+				.map(adv -> ((AlternativesRouteView) adv))
+				.map(AlternativesRouteView::getRouteConnection)
+				.map(rc -> rc.getFrom().getName() + " - " + rc.getTo().getName())
+				.distinct()
+				.findFirst()
+				.orElse(getString(R.string.no_connection));
+
+		int color = views.stream()
+				.filter(adv -> !adv.isTimeShiftButton())
+				.map(adv -> ((AlternativesRouteView) adv))
+				.map(AlternativesRouteView::getRouteConnection)
+				.map(RouteConnection::getFirstColor)
+				.distinct()
+				.findFirst()
+				.orElse(0);
+
+		NotificationManager.getInstance().sendAlternatives(options, this, connection, color);
 	}
 }

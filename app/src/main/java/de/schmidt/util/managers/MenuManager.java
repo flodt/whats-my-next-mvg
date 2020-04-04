@@ -12,6 +12,7 @@ import de.schmidt.mvg.Requests;
 import de.schmidt.whatsnext.activities.NetworkMapActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.base.Notifyable;
 import de.schmidt.whatsnext.base.Shortcutable;
 
 public class MenuManager {
@@ -54,6 +55,17 @@ public class MenuManager {
 			case R.id.show_subway_map_button:
 				showSubwayMap(context);
 				break;
+			case R.id.send_notification_button:
+				sendNotification(context);
+				break;
+		}
+	}
+
+	private void sendNotification(Context context) {
+		if (context instanceof Notifyable) {
+			((Notifyable) context).sendToNotifcations();
+		} else {
+			Toast.makeText(context, context.getString(R.string.send_notification_error), Toast.LENGTH_SHORT).show();
 		}
 	}
 

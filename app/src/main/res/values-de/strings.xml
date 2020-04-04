@@ -76,4 +76,9 @@
     <string name="show_subway_map">Netzplan anzeigen…</string>
     <string name="time_earlier">Früher</string>
     <string name="time_later">Später</string>
+    <string name="channel_description">Erinnerungsmitteilungen für Trips</string>
+    <string name="no_connection">Keine Verbindungen gefunden</string>
+    <string name="send_notification">Als Mitteilung senden…</string>
+    <string name="send_notification_error">Hierzu kann keine Mitteilung erstellt werden.</string>
+    <string name="tap_to_view_details">Für Reisemöglichkeiten tippen</string>
 </resources>

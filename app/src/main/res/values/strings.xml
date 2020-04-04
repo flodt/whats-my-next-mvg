@@ -144,4 +144,10 @@
     <string name="key_route_options_from_shortcut" translatable="false">ROUTE_OPTIONS_SHORTCUT</string>
     <string name="show_subway_map">Show subway map…</string>
     <string name="network_map_title">Subway map</string>
+    <string name="channel_name" translatable="false">What\'s My Next</string>
+    <string name="channel_description">Itinerary notifications for trips</string>
+    <string name="send_notification">Send to notifications…</string>
+    <string name="send_notification_error">Cannot send this to notifications.</string>
+    <string name="no_connection">No connections found</string>
+    <string name="tap_to_view_details">Tap to view alternatives</string>
 </resources>
