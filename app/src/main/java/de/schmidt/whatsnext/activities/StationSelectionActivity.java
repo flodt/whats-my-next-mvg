@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.FabManager;
@@ -111,13 +112,8 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 	protected void onResume() {
 		super.onResume();
 		//set colors
-		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
-		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
-		getWindow().setStatusBarColor(primaryAndDark[1]);
-
-		navBar.setBackgroundColor(getColor(R.color.white));
-		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
-		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+		ThemeManager.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
+		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 	}
 
 	@Override
