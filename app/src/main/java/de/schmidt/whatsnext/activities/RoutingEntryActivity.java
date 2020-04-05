@@ -267,11 +267,11 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	@Override
 	protected void onResume() {
 		//set colors
-		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
+		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.actionBar));
 		actionBar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
 		getWindow().setStatusBarColor(primaryAndDark[1]);
 
-		navBar.setBackgroundColor(getColor(R.color.white));
+		navBar.setBackgroundColor(getColor(R.color.navBarBackground));
 		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9E9E9E</color>
+    <color name="colorPrimaryLight">#BDBDBD</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorAccent">#607D8B</color>
+    <color name="lighter_gray">#ECECEC</color>
+    <color name="light_gray">#DCDCDC</color>
+    <color name="black">#000000</color>
+    <color name="background">#121212</color>
+    <color name="textColorFull">#FFFFFF</color>
+    <color name="textColorHalf">@color/light_gray</color>
+    <color name="buttonColor">#232323</color>
+    <color name="white">#FFFFFF</color>
+    <color name="actionBar">#202020</color>
+    <color name="navBarBackground">#202020</color>
+    <color name="mvg_1">#C95169</color>
+    <color name="mvg_2">#EB7A46</color>
+    <color name="mvg_3">#F0BD48</color>
+    <color name="mvg_4">#8AB853</color>
+    <color name="mvg_5">#4BB88E</color>
+    <color name="mvg_6">#5CCAE6</color>
+    <color name="mvg_7">#3E9BD5</color>
+    <color name="mvg_8">#CF7CC4</color>
+    <color name="warning_yellow">#FFC107</color>
+</resources>
