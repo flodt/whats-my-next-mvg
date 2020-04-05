@@ -4,13 +4,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -26,7 +22,6 @@ import de.schmidt.whatsnext.adapters.AutocompleteSuggestAdapter;
 import de.schmidt.whatsnext.adapters.OnTextChangedWatcher;
 import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.mvg.traffic.Station;
-import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.LocationManager;
 import de.schmidt.util.managers.NavBarManager;
@@ -269,7 +264,7 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	protected void onResume() {
 		//set colors
 		ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccent(this, navBar, R.color.mvg_1);
+		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 
 		//clear the route options cache, as we are in the process of entering a new input
 		RoutingOptionsCache.getInstance().clearCache();

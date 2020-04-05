@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:background="@color/warning_yellow"
+                                                   android:background="@color/warning_background"
                                                    android:layout_height="wrap_content">
 
     <ImageView
@@ -14,14 +14,14 @@
             android:layout_marginTop="15dp"
             android:id="@+id/warning_icon"
             android:src="@drawable/ic_warning"
-            android:tint="@color/black"
+            android:tint="@color/warning_heading"
             tools:ignore="ContentDescription"/>
 
     <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/warning_header"
-            android:textColor="@color/black"
+            android:textColor="@color/warning_heading"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@id/warning_icon"
             app:layout_constraintBottom_toBottomOf="@id/warning_icon"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:text="@string/warning_long_travel_time"
-            android:textColor="@color/black"
+            android:textColor="@color/warning_text"
             app:layout_constraintTop_toBottomOf="@id/warning_header_label"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

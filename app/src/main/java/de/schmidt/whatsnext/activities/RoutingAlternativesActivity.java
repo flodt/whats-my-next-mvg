@@ -1,15 +1,9 @@
 package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import androidx.annotation.DrawableRes;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.route.RouteConnection;
@@ -19,7 +13,6 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.NotificationManager;
-import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
@@ -31,14 +24,12 @@ import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesRouteView;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesTimeChangeView;
-import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class RoutingAlternativesActivity extends ActionBarBaseActivity implements Updatable<RouteConnection>, Shortcutable, Notifyable {
@@ -149,7 +140,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 
 		//set colors
 		ThemeManager.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccent(this, navBar, R.color.mvg_1);
+		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 	}
 
 	@Override

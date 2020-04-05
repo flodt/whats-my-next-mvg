@@ -1,8 +1,6 @@
 package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.widget.ListView;
 import android.os.Bundle;
 import androidx.annotation.DrawableRes;
@@ -14,7 +12,6 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.caching.InterruptionsCache;
-import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
@@ -22,7 +19,6 @@ import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
-import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +64,11 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	protected void onResume() {
 		super.onResume();
 		//set colors
-		ThemeManager.getInstance().initializeActionBarWithColor(this,
-																Objects.requireNonNull(getSupportActionBar()),
-																getWindow(),
-																R.color.mvg_3);
-		ThemeManager.getInstance().initializeNavBarWithAccent(this, navBar, R.color.mvg_3);
+		ThemeManager.getInstance().initializeActionBarWithColorResource(this,
+																		Objects.requireNonNull(getSupportActionBar()),
+																		getWindow(),
+																		R.color.mvg_3);
+		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_3);
 	}
 
 	@Override

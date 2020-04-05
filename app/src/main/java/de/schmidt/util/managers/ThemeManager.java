@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
+import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.ActionBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,16 +37,33 @@ public class ThemeManager {
 		window.setStatusBarColor(primaryAndDark[1]);
 	}
 
-	public void initializeActionBarWithColor(Context context, ActionBar bar, Window window, @ColorRes int color) {
+	public void initializeActionBarWithColorResource(Context context, ActionBar bar, Window window, @ColorRes int color) {
 		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(
 				context.getColor(isInDarkMode(context) ? R.color.actionBar : color));
 		bar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
 		window.setStatusBarColor(primaryAndDark[1]);
 	}
 
-	public void initializeNavBarWithAccent(Context context, BottomNavigationView navBar, @ColorRes int accent) {
+	public void initializeActionBarWithColorRaw(Context context, ActionBar bar, Window window, @ColorInt int color) {
+		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(
+				isInDarkMode(context) ? context.getColor(R.color.actionBar) : color);
+		bar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
+		window.setStatusBarColor(primaryAndDark[1]);
+	}
+
+	public void initializeNavBarWithAccentResource(Context context, BottomNavigationView navBar, @ColorRes int accent) {
+		//only allow accent when in light mode, does not look good for some colors
+		if (isInDarkMode(context)) accent = R.color.mvg_1;
 		navBar.setBackgroundColor(context.getColor(R.color.navBarBackground));
 		navBar.setItemIconTintList(ColorStateList.valueOf(context.getColor(accent)));
 		navBar.setItemTextColor(ColorStateList.valueOf(context.getColor(accent)));
+	}
+
+	public void initializeNavBarWithAccentRaw(Context context, BottomNavigationView navBar, @ColorInt int accent) {
+		//only allow accent when in light mode, does not look good for some colors
+		if (isInDarkMode(context)) accent = context.getColor(R.color.mvg_1);
+		navBar.setBackgroundColor(context.getColor(R.color.navBarBackground));
+		navBar.setItemIconTintList(ColorStateList.valueOf(accent));
+		navBar.setItemTextColor(ColorStateList.valueOf(accent));
 	}
 }

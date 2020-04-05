@@ -1,8 +1,6 @@
 package de.schmidt.whatsnext.activities;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.widget.ListView;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
@@ -14,6 +12,7 @@ import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.NotificationManager;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.ItineraryListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
@@ -127,13 +126,8 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 		this.views.addAll(dataSet);
 
 		runOnUiThread(() -> {
-			int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(routeConnection.getFirstColor());
-			actionBar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
-			getWindow().setStatusBarColor(primaryAndDark[1]);
-
-			navBar.setBackgroundColor(getColor(R.color.white));
-			navBar.setItemIconTintList(ColorStateList.valueOf(routeConnection.getLastColor()));
-			navBar.setItemTextColor(ColorStateList.valueOf(routeConnection.getLastColor()));
+			ThemeManager.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), routeConnection.getFirstColor());
+			ThemeManager.getInstance().initializeNavBarWithAccentRaw(this, navBar, routeConnection.getLastColor());
 
 			//refresh the list view
 			adapter.notifyDataSetChanged();

@@ -25,5 +25,8 @@
     <color name="mvg_7">#3E9BD5</color>
     <color name="mvg_8">#CF7CC4</color>
     <color name="warning_yellow">#FFC107</color>
+    <color name="warning_background">#232323</color>
+    <color name="warning_heading">#FFC107</color>
+    <color name="warning_text">#FFFFFF</color>
     <color name="timeShiftBackground">#404040</color>
 </resources>
