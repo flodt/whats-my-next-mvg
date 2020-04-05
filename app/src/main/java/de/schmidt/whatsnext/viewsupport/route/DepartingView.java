@@ -89,8 +89,8 @@ public class DepartingView extends ConnectionDisplayView {
 		TextView info = view.findViewById(R.id.departure_line_info);
 		TextView destination = view.findViewById(R.id.departure_line_destination);
 
-		bar1.setBackground(new ColorDrawable(Color.parseColor(departure.getColor().getPrimary())));
-		bar2.setBackground(new ColorDrawable(Color.parseColor(departure.getColor().getPrimary())));
+		bar1.setBackground(new ColorDrawable(Color.parseColor(departure.getColor().getSecondary())));
+		bar2.setBackground(new ColorDrawable(Color.parseColor(departure.getColor().getSecondary())));
 		fromLabel.setText(departure.getFrom().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");

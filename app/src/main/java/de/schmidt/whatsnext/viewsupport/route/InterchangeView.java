@@ -112,10 +112,10 @@ public class InterchangeView extends ConnectionDisplayView {
 		TextView info = view.findViewById(R.id.interchg_line_info);
 		TextView destination = view.findViewById(R.id.interchg_line_destination);
 
-		bar0.setBackground(new ColorDrawable(Color.parseColor(inter.getFormerColor().getPrimary())));
-		bar1.setBackground(new ColorDrawable(Color.parseColor(inter.getFormerColor().getPrimary())));
-		bar2.setBackground(new ColorDrawable(Color.parseColor(inter.getNextColor().getPrimary())));
-		bar3.setBackground(new ColorDrawable(Color.parseColor(inter.getNextColor().getPrimary())));
+		bar0.setBackground(new ColorDrawable(Color.parseColor(inter.getFormerColor().getSecondary())));
+		bar1.setBackground(new ColorDrawable(Color.parseColor(inter.getFormerColor().getSecondary())));
+		bar2.setBackground(new ColorDrawable(Color.parseColor(inter.getNextColor().getSecondary())));
+		bar3.setBackground(new ColorDrawable(Color.parseColor(inter.getNextColor().getSecondary())));
 
 		atLabel.setText(inter.getAt().getName());
 

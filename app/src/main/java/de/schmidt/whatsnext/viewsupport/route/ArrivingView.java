@@ -65,8 +65,8 @@ public class ArrivingView extends ConnectionDisplayView {
 		TextView toLabel = view.findViewById(R.id.arrival_line_to_label);
 		TextView info = view.findViewById(R.id.arrival_line_info);
 
-		bar1.setBackground(new ColorDrawable(Color.parseColor(arrival.getColor().getPrimary())));
-		bar2.setBackground(new ColorDrawable(Color.parseColor(arrival.getColor().getPrimary())));
+		bar1.setBackground(new ColorDrawable(Color.parseColor(arrival.getColor().getSecondary())));
+		bar2.setBackground(new ColorDrawable(Color.parseColor(arrival.getColor().getSecondary())));
 		toLabel.setText(arrival.getTo().getName());
 
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("HH:mm");

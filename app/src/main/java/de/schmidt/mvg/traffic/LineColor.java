@@ -59,6 +59,6 @@ public class LineColor implements Serializable {
 	}
 
 	public static String getHtmlColored(String line) {
-		return "<font color=" + getForLine(line).getPrimary() + ">" + line + "</font>";
+		return "<font color=" + getForLine(line).getSecondary() + ">" + line + "</font>";
 	}
 }

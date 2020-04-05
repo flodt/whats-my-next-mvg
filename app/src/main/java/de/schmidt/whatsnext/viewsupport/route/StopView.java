@@ -51,8 +51,8 @@ public class StopView extends ConnectionDisplayView {
 		View box = view.findViewById(R.id.stop_square);
 		TextView info = view.findViewById(R.id.stop_line_info);
 
-		bar.setBackground(new ColorDrawable(Color.parseColor(stop.getColor().getPrimary())));
-		box.setBackground(new ColorDrawable(Color.parseColor(stop.getColor().getPrimary())));
+		bar.setBackground(new ColorDrawable(Color.parseColor(stop.getColor().getSecondary())));
+		box.setBackground(new ColorDrawable(Color.parseColor(stop.getColor().getSecondary())));
 
 		@SuppressLint("SimpleDateFormat")
 		String infoText = stop.getStop().getStation().getName()
