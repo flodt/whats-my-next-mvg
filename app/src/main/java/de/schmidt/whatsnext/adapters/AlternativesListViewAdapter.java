@@ -2,24 +2,16 @@ package de.schmidt.whatsnext.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.mvg.route.RouteConnectionPart;
-import de.schmidt.util.ColorUtils;
-import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesDisplayView;
 import de.schmidt.whatsnext.viewsupport.alternatives.AlternativesRouteView;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class AlternativesListViewAdapter extends BaseAdapter {
 	private final Activity context;

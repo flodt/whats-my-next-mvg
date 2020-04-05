@@ -1,14 +1,10 @@
 package de.schmidt.util.managers;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import de.schmidt.mvg.Requests;
 import de.schmidt.whatsnext.activities.NetworkMapActivity;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.R;

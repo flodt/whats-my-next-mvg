@@ -3,15 +3,11 @@ package de.schmidt.util.managers;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -222,18 +218,15 @@ public class PreferenceManager {
 
 		//setup autocompletion
 		AutocompleteSuggestAdapter adapter = new AutocompleteSuggestAdapter(context, android.R.layout.select_dialog_item);
-		Handler handler = new Handler(new Handler.Callback() {
-			@Override
-			public boolean handleMessage(@NonNull Message msg) {
-				//if we want to autocomplete the text field, do that if it's not empty
-				if (msg.what == AUTOCOMPLETE_FIELD) {
-					if (!TextUtils.isEmpty(input.getText())) {
-						new AutocompleteNetworkAccess(input.getText().toString(), adapter).execute();
-					}
+		Handler handler = new Handler(msg -> {
+			//if we want to autocomplete the text field, do that if it's not empty
+			if (msg.what == AUTOCOMPLETE_FIELD) {
+				if (!TextUtils.isEmpty(input.getText())) {
+					new AutocompleteNetworkAccess(input.getText().toString(), adapter).execute();
 				}
-
-				return false;
 			}
+
+			return false;
 		});
 		input.setThreshold(1);
 		input.setAdapter(adapter);

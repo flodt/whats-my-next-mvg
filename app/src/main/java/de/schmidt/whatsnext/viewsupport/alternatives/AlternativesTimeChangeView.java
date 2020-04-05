@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.schmidt.mvg.route.TimeShift;
-import de.schmidt.util.ColorUtils;
 import de.schmidt.whatsnext.R;
 
 public class AlternativesTimeChangeView extends AlternativesDisplayView {

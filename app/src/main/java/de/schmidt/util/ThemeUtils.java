@@ -16,7 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.activities.DepartureListActivity;
-import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 
 public class ThemeUtils {
 	private static ThemeUtils instance = new ThemeUtils();

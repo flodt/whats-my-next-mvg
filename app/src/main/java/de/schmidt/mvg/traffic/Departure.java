@@ -1,8 +1,5 @@
 package de.schmidt.mvg.traffic;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

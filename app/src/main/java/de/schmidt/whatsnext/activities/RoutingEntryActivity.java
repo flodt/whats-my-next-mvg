@@ -114,22 +114,19 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 		});
 
 		//setup handler for UI updates
-		handler = new Handler(new Handler.Callback() {
-			@Override
-			public boolean handleMessage(@NonNull Message msg) {
-				//if we want to autocomplete the from field, do that if it's not empty
-				if (msg.what == AUTOCOMPLETE_FROM) {
-					if (!TextUtils.isEmpty(fromInput.getText())) {
-						new AutocompleteNetworkAccess(fromInput.getText().toString(), fromAdapter).execute();
-					}
-				} else if (msg.what == AUTOCOMPLETE_TO) {
-					if (!TextUtils.isEmpty(toInput.getText())) {
-						new AutocompleteNetworkAccess(toInput.getText().toString(), toAdapter).execute();
-					}
+		handler = new Handler(msg -> {
+			//if we want to autocomplete the from field, do that if it's not empty
+			if (msg.what == AUTOCOMPLETE_FROM) {
+				if (!TextUtils.isEmpty(fromInput.getText())) {
+					new AutocompleteNetworkAccess(fromInput.getText().toString(), fromAdapter).execute();
 				}
-
-				return false;
+			} else if (msg.what == AUTOCOMPLETE_TO) {
+				if (!TextUtils.isEmpty(toInput.getText())) {
+					new AutocompleteNetworkAccess(toInput.getText().toString(), toAdapter).execute();
+				}
 			}
+
+			return false;
 		});
 
 		//set threshold for the start of autocompletion

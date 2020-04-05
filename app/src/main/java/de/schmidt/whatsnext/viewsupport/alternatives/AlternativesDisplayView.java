@@ -1,8 +1,6 @@
 package de.schmidt.whatsnext.viewsupport.alternatives;
 
 import android.view.View;
-import de.schmidt.mvg.route.RouteConnection;
-import de.schmidt.whatsnext.viewsupport.route.ConnectionDisplayView;
 
 public abstract class AlternativesDisplayView {
 	public abstract int getLayoutId();
