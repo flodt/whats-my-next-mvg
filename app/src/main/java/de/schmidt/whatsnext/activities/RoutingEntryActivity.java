@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteOptions;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.util.network.AutocompleteNetworkAccess;
 import de.schmidt.whatsnext.adapters.AutocompleteSuggestAdapter;
 import de.schmidt.whatsnext.adapters.OnTextChangedWatcher;
@@ -263,8 +263,8 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	@Override
 	protected void onResume() {
 		//set colors
-		ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
+		ThemeUtils.getInstance().initializeActionBar(this, actionBar, getWindow());
+		ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 
 		//clear the route options cache, as we are in the process of entering a new input
 		RoutingOptionsCache.getInstance().clearCache();

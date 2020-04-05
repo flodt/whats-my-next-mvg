@@ -14,7 +14,7 @@ import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.route.RoutePathLocation;
 import de.schmidt.mvg.traffic.Station;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.R;
 
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 		mMap = googleMap;
 
 		//set the map style according ot dark mode
-		if (ThemeManager.getInstance().isInDarkMode(this)) {
+		if (ThemeUtils.getInstance().isInDarkMode(this)) {
 			mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
 		}
 

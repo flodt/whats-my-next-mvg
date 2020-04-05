@@ -12,7 +12,7 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.caching.InterruptionsCache;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
@@ -64,11 +64,11 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	protected void onResume() {
 		super.onResume();
 		//set colors
-		ThemeManager.getInstance().initializeActionBarWithColorResource(this,
-																		Objects.requireNonNull(getSupportActionBar()),
-																		getWindow(),
-																		R.color.mvg_3);
-		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_3);
+		ThemeUtils.getInstance().initializeActionBarWithColorResource(this,
+																	  Objects.requireNonNull(getSupportActionBar()),
+																	  getWindow(),
+																	  R.color.mvg_3);
+		ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_3);
 	}
 
 	@Override

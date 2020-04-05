@@ -8,7 +8,7 @@ import android.widget.TextView;
 import de.schmidt.mvg.route.RouteConnection;
 import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.util.ColorUtils;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.R;
 
 import java.text.SimpleDateFormat;
@@ -88,7 +88,7 @@ public class AlternativesRouteView extends AlternativesDisplayView {
 		delta.setText("in " + connection.getDeltaToDepartureInMinutes() + " min.");
 
 		//color the duration orange when it is higher than 1.5x the average duration of all connections
-		final boolean isInDarkMode = ThemeManager.getInstance().isInDarkMode(convertView.getContext());
+		final boolean isInDarkMode = ThemeUtils.getInstance().isInDarkMode(convertView.getContext());
 		String highlightColor = isInDarkMode ? "#ef5350" : "#C20831";
 		String defaultColor = isInDarkMode ? "#FFFFFF" : "#000000";
 		String color = connection.getDurationInMinutes() > 1.50 * average ? highlightColor : defaultColor;

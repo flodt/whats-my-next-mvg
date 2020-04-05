@@ -12,7 +12,7 @@ import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.NotificationManager;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.ItineraryListViewAdapter;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
@@ -126,8 +126,8 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 		this.views.addAll(dataSet);
 
 		runOnUiThread(() -> {
-			ThemeManager.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), routeConnection.getFirstColor());
-			ThemeManager.getInstance().initializeNavBarWithAccentRaw(this, navBar, routeConnection.getLastColor());
+			ThemeUtils.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), routeConnection.getFirstColor());
+			ThemeUtils.getInstance().initializeNavBarWithAccentRaw(this, navBar, routeConnection.getLastColor());
 
 			//refresh the list view
 			adapter.notifyDataSetChanged();

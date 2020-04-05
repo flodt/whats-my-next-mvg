@@ -2,8 +2,6 @@ package de.schmidt.whatsnext.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -11,13 +9,11 @@ import android.webkit.WebViewClient;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
-import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Shortcutable;
@@ -53,8 +49,8 @@ public class NetworkMapActivity extends ActionBarBaseActivity implements Shortcu
 	@Override
 	protected void onResume() {
 		//set colors
-		ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
+		ThemeUtils.getInstance().initializeActionBar(this, actionBar, getWindow());
+		ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 
 		super.onResume();
 	}

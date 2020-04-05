@@ -1,21 +1,13 @@
 package de.schmidt.whatsnext.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.TestLooperManager;
 import android.widget.ListView;
-import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,7 +25,6 @@ import de.schmidt.whatsnext.base.Shortcutable;
 import de.schmidt.whatsnext.base.Updatable;
 import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +121,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			this.departures.addAll(dataSet);
 
 			//set the default color values
-			ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
+			ThemeUtils.getInstance().initializeActionBar(this, actionBar, getWindow());
 			listView.setBackgroundColor(getColor(R.color.background));
 
 			//set colors according to result
@@ -144,7 +135,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 															  departures.get(0).getLine());
 
 				//set action and status bar colors based on enabled theme
-				if (ThemeManager.getInstance().isInLightMode(this)) {
+				if (ThemeUtils.getInstance().isInLightMode(this)) {
 					actionBar.setBackgroundDrawable(new ColorDrawable(
 							modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
 					));
@@ -154,7 +145,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 				}
 
 				//set navbar color
-				ThemeManager.getInstance().initializeNavBarWithAccentRaw(this, navBar, Color.parseColor(topDeparture.getSecondary()));
+				ThemeUtils.getInstance().initializeNavBarWithAccentRaw(this, navBar, Color.parseColor(topDeparture.getSecondary()));
 			}
 
 			//refresh the list view

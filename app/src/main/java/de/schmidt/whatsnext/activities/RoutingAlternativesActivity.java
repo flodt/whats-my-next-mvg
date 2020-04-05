@@ -13,7 +13,7 @@ import de.schmidt.util.ColorUtils;
 import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.NotificationManager;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
@@ -139,8 +139,8 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		super.onResume();
 
 		//set colors
-		ThemeManager.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
+		ThemeUtils.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
+		ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 	}
 
 	@Override

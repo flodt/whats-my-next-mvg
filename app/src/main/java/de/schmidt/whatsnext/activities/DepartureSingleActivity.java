@@ -2,9 +2,7 @@ package de.schmidt.whatsnext.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -144,8 +142,8 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 													   dept.getLine());
 
 				//set colors depending on dark mode
-				ThemeManager.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), Color.parseColor(color.getSecondary()));
-				if (ThemeManager.getInstance().isInLightMode(this)) {
+				ThemeUtils.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), Color.parseColor(color.getSecondary()));
+				if (ThemeUtils.getInstance().isInLightMode(this)) {
 					//in light mode, set according to the departure
 					layoutBackground.setBackground(new ColorDrawable(
 							modifyColor(Color.parseColor(color.getPrimary()), 1.20f)

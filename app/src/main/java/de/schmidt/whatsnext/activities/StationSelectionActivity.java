@@ -2,8 +2,6 @@ package de.schmidt.whatsnext.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,7 +10,7 @@ import android.os.Bundle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.FabManager;
@@ -112,8 +110,8 @@ public class StationSelectionActivity extends ActionBarBaseActivity implements U
 	protected void onResume() {
 		super.onResume();
 		//set colors
-		ThemeManager.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
-		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
+		ThemeUtils.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
+		ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 	}
 
 	@Override

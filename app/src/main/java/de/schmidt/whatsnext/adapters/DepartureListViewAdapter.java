@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
-import de.schmidt.util.managers.ThemeManager;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.whatsnext.R;
 
 import java.util.List;
@@ -59,7 +59,7 @@ public class DepartureListViewAdapter extends BaseAdapter {
 		minutes.setText("" + departure.getDeltaInMinutes());
 		destination.setText(departure.getDirection());
 
-		if (ThemeManager.getInstance().isInLightMode(convertView.getContext())) {
+		if (ThemeUtils.getInstance().isInLightMode(convertView.getContext())) {
 			line.setTextColor(Color.parseColor(color.getTextColor()));
 			minutes.setTextColor(Color.parseColor(color.getTextColor()));
 			minutesLabel.setTextColor(Color.parseColor(color.getTextColor()));
