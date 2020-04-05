@@ -145,7 +145,7 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 
 				//set colors depending on dark mode
 				ThemeManager.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), Color.parseColor(color.getSecondary()));
-				if (!ThemeManager.getInstance().isInDarkMode(this)) {
+				if (ThemeManager.getInstance().isInLightMode(this)) {
 					//in light mode, set according to the departure
 					layoutBackground.setBackground(new ColorDrawable(
 							modifyColor(Color.parseColor(color.getPrimary()), 1.20f)

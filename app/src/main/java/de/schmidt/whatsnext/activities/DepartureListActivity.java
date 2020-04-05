@@ -22,10 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.util.*;
-import de.schmidt.util.managers.FabManager;
-import de.schmidt.util.managers.LocationManager;
-import de.schmidt.util.managers.NavBarManager;
-import de.schmidt.util.managers.PreferenceManager;
+import de.schmidt.util.managers.*;
 import de.schmidt.util.caching.DepartureCache;
 import de.schmidt.util.network.DepartureDetailNetworkAccess;
 import de.schmidt.util.network.ListableNetworkAccess;
@@ -132,32 +129,33 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			this.departures.clear();
 			this.departures.addAll(dataSet);
 
+			//set the default color values
+			ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
+			listView.setBackgroundColor(getColor(R.color.background));
+
 			//set colors according to result
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
-
-				listView.setBackgroundColor(getColor(R.color.colorPrimary));
-				actionBar.setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimary)));
-				getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
-				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
-				navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 			} else {
 				//adapt status bar to first departure
 				setTitle(departures.get(0).getStation().getName());
-				listView.setBackgroundColor(getColor(R.color.white));
+
 				LineColor topDeparture = LineColor.ofAPIValue(departures.get(0).getLineBackgroundColor(),
 															  departures.get(0).getLine());
-				actionBar.setBackgroundDrawable(new ColorDrawable(
-						modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
-				));
-				getWindow().setStatusBarColor(
-						modifyColor(Color.parseColor(topDeparture.getSecondary()), 0.80f)
-				);
-				navBar.setItemTextColor(ColorStateList.valueOf(Color.parseColor(topDeparture.getSecondary())));
-				navBar.setItemIconTintList(ColorStateList.valueOf(Color.parseColor(topDeparture.getSecondary())));
-			}
 
-			navBar.setBackgroundColor(getColor(R.color.white));
+				//set action and status bar colors based on enabled theme
+				if (ThemeManager.getInstance().isInLightMode(this)) {
+					actionBar.setBackgroundDrawable(new ColorDrawable(
+							modifyColor(Color.parseColor(topDeparture.getSecondary()), 1.00f)
+					));
+					getWindow().setStatusBarColor(
+							modifyColor(Color.parseColor(topDeparture.getSecondary()), 0.80f)
+					);
+				}
+
+				//set navbar color
+				ThemeManager.getInstance().initializeNavBarWithAccentRaw(this, navBar, Color.parseColor(topDeparture.getSecondary()));
+			}
 
 			//refresh the list view
 			adapter.notifyDataSetChanged();

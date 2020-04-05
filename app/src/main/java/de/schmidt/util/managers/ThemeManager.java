@@ -34,6 +34,10 @@ public class ThemeManager {
 		}
 	}
 
+	public boolean isInLightMode(Context context) {
+		return !isInDarkMode(context);
+	}
+
 	public void initializeActionBar(Context context, ActionBar bar, Window window) {
 		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(context.getColor(R.color.actionBar));
 		bar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.whatsnext.R;
 
 import java.util.List;
@@ -58,12 +59,19 @@ public class DepartureListViewAdapter extends BaseAdapter {
 		minutes.setText("" + departure.getDeltaInMinutes());
 		destination.setText(departure.getDirection());
 
-		line.setTextColor(Color.parseColor(color.getTextColor()));
-		minutes.setTextColor(Color.parseColor(color.getTextColor()));
-		minutesLabel.setTextColor(Color.parseColor(color.getTextColor()));
-		destination.setTextColor(Color.parseColor(color.getTextColor()));
-
-		convertView.setBackgroundColor(modifyColor(Color.parseColor(color.getPrimary()), 1.20f));
+		if (ThemeManager.getInstance().isInLightMode(convertView.getContext())) {
+			line.setTextColor(Color.parseColor(color.getTextColor()));
+			minutes.setTextColor(Color.parseColor(color.getTextColor()));
+			minutesLabel.setTextColor(Color.parseColor(color.getTextColor()));
+			destination.setTextColor(Color.parseColor(color.getTextColor()));
+			convertView.setBackgroundColor(modifyColor(Color.parseColor(color.getPrimary()), 1.20f));
+		} else {
+			line.setTextColor(Color.parseColor(color.getSecondary()));
+			minutes.setTextColor(Color.parseColor(color.getSecondary()));
+			minutesLabel.setTextColor(Color.parseColor(color.getSecondary()));
+			destination.setTextColor(Color.parseColor(color.getSecondary()));
+			convertView.setBackgroundColor(convertView.getContext().getColor(R.color.background));
+		}
 
 		return convertView;
 	}
