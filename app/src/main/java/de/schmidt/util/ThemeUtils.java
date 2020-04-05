@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.DepartureListActivity;
 import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 
 public class ThemeUtils {
@@ -36,7 +37,7 @@ public class ThemeUtils {
 
 		//recreate activity to reflect theming changes
 		ActivityCompat.finishAffinity((Activity) context);
-		Intent intent = new Intent(context, RoutingEntryActivity.class);
+		Intent intent = new Intent(context, DepartureListActivity.class);
 		context.startActivity(intent);
 	}
 
