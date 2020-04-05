@@ -58,6 +58,9 @@ public class MenuManager {
 			case R.id.send_notification_button:
 				sendNotification(context);
 				break;
+			case R.id.switch_theme_button:
+				PreferenceManager.getInstance().updateThemeSelection(context);
+				break;
 		}
 	}
 

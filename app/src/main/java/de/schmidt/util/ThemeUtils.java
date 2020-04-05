@@ -1,5 +1,6 @@
 package de.schmidt.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -8,14 +9,17 @@ import android.view.Window;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
 
 public class ThemeUtils {
-	//language=JSON
-	public static final String MAP_STYLE_DARK = "[ { \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#212121\" } ] }, { \"elementType\": \"labels.icon\", \"stylers\": [ { \"visibility\": \"off\" } ] }, { \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#757575\" } ] }, { \"elementType\": \"labels.text.stroke\", \"stylers\": [ { \"color\": \"#212121\" } ] }, { \"featureType\": \"administrative\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#757575\" } ] }, { \"featureType\": \"administrative.country\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#9e9e9e\" } ] }, { \"featureType\": \"administrative.land_parcel\", \"stylers\": [ { \"visibility\": \"off\" } ] }, { \"featureType\": \"administrative.locality\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#bdbdbd\" } ] }, { \"featureType\": \"poi\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#757575\" } ] }, { \"featureType\": \"poi.park\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#181818\" } ] }, { \"featureType\": \"poi.park\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#616161\" } ] }, { \"featureType\": \"poi.park\", \"elementType\": \"labels.text.stroke\", \"stylers\": [ { \"color\": \"#1b1b1b\" } ] }, { \"featureType\": \"road\", \"elementType\": \"geometry.fill\", \"stylers\": [ { \"color\": \"#2c2c2c\" } ] }, { \"featureType\": \"road\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#8a8a8a\" } ] }, { \"featureType\": \"road.arterial\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#373737\" } ] }, { \"featureType\": \"road.highway\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#3c3c3c\" } ] }, { \"featureType\": \"road.highway.controlled_access\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#4e4e4e\" } ] }, { \"featureType\": \"road.local\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#616161\" } ] }, { \"featureType\": \"transit\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#757575\" } ] }, { \"featureType\": \"water\", \"elementType\": \"geometry\", \"stylers\": [ { \"color\": \"#000000\" } ] }, { \"featureType\": \"water\", \"elementType\": \"labels.text.fill\", \"stylers\": [ { \"color\": \"#3d3d3d\" } ] } ]";
-
 	private static ThemeUtils instance = new ThemeUtils();
+
+	public static final int THEME_FOLLOW_SYSTEM = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+	public static final int THEME_LIGHT = AppCompatDelegate.MODE_NIGHT_NO;
+	public static final int THEME_DARK = AppCompatDelegate.MODE_NIGHT_YES;
 
 	public ThemeUtils() {}
 
@@ -23,7 +27,29 @@ public class ThemeUtils {
 		return instance;
 	}
 
+	public void updateThemeSetting(Context context, int newThemeSetting) {
+		PreferenceManager.getInstance().setThemeSelection(context, newThemeSetting);
+		AppCompatDelegate.setDefaultNightMode(newThemeSetting);
+
+		//recreate activity to reflect theming changes
+		if (context instanceof Activity) {
+			((Activity) context).recreate();
+		}
+	}
+
 	public boolean isInDarkMode(Context context) {
+		switch (PreferenceManager.getInstance().getThemeSelection(context)) {
+			default:
+			case THEME_FOLLOW_SYSTEM:
+				return isInDarkModeBySystem(context);
+			case THEME_LIGHT:
+				return false;
+			case THEME_DARK:
+				return true;
+		}
+	}
+
+	private boolean isInDarkModeBySystem(Context context) {
 		switch (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
 			case Configuration.UI_MODE_NIGHT_YES:
 				return true;

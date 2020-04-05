@@ -81,4 +81,9 @@
     <string name="send_notification">Als Mitteilung senden…</string>
     <string name="send_notification_error">Hierzu kann keine Mitteilung erstellt werden.</string>
     <string name="tap_to_view_details">Für Reisemöglichkeiten tippen</string>
+    <string name="switch_theme">Design wechseln…</string>
+    <string name="switch_theme_title">Design wechseln</string>
+    <string name="theme_selection_day">Hell</string>
+    <string name="theme_selection_follow_system">Systemstandard</string>
+    <string name="theme_selection_night">Dunkel</string>
 </resources>

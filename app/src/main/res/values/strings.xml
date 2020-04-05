@@ -35,6 +35,11 @@
         <item>Tram</item>
         <item>Regionalbahn</item>
     </string-array>
+    <string-array name="theme_selection_options">
+        <item>@string/theme_selection_follow_system</item>
+        <item>@string/theme_selection_day</item>
+        <item>@string/theme_selection_night</item>
+    </string-array>
 
     <string-array name="station_keys">
         <item>LOCATION</item>
@@ -150,4 +155,10 @@
     <string name="send_notification_error">Cannot send this to notifications.</string>
     <string name="no_connection">No connections found</string>
     <string name="tap_to_view_details">Tap to view alternatives</string>
+    <string name="pref_key_selected_theme" translatable="false">SELECTED_THEME</string>
+    <string name="switch_theme">Switch theme…</string>
+    <string name="theme_selection_follow_system">System default</string>
+    <string name="theme_selection_day">Light</string>
+    <string name="theme_selection_night">Dark</string>
+    <string name="switch_theme_title">Switch theme</string>
 </resources>

@@ -3,6 +3,7 @@ package de.schmidt.util.managers;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -16,9 +17,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import de.schmidt.mvg.Requests;
+import de.schmidt.util.ThemeUtils;
 import de.schmidt.util.network.AutocompleteNetworkAccess;
 import de.schmidt.whatsnext.adapters.AutocompleteSuggestAdapter;
 import de.schmidt.whatsnext.adapters.OnTextChangedWatcher;
+import de.schmidt.whatsnext.adapters.SelectThemeDialogAdapter;
 import de.schmidt.whatsnext.viewsupport.list.FixedSwitchStationListItem;
 import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
@@ -316,6 +319,38 @@ public class PreferenceManager {
 
 	public void clearRecents(Context context) {
 		setRecents(context, Collections.emptyList());
+	}
+
+	public int getThemeSelection(Context context) {
+		return context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.getInt(context.getString(R.string.pref_key_selected_theme), ThemeUtils.THEME_FOLLOW_SYSTEM);
+	}
+
+	public void setThemeSelection(Context context, int value) {
+		if (!Arrays.asList(ThemeUtils.THEME_FOLLOW_SYSTEM, ThemeUtils.THEME_LIGHT, ThemeUtils.THEME_DARK).contains(value))
+			throw new IllegalArgumentException("Not a valid theme setting.");
+
+		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.edit()
+				.putInt(context.getString(R.string.pref_key_selected_theme), value)
+				.commit();
+	}
+
+	public void updateThemeSelection(Context context) {
+		new AlertDialog.Builder(context)
+				.setTitle(R.string.switch_theme_title)
+				.setSingleChoiceItems(R.array.theme_selection_options,
+									  SelectThemeDialogAdapter.getAsIndex(getThemeSelection(context)),
+									  (dialog, which) -> {
+										  //save theme settings and dismiss dialog
+										  //this will re-create all open activities!
+										  int property = SelectThemeDialogAdapter.getSelectionByIndex(which);
+										  ThemeUtils.getInstance().updateThemeSetting(context, property);
+										  dialog.dismiss();
+									  })
+				.setNegativeButton(R.string.cancel_dialog, null)
+				.create()
+				.show();
 	}
 
 	private void refresh(Context context) {

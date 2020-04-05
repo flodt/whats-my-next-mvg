@@ -30,4 +30,10 @@
             app:showAsAction="never"
             android:icon="@drawable/ic_notify"
     />
+    <item
+            android:id="@+id/switch_theme_button"
+            android:title="@string/switch_theme"
+            app:showAsAction="never"
+            android:icon="@drawable/ic_switch_theme"
+    />
 </menu>
