@@ -2,6 +2,7 @@ package de.schmidt.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -10,9 +11,11 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.util.managers.PreferenceManager;
 import de.schmidt.whatsnext.R;
+import de.schmidt.whatsnext.activities.RoutingEntryActivity;
 
 public class ThemeUtils {
 	private static ThemeUtils instance = new ThemeUtils();
@@ -32,9 +35,9 @@ public class ThemeUtils {
 		AppCompatDelegate.setDefaultNightMode(newThemeSetting);
 
 		//recreate activity to reflect theming changes
-		if (context instanceof Activity) {
-			((Activity) context).recreate();
-		}
+		ActivityCompat.finishAffinity((Activity) context);
+		Intent intent = new Intent(context, RoutingEntryActivity.class);
+		context.startActivity(intent);
 	}
 
 	public boolean isInDarkMode(Context context) {
