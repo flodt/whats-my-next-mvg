@@ -54,7 +54,7 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 
 		//set the map style according ot dark mode
 		if (ThemeManager.getInstance().isInDarkMode(this)) {
-			mMap.setMapStyle(new MapStyleOptions(ThemeManager.MAP_STYLE_DARK));
+			mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
 		}
 
 		//get display mode: false -> only show entire route, true -> show station detail
