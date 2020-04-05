@@ -6,16 +6,23 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
 import de.schmidt.mvg.route.RouteOptions;
+import de.schmidt.util.network.AutocompleteNetworkAccess;
+import de.schmidt.whatsnext.adapters.AutocompleteSuggestAdapter;
+import de.schmidt.whatsnext.adapters.OnTextChangedWatcher;
 import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.mvg.traffic.Station;
 import de.schmidt.util.ColorUtils;
@@ -35,6 +42,9 @@ import java.util.List;
 
 public class RoutingEntryActivity extends ActionBarBaseActivity implements TimePickerDialog.OnTimeSetListener {
 	private static final String TAG = "RoutingEntry";
+	private static final int AUTOCOMPLETE_FROM = 1000;
+	private static final int AUTOCOMPLETE_TO = 1001;
+
 	private BottomNavigationView navBar;
 	private ActionBar actionBar;
 	private AutoCompleteTextView fromInput;
@@ -49,6 +59,9 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 	private ListView recentsList;
 	private List<RouteStationSelection> recents;
 	private RecentsListViewAdapter adapter;
+	private AutocompleteSuggestAdapter fromAdapter;
+	private AutocompleteSuggestAdapter toAdapter;
+	private Handler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,61 +117,43 @@ public class RoutingEntryActivity extends ActionBarBaseActivity implements TimeP
 			return true;
 		});
 
-		fromInput.setThreshold(1);
-		toInput.setThreshold(1);
-
-		fromInput.addTextChangedListener(new TextWatcher() {
+		//setup handler for UI updates
+		handler = new Handler(new Handler.Callback() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			public boolean handleMessage(@NonNull Message msg) {
+				//if we want to autocomplete the from field, do that if it's not empty
+				if (msg.what == AUTOCOMPLETE_FROM) {
+					if (!TextUtils.isEmpty(fromInput.getText())) {
+						new AutocompleteNetworkAccess(fromInput.getText().toString(), fromAdapter).execute();
+					}
+				} else if (msg.what == AUTOCOMPLETE_TO) {
+					if (!TextUtils.isEmpty(toInput.getText())) {
+						new AutocompleteNetworkAccess(toInput.getText().toString(), toAdapter).execute();
+					}
+				}
 
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (s.length() == 0) return;
-
-				new Thread(() -> {
-					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
-
-					runOnUiThread(() -> fromInput.setAdapter(new ArrayAdapter<>(
-							RoutingEntryActivity.this,
-							android.R.layout.select_dialog_item,
-							suggestions
-					)));
-				}).start();
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
+				return false;
 			}
 		});
 
-		toInput.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		//set threshold for the start of autocompletion
+		fromInput.setThreshold(1);
+		toInput.setThreshold(1);
 
-			}
+		//create adapters
+		fromAdapter = new AutocompleteSuggestAdapter(this, android.R.layout.select_dialog_item);
+		fromInput.setAdapter(fromAdapter);
+		toAdapter = new AutocompleteSuggestAdapter(this, android.R.layout.select_dialog_item);
+		toInput.setAdapter(toAdapter);
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (s.length() == 0) return;
-
-				new Thread(() -> {
-					String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
-
-					runOnUiThread(() -> toInput.setAdapter(new ArrayAdapter<>(
-							RoutingEntryActivity.this,
-							android.R.layout.select_dialog_item,
-							suggestions
-					)));
-				}).start();
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
+		//setup text changed listeners for handling of the autocompletion
+		fromInput.addTextChangedListener((OnTextChangedWatcher) (s, start, before, count) -> {
+			handler.removeMessages(AUTOCOMPLETE_FROM);
+			handler.sendEmptyMessage(AUTOCOMPLETE_FROM);
+		});
+		toInput.addTextChangedListener((OnTextChangedWatcher) (s, start, before, count) -> {
+			handler.removeMessages(AUTOCOMPLETE_TO);
+			handler.sendEmptyMessage(AUTOCOMPLETE_TO);
 		});
 
 		selectTimeButton.setOnClickListener(v -> {

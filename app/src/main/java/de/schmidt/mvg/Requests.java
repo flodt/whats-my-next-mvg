@@ -206,9 +206,9 @@ public class Requests {
 	 * Get a number of autocomplete suggestions for a given input Station name.
 	 * @param input partial station name input
 	 * @param count number of suggestions to return
-	 * @return String[] of suggestions
+	 * @return list of suggestions
 	 */
-	public String[] getAutocompleteSuggestionsForInput(String input, int count) {
+	public List<String> getAutocompleteSuggestionsForInput(String input, int count) {
 		//request stations by name
 		String url = URL_STATION_BY_NAME.replace("{name}", input)
 				.replace(" ", "%20");
@@ -229,12 +229,11 @@ public class Requests {
 				}
 			}
 
-			//convert the list to an array
-			return result.toArray(new String[0]);
+			return result;
 		} catch (JSONException e) {
 			Log.e(TAG, "getAutocompleteSuggestionsForInput: json error", e);
 			//upon exception: fail silently and return no suggestions
-			return new String[0];
+			return Collections.emptyList();
 		}
 	}
 

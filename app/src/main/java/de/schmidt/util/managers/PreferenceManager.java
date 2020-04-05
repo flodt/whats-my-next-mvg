@@ -4,14 +4,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import de.schmidt.mvg.Requests;
+import de.schmidt.util.network.AutocompleteNetworkAccess;
+import de.schmidt.whatsnext.adapters.AutocompleteSuggestAdapter;
+import de.schmidt.whatsnext.adapters.OnTextChangedWatcher;
 import de.schmidt.whatsnext.viewsupport.list.FixedSwitchStationListItem;
 import de.schmidt.whatsnext.viewsupport.list.RouteStationSelection;
 import de.schmidt.whatsnext.viewsupport.list.SwitchStationListItem;
@@ -26,6 +33,7 @@ public class PreferenceManager {
 	public static final String PREFERENCE_KEY = "WhatsMyNext";
 	private static final PreferenceManager instance = new PreferenceManager();
 	private static final String TAG = "PreferenceManager";
+	private static final int AUTOCOMPLETE_FIELD = 1002;
 
 	private PreferenceManager() {
 
@@ -210,33 +218,25 @@ public class PreferenceManager {
 		input.setHint(context.getResources().getString(R.string.station_addition_hint));
 
 		//setup autocompletion
-		input.setThreshold(1);
-		input.addTextChangedListener(new TextWatcher() {
+		AutocompleteSuggestAdapter adapter = new AutocompleteSuggestAdapter(context, android.R.layout.select_dialog_item);
+		Handler handler = new Handler(new Handler.Callback() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (s.length() == 0) return;
-				new Thread(() -> {
-					synchronized (s) {
-						//grab suggestions and set adapter
-						String[] suggestions = Requests.instance().getAutocompleteSuggestionsForInput(s.toString(), 5);
-						context.runOnUiThread(() -> input.setAdapter(new ArrayAdapter<>(
-								context,
-								android.R.layout.select_dialog_item,
-								suggestions
-						)));
+			public boolean handleMessage(@NonNull Message msg) {
+				//if we want to autocomplete the text field, do that if it's not empty
+				if (msg.what == AUTOCOMPLETE_FIELD) {
+					if (!TextUtils.isEmpty(input.getText())) {
+						new AutocompleteNetworkAccess(input.getText().toString(), adapter).execute();
 					}
-				}).start();
-			}
+				}
 
-			@Override
-			public void afterTextChanged(Editable s) {
-
+				return false;
 			}
+		});
+		input.setThreshold(1);
+		input.setAdapter(adapter);
+		input.addTextChangedListener((OnTextChangedWatcher) (s, start, before, count) -> {
+			handler.removeMessages(AUTOCOMPLETE_FIELD);
+			handler.sendEmptyMessage(AUTOCOMPLETE_FIELD);
 		});
 
 		//build the dialog
