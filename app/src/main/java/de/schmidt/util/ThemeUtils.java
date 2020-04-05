@@ -40,6 +40,10 @@ public class ThemeUtils {
 		context.startActivity(intent);
 	}
 
+	public void refreshThemeSetting(Context context) {
+		AppCompatDelegate.setDefaultNightMode(PreferenceManager.getInstance().getThemeSelection(context));
+	}
+
 	public boolean isInDarkMode(Context context) {
 		switch (PreferenceManager.getInstance().getThemeSelection(context)) {
 			default:
