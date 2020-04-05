@@ -58,7 +58,8 @@ public class NotificationManager {
 		//create intent with saved route connection
 		Intent launchIntent = new Intent(context, RoutingItineraryDisplayActivity.class);
 		launchIntent.putExtra(context.getResources().getString(R.string.key_itinerary), connection);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+		launchIntent.setAction(Long.toString(System.currentTimeMillis()));
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		//formatting the info
 		@SuppressLint("SimpleDateFormat")
@@ -66,8 +67,10 @@ public class NotificationManager {
 		final RouteConnectionPart firstPart = connection.getConnectionParts().get(0);
 		final String title = connection.getFrom().getName() + " - " + connection.getTo().getName();
 		final String content = dateFormat.format(connection.getDepartureTime())
-				+ " via " + firstPart.getLine() + " ▸ " + firstPart.getDirection()
-				+ " (" + firstPart.getDeparturePlatform() + ")";
+				+ " via " + firstPart.getLine()
+				+ ((!firstPart.getLine().equals("Walking"))
+				? (" ▸ " + firstPart.getDirection() + " (" + firstPart.getDeparturePlatform() + ")")
+				: "");
 		final int color = connection.getFirstColor();
 		final int notificationID = (int) connection.getDepartureTime().getTime();
 
@@ -79,8 +82,8 @@ public class NotificationManager {
 		//create intent
 		Intent launchIntent = new Intent(context.getApplicationContext(), RoutingAlternativesActivity.class);
 		launchIntent.putExtra(context.getString(R.string.key_route_options_from_shortcut), options.getParameterString());
-		launchIntent.setAction(Intent.ACTION_MAIN);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+		launchIntent.setAction(Long.toString(System.currentTimeMillis()));
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		//content setup
 		final int notificationID = options.hashCode();
