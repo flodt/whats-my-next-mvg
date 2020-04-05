@@ -14,6 +14,7 @@ import de.schmidt.mvg.route.RouteConnectionPart;
 import de.schmidt.mvg.route.RouteIntermediateStop;
 import de.schmidt.mvg.route.RoutePathLocation;
 import de.schmidt.mvg.traffic.Station;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.whatsnext.R;
 
 import java.util.Arrays;
@@ -50,6 +51,11 @@ public class RoutingOnMapActivity extends FragmentActivity implements OnMapReady
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
+
+		//set the map style according ot dark mode
+		if (ThemeManager.getInstance().isInDarkMode(this)) {
+			mMap.setMapStyle(new MapStyleOptions(ThemeManager.MAP_STYLE_DARK));
+		}
 
 		//get display mode: false -> only show entire route, true -> show station detail
 		boolean stationDetail = getIntent().getBooleanExtra(getString(R.string.key_show_station_detail), false);
