@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import de.schmidt.mvg.Requests;
 import de.schmidt.util.ColorUtils;
 import de.schmidt.util.managers.NavBarManager;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.base.ActionBarBaseActivity;
 import de.schmidt.whatsnext.base.Shortcutable;
@@ -52,13 +53,8 @@ public class NetworkMapActivity extends ActionBarBaseActivity implements Shortcu
 	@Override
 	protected void onResume() {
 		//set colors
-		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
-		actionBar.setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
-		getWindow().setStatusBarColor(primaryAndDark[1]);
-
-		navBar.setBackgroundColor(getColor(R.color.white));
-		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
-		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+		ThemeManager.getInstance().initializeActionBar(this, actionBar, getWindow());
+		ThemeManager.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 
 		super.onResume();
 	}
