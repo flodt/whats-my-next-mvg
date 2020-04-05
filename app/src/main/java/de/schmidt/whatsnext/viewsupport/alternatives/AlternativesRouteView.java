@@ -68,7 +68,7 @@ public class AlternativesRouteView extends AlternativesDisplayView {
 		for (i = 0; i < lengths.size(); i++) {
 			sum += lengths.get(i);
 
-			final int maxNumberOfCharsForTextView = 21;
+			final int maxNumberOfCharsForTextView = 17;
 			if (sum >= maxNumberOfCharsForTextView) {
 				showAll = false;
 				break;

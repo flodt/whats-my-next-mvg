@@ -20,6 +20,7 @@ import de.schmidt.util.caching.RoutingOptionsCache;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.managers.NotificationManager;
 import de.schmidt.util.managers.PreferenceManager;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.util.network.RoutingNetworkAccess;
 import de.schmidt.whatsnext.R;
 import de.schmidt.whatsnext.adapters.AlternativesListViewAdapter;
@@ -147,13 +148,8 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 		super.onResume();
 
 		//set colors
-		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_1));
-		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
-		getWindow().setStatusBarColor(primaryAndDark[1]);
-
-		navBar.setBackgroundColor(getColor(R.color.white));
-		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
-		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+		ThemeManager.getInstance().initializeActionBar(this, Objects.requireNonNull(getSupportActionBar()), getWindow());
+		ThemeManager.getInstance().initializeNavBarWithAccent(this, navBar, R.color.mvg_1);
 	}
 
 	@Override
