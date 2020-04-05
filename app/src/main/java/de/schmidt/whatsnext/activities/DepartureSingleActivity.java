@@ -163,10 +163,10 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 					navBar.setBackgroundColor(getColor(R.color.navBarBackground));
 					navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
 					navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
-					inMinutes.setTextColor(Color.parseColor(color.getPrimary()));
-					direction.setTextColor(Color.parseColor(color.getPrimary()));
-					line.setTextColor(Color.parseColor(color.getPrimary()));
-					minutesFixedLabel.setTextColor(Color.parseColor(color.getPrimary()));
+					inMinutes.setTextColor(Color.parseColor(color.getSecondary()));
+					direction.setTextColor(Color.parseColor(color.getSecondary()));
+					line.setTextColor(Color.parseColor(color.getSecondary()));
+					minutesFixedLabel.setTextColor(Color.parseColor(color.getSecondary()));
 				}
 
 				pullToRefresh.setRefreshing(false);
