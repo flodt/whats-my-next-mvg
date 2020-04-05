@@ -1,5 +1,6 @@
 package de.schmidt.mvg.route;
 
+import android.content.Context;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.mvg.traffic.Station;
 import org.json.JSONArray;

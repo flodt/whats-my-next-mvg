@@ -57,7 +57,7 @@ public class InterruptionsListViewAdapter extends BaseAdapter {
 
 		//set the color to interchanging grey and light grey
 		convertView.setBackgroundColor(
-				(position % 2 == 0) ? context.getColor(R.color.light_gray) : context.getColor(R.color.lighter_gray)
+				(position % 2 == 0) ? context.getColor(R.color.listItemPrimary) : context.getColor(R.color.listItemSecondary)
 		);
 
 		return convertView;

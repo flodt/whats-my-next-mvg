@@ -15,6 +15,7 @@ import de.schmidt.util.managers.FabManager;
 import de.schmidt.util.managers.NavBarManager;
 import de.schmidt.util.caching.InterruptionsCache;
 import de.schmidt.util.managers.PreferenceManager;
+import de.schmidt.util.managers.ThemeManager;
 import de.schmidt.util.network.InterruptionsNetworkAccess;
 import de.schmidt.whatsnext.adapters.InterruptionsListViewAdapter;
 import de.schmidt.whatsnext.R;
@@ -67,13 +68,11 @@ public class InterruptionsActivity extends ActionBarBaseActivity implements Upda
 	protected void onResume() {
 		super.onResume();
 		//set colors
-		int[] primaryAndDark = ColorUtils.extractPrimaryAndDark(getColor(R.color.mvg_3));
-		Objects.requireNonNull(getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(primaryAndDark[0]));
-		getWindow().setStatusBarColor(primaryAndDark[1]);
-
-		navBar.setBackgroundColor(getColor(R.color.white));
-		navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_3)));
-		navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_3)));
+		ThemeManager.getInstance().initializeActionBarWithColor(this,
+																Objects.requireNonNull(getSupportActionBar()),
+																getWindow(),
+																R.color.mvg_3);
+		ThemeManager.getInstance().initializeNavBarWithAccent(this, navBar, R.color.mvg_3);
 	}
 
 	@Override

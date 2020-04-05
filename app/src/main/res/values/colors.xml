@@ -13,6 +13,8 @@
     <color name="buttonColor">@color/colorPrimary</color>
     <color name="actionBar">@color/mvg_1</color>
     <color name="navBarBackground">@color/white</color>
+    <color name="listItemPrimary">#DCDCDC</color>
+    <color name="listItemSecondary">#ECECEC</color>
     <color name="white">#FFFFFF</color>
     <color name="mvg_1">#C20831</color>
     <color name="mvg_2">#EC6725</color>

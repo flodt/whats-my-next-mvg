@@ -54,7 +54,7 @@ public class LineColor implements Serializable {
 			case "S6": return ofAPIValue("#03a074", line);
 			case "S7": return ofAPIValue("#964438", line);
 			case "S8": return ofAPIValue("#000000", line);
-			default: return ofAPIValue("#7E7E7E", line);
+			default: return ofAPIValue("#9E9E9E", line);
 		}
 	}
 
