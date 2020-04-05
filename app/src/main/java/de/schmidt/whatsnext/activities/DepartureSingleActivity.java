@@ -20,10 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.schmidt.mvg.traffic.Departure;
 import de.schmidt.mvg.traffic.LineColor;
 import de.schmidt.util.*;
-import de.schmidt.util.managers.FabManager;
-import de.schmidt.util.managers.LocationManager;
-import de.schmidt.util.managers.NavBarManager;
-import de.schmidt.util.managers.PreferenceManager;
+import de.schmidt.util.managers.*;
 import de.schmidt.util.caching.DepartureCache;
 import de.schmidt.util.network.DepartureDetailNetworkAccess;
 import de.schmidt.util.network.SingleNetworkAccess;
@@ -145,25 +142,34 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 				//U7 and 8 have two colors in the line bullet - handle this here
 				LineColor color = LineColor.ofAPIValue(dept.getLineBackgroundColor(),
 													   dept.getLine());
-				layoutBackground.setBackground(new ColorDrawable(
-						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
-				));
-				actionBar.setBackgroundDrawable(new ColorDrawable(
-						modifyColor(Color.parseColor(color.getSecondary()), 1.00f)
-				));
-				getWindow().setStatusBarColor(
-						modifyColor(Color.parseColor(color.getSecondary()), 0.80f)
-				);
 
-				navBar.setBackgroundColor(
-						modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
-				);
-				inMinutes.setTextColor(Color.parseColor(color.getTextColor()));
-				direction.setTextColor(Color.parseColor(color.getTextColor()));
-				line.setTextColor(Color.parseColor(color.getTextColor()));
-				minutesFixedLabel.setTextColor(Color.parseColor(color.getTextColor()));
-				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.white)));
-				navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.white)));
+				//set colors depending on dark mode
+				ThemeManager.getInstance().initializeActionBarWithColorRaw(this, actionBar, getWindow(), Color.parseColor(color.getSecondary()));
+				if (!ThemeManager.getInstance().isInDarkMode(this)) {
+					//in light mode, set according to the departure
+					layoutBackground.setBackground(new ColorDrawable(
+							modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
+					));
+					navBar.setBackgroundColor(
+							modifyColor(Color.parseColor(color.getPrimary()), 1.20f)
+					);
+					navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.white)));
+					navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.white)));
+					inMinutes.setTextColor(Color.parseColor(color.getTextColor()));
+					direction.setTextColor(Color.parseColor(color.getTextColor()));
+					line.setTextColor(Color.parseColor(color.getTextColor()));
+					minutesFixedLabel.setTextColor(Color.parseColor(color.getTextColor()));
+				} else {
+					//in dark mode, set background to dark, rest according to departure
+					layoutBackground.setBackground(new ColorDrawable(getColor(R.color.background)));
+					navBar.setBackgroundColor(getColor(R.color.navBarBackground));
+					navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+					navBar.setItemIconTintList(ColorStateList.valueOf(getColor(R.color.mvg_1)));
+					inMinutes.setTextColor(Color.parseColor(color.getPrimary()));
+					direction.setTextColor(Color.parseColor(color.getPrimary()));
+					line.setTextColor(Color.parseColor(color.getPrimary()));
+					minutesFixedLabel.setTextColor(Color.parseColor(color.getPrimary()));
+				}
 
 				pullToRefresh.setRefreshing(false);
 			});
