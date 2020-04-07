@@ -4,11 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import de.schmidt.whatsnext.R;
@@ -18,15 +18,14 @@ public class LocationManager {
 	private static final String TAG = "LocationManager";
 	public static final int LOCATION_PERMISSION_REQUEST_CODE = 9909;
 
-	private LocationManager() {
-
-	}
+	private LocationManager() {}
 
 	public static LocationManager getInstance() {
 		return instance;
 	}
 
-	public Location getLocation(Context context) {
+	public Location getLocation(Activity context) {
+		checkLocationPermission(context);
 		return getCurrentGeoLocation(context);
 	}
 
@@ -38,19 +37,24 @@ public class LocationManager {
 		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			//show an explanation to the user why this location info is needed
 			if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.ACCESS_FINE_LOCATION)) {
-				new AlertDialog.Builder(context)
-						.setTitle(R.string.location_rationale_title)
-						.setMessage(R.string.location_rationale_message)
-						.setPositiveButton(R.string.continue_dialog, (dialog, which) -> {
-							//user has received explanation, now request permission
-							ActivityCompat.requestPermissions(
-									context,
-									new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-									LOCATION_PERMISSION_REQUEST_CODE
-							);
-						})
-						.create()
-						.show();
+				context.runOnUiThread(() -> {
+					new AlertDialog.Builder(context)
+							.setTitle(R.string.location_rationale_title)
+							.setMessage(R.string.location_rationale_message)
+							.setPositiveButton(R.string.continue_dialog, (dialog, which) -> {
+								//user has received explanation, now request permission
+								ActivityCompat.requestPermissions(
+										context,
+										new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+										LOCATION_PERMISSION_REQUEST_CODE
+								);
+
+								//store the request in the preferences to avoid asking again
+								PreferenceManager.getInstance().storeLocationPermissionAlreadyRequested(context, true);
+							})
+							.create()
+							.show();
+				});
 			} else {
 				//we don't need to show any rationale, so just request permission
 				ActivityCompat.requestPermissions(
@@ -94,6 +98,7 @@ public class LocationManager {
 			location = new Location("dummyprovider");
 			location.setLatitude(30.0000);
 			location.setLongitude(9.000);
+			((Activity) context).runOnUiThread(() -> Toast.makeText(context, context.getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show());
 		} else {
 			assert provider != null;
 			location = locationManager.getLastKnownLocation(provider);

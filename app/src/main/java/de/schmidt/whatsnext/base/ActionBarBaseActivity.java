@@ -60,9 +60,6 @@ public abstract class ActionBarBaseActivity extends AppCompatActivity implements
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				//permission was granted
 				Toast.makeText(this, getString(R.string.location_permission_granted), Toast.LENGTH_SHORT).show();
-			} else {
-				//store the request in preferences to avoid asking again
-				PreferenceManager.getInstance().storeLocationPermissionAlreadyRequested(this, true);
 			}
 		}
 	}
