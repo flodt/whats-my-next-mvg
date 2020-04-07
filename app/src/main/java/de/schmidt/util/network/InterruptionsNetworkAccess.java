@@ -32,7 +32,7 @@ public class InterruptionsNetworkAccess extends AsyncTask<Void, Void, List<Inter
 		//set cache, trigger UI update
 		super.onPostExecute(interruptions);
 		InterruptionsCache.getInstance().setCache(interruptions);
-		act.get().handleUIUpdate(interruptions);
+		if (act.get() != null) act.get().handleUIUpdate(interruptions);
 	}
 
 	@Override

@@ -1,15 +1,22 @@
 package de.schmidt.util.managers;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.util.Log;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import de.schmidt.whatsnext.R;
 
 public class LocationManager {
 	private static final LocationManager instance = new LocationManager();
 	private static final String TAG = "LocationManager";
+	public static final int LOCATION_PERMISSION_REQUEST_CODE = 9909;
 
 	private LocationManager() {
 
@@ -23,8 +30,47 @@ public class LocationManager {
 		return getCurrentGeoLocation(context);
 	}
 
+	public boolean checkLocationPermission(Activity context) {
+		//if we already asked for permission, don't ask again
+		if (PreferenceManager.getInstance().getLocationPermissionAlreadyRequested(context)) return false;
+
+		//check whether we already have the permission
+		if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			//show an explanation to the user why this location info is needed
+			if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.ACCESS_FINE_LOCATION)) {
+				new AlertDialog.Builder(context)
+						.setTitle(R.string.location_rationale_title)
+						.setMessage(R.string.location_rationale_message)
+						.setPositiveButton(R.string.continue_dialog, (dialog, which) -> {
+							//user has received explanation, now request permission
+							ActivityCompat.requestPermissions(
+									context,
+									new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+									LOCATION_PERMISSION_REQUEST_CODE
+							);
+						})
+						.create()
+						.show();
+			} else {
+				//we don't need to show any rationale, so just request permission
+				ActivityCompat.requestPermissions(
+						context,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+						LOCATION_PERMISSION_REQUEST_CODE
+				);
+			}
+
+			//we don't have the permission right now
+			return false;
+		} else {
+			//we have the permission right now
+			return true;
+		}
+	}
+
 	/**
 	 * Get current location a single time.
+	 *
 	 * @param context context for request
 	 * @return the requested location object
 	 */
@@ -42,13 +88,6 @@ public class LocationManager {
 		// Get Current Location
 		Location location;
 		if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			// TODO: Consider calling
-			//    Activity#requestPermissions
-			// here to request the missing permissions, and then overriding
-			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			//                                          int[] grantResults)
-			// to handle the case where the user grants the permission. See the documentation
-			// for Activity#requestPermissions for more details.
 			Log.e(TAG, "no location access granted");
 
 			//set the location to dummy coordinates

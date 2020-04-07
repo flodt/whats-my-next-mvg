@@ -161,4 +161,11 @@
     <string name="theme_selection_day">Light</string>
     <string name="theme_selection_night">Dark</string>
     <string name="switch_theme_title">Switch theme</string>
+    <string name="location_rationale_title">Location permission</string>
+    <string name="location_rationale_message">Location permission is needed for fetching departures from stations close
+        to you.
+    </string>
+    <string name="location_permission_granted">Location permission granted</string>
+    <string name="pref_key_location_already_requested">LOCATION_ALREADY_REQUESTED</string>
+    <string name="continue_dialog">Continue</string>
 </resources>

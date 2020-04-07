@@ -32,7 +32,7 @@ public class ListableNetworkAccess extends AsyncTask<Void, Void, Departure[]> {
 		//save to cache and trigger UI update
 		super.onPostExecute(departures);
 		DepartureCache.getInstance().setCache(Arrays.asList(departures));
-		act.get().handleUIUpdate(Arrays.asList(departures));
+		if (act.get() != null) act.get().handleUIUpdate(Arrays.asList(departures));
 	}
 
 	@Override

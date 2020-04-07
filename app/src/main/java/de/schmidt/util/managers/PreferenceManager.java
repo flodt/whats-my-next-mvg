@@ -5,13 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import de.schmidt.mvg.Requests;
 import de.schmidt.util.ThemeUtils;
 import de.schmidt.util.network.AutocompleteNetworkAccess;
@@ -344,6 +342,18 @@ public class PreferenceManager {
 				.setNegativeButton(R.string.cancel_dialog, null)
 				.create()
 				.show();
+	}
+
+	public void storeLocationPermissionAlreadyRequested(Context context, boolean requested) {
+		context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.edit()
+				.putBoolean(context.getString(R.string.pref_key_location_already_requested), requested)
+				.commit();
+	}
+
+	public boolean getLocationPermissionAlreadyRequested(Context context) {
+		return context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE)
+				.getBoolean(context.getString(R.string.pref_key_location_already_requested), false);
 	}
 
 	private void refresh(Context context) {

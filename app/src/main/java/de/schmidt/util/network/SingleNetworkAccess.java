@@ -33,9 +33,11 @@ public class SingleNetworkAccess extends AsyncTask<Void, Void, Departure> {
 	protected void onPostExecute(Departure departure) {
 		//handle UI update
 		super.onPostExecute(departure);
-		act.get().handleUIUpdate(
-				(departure == null) ? Collections.emptyList() : Collections.singletonList(departure)
-		);
+		if (act.get() != null) {
+			act.get().handleUIUpdate(
+					(departure == null) ? Collections.emptyList() : Collections.singletonList(departure)
+			);
+		}
 	}
 
 	@Override
