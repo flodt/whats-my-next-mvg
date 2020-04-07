@@ -127,6 +127,7 @@ public class DepartureListActivity extends ActionBarBaseActivity implements Upda
 			//set colors according to result
 			if (departures.isEmpty()) {
 				setTitle(R.string.app_name);
+				ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 			} else {
 				//adapt status bar to first departure
 				setTitle(departures.get(0).getStation().getName());

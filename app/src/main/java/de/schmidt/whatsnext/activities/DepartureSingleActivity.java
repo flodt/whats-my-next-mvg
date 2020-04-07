@@ -117,11 +117,10 @@ public class DepartureSingleActivity extends ActionBarBaseActivity implements Up
 				direction.setText(getResources().getString(R.string.no_departures_found));
 				line.setText("");
 				minutesFixedLabel.setText("");
-				direction.setTextColor(getColor(R.color.white));
-				layoutBackground.setBackgroundColor(getColor(R.color.colorPrimary));
-				actionBar.setBackgroundDrawable(new ColorDrawable(getColor(R.color.colorPrimary)));
-				getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
-				navBar.setItemTextColor(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
+				direction.setTextColor(getColor(R.color.textColorHalf));
+				layoutBackground.setBackgroundColor(getColor(R.color.background));
+				ThemeUtils.getInstance().initializeActionBar(this, actionBar, getWindow());
+				ThemeUtils.getInstance().initializeNavBarWithAccentResource(this, navBar, R.color.mvg_1);
 
 				pullToRefresh.setRefreshing(false);
 			});
