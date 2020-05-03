@@ -86,4 +86,10 @@
     <string name="theme_selection_day">Hell</string>
     <string name="theme_selection_follow_system">Systemstandard</string>
     <string name="theme_selection_night">Dunkel</string>
+    <string name="location_rationale_title">Standortberechtigung</string>
+    <string name="location_rationale_message">"Die Standortberechtigung wird benötigt um Abfahrten von Stationen in der Nähe anzuzeigen."</string>
+    <string name="location_permission_granted">Standortberechtigung gewährt</string>
+    <string name="continue_dialog">Weiter</string>
+    <string name="location_permission_denied">Standortberechtigung nicht gewährt</string>
+    <string name="all_lines">Alle</string>
 </resources>

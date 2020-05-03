@@ -166,7 +166,8 @@
         to you.
     </string>
     <string name="location_permission_granted">Location permission granted</string>
-    <string name="pref_key_location_already_requested">LOCATION_ALREADY_REQUESTED</string>
+    <string name="pref_key_location_already_requested" translatable="false">LOCATION_ALREADY_REQUESTED</string>
     <string name="continue_dialog">Continue</string>
     <string name="location_permission_denied">No location permission granted</string>
+    <string name="all_lines">All</string>
 </resources>

@@ -2,6 +2,7 @@ package de.schmidt.mvg.interrupt;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import de.schmidt.whatsnext.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +55,10 @@ public class Interruption {
 		return sb.toString();
 	}
 
-	public String getLinesAsHtmlColoredString() {
+	public String getLinesAsHtmlColoredString(Context context) {
+		//if we have no lines, return an empty line string
+		if (lines.isEmpty()) return context.getResources().getString(R.string.all_lines);
+
 		StringBuilder sb = new StringBuilder(lines.get(0).getHtmlColoredLine());
 		for (int i = 1; i < lines.size(); i++) {
 			sb.append(", ").append(lines.get(i).getHtmlColoredLine());
@@ -91,10 +95,15 @@ public class Interruption {
 	public static Interruption ofJSON(JSONObject json) throws JSONException {
 		//collect interruption lines
 		List<InterruptionLine> lines = new ArrayList<>();
-		JSONArray rawLines = json.getJSONObject("lines").getJSONArray("line");
-		for (int i = 0; i < rawLines.length(); i++) {
-			JSONObject line = rawLines.getJSONObject(i);
-			lines.add(InterruptionLine.ofJSON(line));
+		try {
+			JSONArray rawLines = json.getJSONObject("lines").getJSONArray("line");
+			for (int i = 0; i < rawLines.length(); i++) {
+				JSONObject line = rawLines.getJSONObject(i);
+				lines.add(InterruptionLine.ofJSON(line));
+			}
+		} catch (JSONException e) {
+			//no lines were specified --> List<InterruptionLine> is empty
+			Log.e("Interruptions", "ofJSON: error in line array parsing", e);
 		}
 
 		//get duration object

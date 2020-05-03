@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to What's My Next 🚈</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.2.1-blue.svg" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.2.2-blue.svg" />
   
   <a href='https://play.google.com/store/apps/details?id=de.schmidt.whatsnext&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' width=175 src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 </p>
