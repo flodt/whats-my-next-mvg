@@ -62,7 +62,7 @@ public class MenuManager {
 
 	private void sendNotification(Context context) {
 		if (context instanceof Notifyable) {
-			((Notifyable) context).sendToNotifcations();
+			((Notifyable) context).sendToNotifications();
 		} else {
 			Toast.makeText(context, context.getString(R.string.send_notification_error), Toast.LENGTH_SHORT).show();
 		}

@@ -138,7 +138,7 @@ public class RoutingItineraryDisplayActivity extends ActionBarBaseActivity imple
 	}
 
 	@Override
-	public void sendToNotifcations() {
+	public void sendToNotifications() {
 		NotificationManager.getInstance().sendItinerary(routeConnection, this);
 	}
 }

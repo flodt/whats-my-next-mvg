@@ -223,7 +223,7 @@ public class RoutingAlternativesActivity extends ActionBarBaseActivity implement
 	}
 
 	@Override
-	public void sendToNotifcations() {
+	public void sendToNotifications() {
 		RouteOptions options = RoutingOptionsCache.getInstance().getCache();
 		String connection = views.stream()
 				.filter(adv -> !adv.isTimeShiftButton())
