@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -110,12 +111,35 @@ public class Interruption {
 		JSONObject duration = json.getJSONObject("duration");
 
 		//construct the interruption object
+		Date from;
+		try {
+			from = new Date(duration.getLong("from"));
+		} catch (JSONException e) {
+			Log.e("Interruptions", "Date error", e);
+
+			//default from is today
+			from = new Date();
+		}
+
+		Date until;
+		try {
+			until = new Date(duration.getLong("until"));
+		} catch (JSONException e) {
+			Log.e("Interruptions", "Date error", e);
+
+			//default duration is one month
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.MONTH, 1);
+			until = cal.getTime();
+		}
+
 		return new Interruption(
 				json.getLong("id"),
 				json.getString("title"),
 				lines,
-				new Date(duration.getLong("from")),
-				new Date(duration.getLong("until")),
+				from,
+				until,
 				duration.getString("text"),
 				json.getString("text"),
 				new Date(json.getLong("modificationDate"))
