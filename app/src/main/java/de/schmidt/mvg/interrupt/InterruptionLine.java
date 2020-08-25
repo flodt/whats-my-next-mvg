@@ -36,7 +36,7 @@ public class InterruptionLine {
 	}
 
 	public String getHtmlColoredLine() {
-		return "<font color=" + LineColor.getForLine(line).getPrimary() + ">" + line + "</font>";
+		return "<font color=" + LineColor.getForLine(line).getSecondary() + ">" + line + "</font>";
 	}
 
 	@Override
