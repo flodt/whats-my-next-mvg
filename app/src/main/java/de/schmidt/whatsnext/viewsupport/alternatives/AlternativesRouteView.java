@@ -80,7 +80,7 @@ public class AlternativesRouteView extends AlternativesDisplayView {
 		//get that many items, concatenate … when we don't get to show the entirety
 		String lines = IntStream.range(0, i)
 				.mapToObj(connection.getConnectionParts()::get)
-				.map(cp -> "<font color=" + cp.getColor().getPrimary() + ">" + cp.getLine() + "</font>")
+				.map(cp -> "<font color=" + cp.getColor().getSecondary() + ">" + cp.getLine() + "</font>")
 				.collect(Collectors.joining(", ")) +
 				(showAll ? "" : ", …");
 		means.setText((lines.length() == 0) ? "Walking" : Html.fromHtml(lines));
