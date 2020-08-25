@@ -49,9 +49,12 @@ public class InterruptionsListViewAdapter extends BaseAdapter {
 
 		Interruption interruption = interruptions.get(position);
 		title.setText(
-				Html.fromHtml(interruption.getLinesAsHtmlColoredString(convertView.getContext()) + ": " + interruption.getTitle())
+				Html.fromHtml(
+						interruption.getLinesAsHtmlColoredString(convertView.getContext()) + ": " + interruption.getTitle(),
+							  Html.FROM_HTML_MODE_LEGACY
+				)
 		);
-		text.setText(interruption.getDescriptionText());
+		text.setText(Html.fromHtml(interruption.getDescriptionText(), Html.FROM_HTML_MODE_LEGACY));
 		duration.setText(interruption.getDurationAsText());
 		updated.setText(interruption.getModificationDateAsString(context));
 
